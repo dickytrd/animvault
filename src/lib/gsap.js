@@ -10,8 +10,8 @@
  */
 
 import gsap from 'gsap'
-import { SplitText } from 'gsap/SplitText'
-import { CustomEase } from 'gsap/CustomEase'
+import { SplitText }         from 'gsap/SplitText'
+import { CustomEase }        from 'gsap/CustomEase'
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin'
 
 if (typeof window !== 'undefined') {

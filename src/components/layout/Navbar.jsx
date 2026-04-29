@@ -1,12 +1,21 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
+
+const NAV_LINKS = [
+  { label: 'Heading Reveal', href: '/heading-reveal'  },
+  { label: 'Content Reveal', href: '/content-reveal'  },
+  { label: 'Loaders',        href: '/loaders'          },
+  { label: 'Buttons',        href: '/buttons'          },
+]
+
 export function Navbar() {
+  const pathname = usePathname()
+
   return (
     <nav style={{
       position:       'fixed',
-      top:            0,
-      left:           0,
-      right:          0,
+      top:            0, left: 0, right: 0,
       zIndex:         100,
       display:        'flex',
       alignItems:     'center',
@@ -18,60 +27,61 @@ export function Navbar() {
       WebkitBackdropFilter: 'blur(12px)',
       borderBottom:   '1px solid var(--border)',
     }}>
+
       {/* Logo */}
-      <a
-        href="/"
-        style={{
-          fontSize:      '14px',
-          fontWeight:    '600',
-          color:         'var(--text)',
-          textDecoration:'none',
-          letterSpacing: '-0.01em',
-        }}
-      >
+      <a href="/" style={{
+        fontSize: '14px', fontWeight: '600',
+        color: 'var(--text)', textDecoration: 'none', letterSpacing: '-0.01em',
+      }}>
         Motion<span style={{ color: 'var(--accent)' }}>Lab</span>
       </a>
 
-      {/* Nav links */}
-      <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-        {[
-          { label: 'Heading Reveal', href: '/heading-reveal', active: true },
-          { label: 'Content Reveal', href: '#',               active: false },
-          { label: 'Loaders',        href: '#',               active: false },
-          { label: 'Buttons',        href: '#',               active: false },
-        ].map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            style={{
-              fontSize:      '13px',
-              color:         link.active ? 'var(--text)' : 'var(--text-muted)',
-              textDecoration:'none',
-              letterSpacing: '0.01em',
-              transition:    'color 0.15s ease',
-              cursor:        link.active ? 'pointer' : 'default',
-              opacity:       link.active ? 1 : 0.5,
-            }}
-          >
-            {link.label}
-            {link.active && (
-              <span style={{
-                display:       'inline-block',
-                marginLeft:    '6px',
-                padding:       '1px 6px',
-                background:    'var(--accent-dim)',
-                color:         'var(--accent)',
-                borderRadius:  '4px',
-                fontSize:      '10px',
-                fontWeight:    '600',
-                letterSpacing: '0.04em',
-                verticalAlign: 'middle',
-              }}>
-                LIVE
-              </span>
-            )}
-          </a>
-        ))}
+      {/* Links */}
+      <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+        {NAV_LINKS.map((link) => {
+          const active = pathname === link.href
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                display:       'inline-flex',
+                alignItems:    'center',
+                gap:           '6px',
+                padding:       '5px 12px',
+                borderRadius:  '6px',
+                fontSize:      '13px',
+                fontWeight:    active ? '500' : '400',
+                color:         active ? 'var(--text)' : 'var(--text-muted)',
+                textDecoration:'none',
+                // background:    active ? 'rgba(255,255,255,0.07)' : 'transparent',
+                letterSpacing: '0.01em',
+                transition:    'all 0.15s ease',
+                borderLeft:    active ? '0px solid var(--accent)' : '2px solid transparent',
+              }}
+              onMouseEnter={(e) => {
+                if (!active) {
+                  e.currentTarget.style.color = 'var(--text)'
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!active) {
+                  e.currentTarget.style.color = 'var(--text-muted)'
+                  e.currentTarget.style.background = 'transparent'
+                }
+              }}
+            >
+              {link.label}
+              {active && (
+                <span style={{
+                  width: '5px', height: '5px', borderRadius: '50%',
+                  background: 'var(--accent)', display: 'inline-block', flexShrink: 0,
+                }} />
+              )}
+            </a>
+          )
+        })}
       </div>
     </nav>
   )
