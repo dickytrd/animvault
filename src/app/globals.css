@@ -127,3 +127,24 @@ body {
   border: none;
   border-top: 1px solid var(--border);
 }
+
+.glitch-slice {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.char-mask-container {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  vertical-align: top;
+  line-height: 1;
+}
+
+.char-mask-inner {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
+}

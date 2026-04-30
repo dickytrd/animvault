@@ -12,7 +12,7 @@ export const headingRevealAnimations = [
   {
     id: 'split-fade-opacity',
     label: 'Split Fade — Opacity',
-    description: 'Each character fades in one by one with opacity.',
+    description: 'Each character fades in sequentially with pure opacity transition. Clean & minimal.',
     animationKey: 'SplitFadeOpacity',
     defaultText: 'This Sample Long Heading in Here',
     defaultSubtext:
@@ -51,7 +51,7 @@ export const headingRevealAnimations = [
   {
     id: 'split-fade-blur',
     label: 'Split Fade — Blur',
-    description: 'Characters fade in and unblur simultaneously, one by one.',
+    description: 'Characters fade in while unblurring simultaneously. Soft, dreamy reveal.',
     animationKey: 'SplitFadeBlur',
     defaultText: 'This Sample Long Heading in Here',
     defaultSubtext:
@@ -99,8 +99,8 @@ export const headingRevealAnimations = [
 
   {
     id: 'split-mask-char',
-    label: 'Split Mask — Per Character',
-    description: 'Each character slides up from behind a mask, one by one.',
+    label: 'Split Mask — Character',
+    description: 'Each character slides up from behind an individual mask. Sharp, precise reveal.',
     animationKey: 'SplitMaskChar',
     defaultText: 'This Sample Long Heading in Here',
     defaultSubtext:
@@ -148,8 +148,8 @@ export const headingRevealAnimations = [
 
   {
     id: 'split-mask-word',
-    label: 'Split Mask — Per Word',
-    description: 'Each word slides up from behind a line mask.',
+    label: 'Split Mask — Word',
+    description: 'Each word slides up from behind a line mask. Faster cascade than per-char.',
     animationKey: 'SplitMaskWord',
     defaultText: 'This Sample Long Heading in Here',
     defaultSubtext:
@@ -258,7 +258,7 @@ export const headingRevealAnimations = [
   {
     id: 'scramble-reveal',
     label: 'Scramble Reveal',
-    description: 'Random characters scramble before the real text is revealed — left to right.',
+    description: 'Random characters scramble before real text reveals left-to-right. Tech/cyber vibe.',
     animationKey: 'ScrambleReveal',
     defaultText: 'This Sample Long Heading in Here',
     defaultSubtext:
@@ -427,7 +427,7 @@ export const headingRevealAnimations = [
   // ─── 09 ────────────────────────────────────────────────────
   {
     id: 'wave-char',
-    label: 'Wave — Per Character',
+    label: 'Wave — Character',
     description: 'Characters enter from different heights following a sine wave pattern.',
     animationKey: 'WaveChar',
     defaultText: 'This Sample Long Heading in Here',
@@ -537,8 +537,8 @@ export const headingRevealAnimations = [
   // ─── 11 ────────────────────────────────────────────────────
   {
     id: 'scale-fade',
-    label: 'Scale Fade — Per Word',
-    description: 'Each word scales up from a small size while fading in.',
+    label: 'Scale Fade — Word',
+    description: 'Each word scales up from small size while fading in. Bouncy, playful feel.',
     animationKey: 'ScaleFade',
     defaultText: 'This Sample Long Heading in Here',
     defaultSubtext:
@@ -657,7 +657,7 @@ export const headingRevealAnimations = [
   // ─── 14 ────────────────────────────────────────────────────
   {
     id: 'slide-from-left',
-    label: 'Slide From Left — Per Word',
+    label: 'Slide From Left — Word',
     description: 'Each word slides in horizontally from the left with a stagger cascade.',
     animationKey: 'SlideFromLeft',
     defaultText: 'This Sample Long Heading in Here',
@@ -753,4 +753,588 @@ export const headingRevealAnimations = [
       },
     ],
   },
+
+    // ─── 16 ───────────────────────────────────────────────────
+  {
+    id: 'slice-glitch',
+    label: 'Slice Glitch — Scatter',
+    description: 'Chars split into horizontal slices that scatter then converge.',
+    animationKey: 'SliceGlitchReveal',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5,
+        max: 3,
+        step: 0.1,
+        default: 1.4,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.005,
+        max: 0.08,
+        step: 0.005,
+        default: 0.025,
+        unit: 's',
+      },
+      {
+        id: 'slices',
+        label: 'Slices per Char',
+        type: 'slider',
+        min: 3,
+        max: 12,
+        step: 1,
+        default: 7,
+        unit: '',
+      },
+      {
+        id: 'glitchRange',
+        label: 'Glitch Range',
+        type: 'slider',
+        min: 20,
+        max: 200,
+        step: 5,
+        default: 110,
+        unit: 'px',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['expo.out', 'power4.out', 'power2.out', 'sine.out', 'back.out(1.5)'],
+        default: 'expo.out',
+      },
+    ],
+  },
+
+    // ─── 17 ────────────────────────────────────────────────────
+  {
+    id: 'char-assemble-glitch',
+    label: 'Char Assemble — Glitch',
+    description: 'Characters scatter randomly then snap into place left-to-right.',
+    animationKey: 'CharAssembleGlitch',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.4,
+        max: 3,
+        step: 0.1,
+        default: 1.2,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.005,
+        max: 0.08,
+        step: 0.005,
+        default: 0.025,
+        unit: 's',
+      },
+      {
+        id: 'intensity',
+        label: 'Glitch Intensity',
+        type: 'slider',
+        min: 20,
+        max: 200,
+        step: 5,
+        default: 90,
+        unit: 'px',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['expo.out', 'power4.out', 'back.out(1.5)', 'sine.out'],
+        default: 'expo.out',
+      },
+    ],
+  },
+
+  // ─── 18 ────────────────────────────────────────────────────
+  {
+    id: 'random-mask-assemble',
+    label: 'Random Mask — Assemble',
+    description: 'Chars appear in random order from random Y positions with mask reveal. madewithgsap.com style.',
+    animationKey: 'RandomMaskAssemble',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.4,
+        max: 3,
+        step: 0.1,
+        default: 0.75,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.005,
+        max: 0.1,
+        step: 0.005,
+        default: 0.02,
+        unit: 's',
+      },
+      {
+        id: 'yRange',
+        label: 'Y Range',
+        type: 'slider',
+        min: 40,
+        max: 200,
+        step: 10,
+        default: 150,
+        unit: 'px',
+      },
+      {
+        id: 'rotationRange',
+        label: 'Rotation Range',
+        type: 'slider',
+        min: 0,
+        max: 90,
+        step: 5,
+        default: 60,
+        unit: 'deg',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['expo.out', 'power4.out', 'power3.out', 'back.out(1.5)', 'elastic.out(1, 0.6)'],
+        default: 'expo.out',
+      },
+    ],
+  },
+
+  // ─── 19 ────────────────────────────────────────────────────
+  {
+    id: 'bottom-mask-assemble',
+    label: 'Bottom Mask — Assemble',
+    description: 'All chars rise from below with random stagger order. Masked reveal effect.',
+        animationKey: 'BottomMaskAssemble',
+        defaultText: 'A collection of JS effects Made With Gsap',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.4,
+        max: 3,
+        step: 0.1,
+        default: 1,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.005,
+        max: 0.1,
+        step: 0.005,
+        default: 0.02,
+        unit: 's',
+      },
+      {
+        id: 'yRange',
+        label: 'Y Range',
+        type: 'slider',
+        min: 40,
+        max: 200,
+        step: 10,
+        default: 150,
+        unit: 'px',
+      },
+      {
+        id: 'rotationRange',
+        label: 'Rotation Range',
+        type: 'slider',
+        min: 0,
+        max: 90,
+        step: 5,
+        default: 60,
+        unit: 'deg',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['expo.out', 'power4.out', 'power3.out', 'back.out(1.5)', 'elastic.out(1, 0.6)'],
+        default: 'expo.out',
+      },
+    ],
+  },
+
+  // ─── 20 ────────────────────────────────────────────────────
+  {
+    id: 'glitch-change-assemble',
+    label: 'Glitch Change — Assemble',
+    description: 'Visible heading scatters out then reassembles. Refresh/change effect with random mask.',
+    animationKey: 'GlitchChangeAssemble',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.4,
+        max: 3,
+        step: 0.1,
+        default: 0.9,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.005,
+        max: 0.1,
+        step: 0.005,
+        default: 0.02,
+        unit: 's',
+      },
+      {
+        id: 'yRange',
+        label: 'Y Range',
+        type: 'slider',
+        min: 40,
+        max: 200,
+        step: 10,
+        default: 90,
+        unit: 'px',
+      },
+      {
+        id: 'rotationRange',
+        label: 'Rotation Range',
+        type: 'slider',
+        min: 0,
+        max: 90,
+        step: 5,
+        default: 0,
+        unit: 'deg',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['expo.out', 'power4.out', 'power3.out', 'back.out(1.5)', 'elastic.out(1, 0.6)'],
+        default: 'expo.out',
+      },
+    ],
+  },
+
+    // ─── 21 ───────────────────────────────────────────────────
+  {
+    id: 'slice-mask-glitch',
+    label: 'Slice Mask — Conveyor',
+    description: 'Chars slide out and are chased by new chars from the same direction. Clean, non-overlapping refresh.',
+    animationKey: 'SliceMaskGlitch',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration', 
+        type: 'slider', min: 0.5, max: 3, step: 0.1, default: 1, unit: 's'
+      },
+      {
+        id: 'stagger', 
+        label: 'Stagger', 
+        type: 'slider', min: 0.005, max: 0.08, step: 0.005, default: 0.08, unit: 's'
+      },
+      {
+        id: 'yRange', 
+        label: 'Travel Distance', 
+        type: 'slider', min: 40, max: 200, step: 10, default: 60, unit: 'px'
+      },
+      {
+        id: 'ease', 
+        label: 'Ease', 
+        type: 'select', 
+        options: ['expo.out', 'power3.out', 'back.out(1.4)', 'sine.out'], default: 'expo.out'
+      }
+    ]
+  },
+
+  // ─── 22 ───────────────────────────────────────────────────
+  {
+    id: 'alternating-y-reveal',
+    label: 'Alternating Y — Zigzag',
+    description: 'Chars reveal from alternating top/bottom directions with left-to-right stagger.',
+    animationKey: 'AlternatingYReveal',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.4,
+        max: 3,
+        step: 0.1,
+        default: 1.0,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.01,
+        max: 0.15,
+        step: 0.005,
+        default: 0.04,
+        unit: 's',
+      },
+      {
+        id: 'yRange',
+        label: 'Y Distance',
+        type: 'slider',
+        min: 30,
+        max: 200,
+        step: 5,
+        default: 100,
+        unit: 'px',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['expo.out', 'power3.out', 'back.out(1.4)', 'sine.out'],
+        default: 'expo.out',
+      },
+    ],
+  },  
+
+    // ─── 23 ───────────────────────────────────────────────────
+  {
+    id: 'floating-zigzag-reveal',
+    label: 'Floating Zigzag — Masked',
+    description: 'Chars float in from the right with alternating Y & subtle rotation. Smooth, editorial cascade.',
+    animationKey: 'FloatingZigzagReveal',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5,
+        max: 3,
+        step: 0.1,
+        default: 1.2,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.01,
+        max: 0.15,
+        step: 0.005,
+        default: 0.04,
+        unit: 's',
+      },
+      {
+        id: 'yRange',
+        label: 'Y Distance',
+        type: 'slider',
+        min: 30,
+        max: 200,
+        step: 5,
+        default: 80,
+        unit: 'px',
+      },
+      {
+        id: 'xRange',
+        label: 'X Float Distance',
+        type: 'slider',
+        min: 30,
+        max: 250,
+        step: 10,
+        default: 120,
+        unit: 'px',
+      },
+      {
+        id: 'rotationRange',
+        label: 'Rotation',
+        type: 'slider',
+        min: 0,
+        max: 45,
+        step: 1,
+        default: 15,
+        unit: 'deg',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['power3.out', 'sine.out', 'expo.out', 'back.out(1.2)'],
+        default: 'power3.out',
+      },
+    ],
+  },
+
+  // ─── 24 ───────────────────────────────────────────────────
+  {
+    id: 'floating-zigzag-nomask',
+    label: 'Floating Zigzag — Free',
+    description: 'Chars float from right with zigzag Y & rotation. No clipping, pure transform cascade.',
+    animationKey: 'FloatingZigzagNoMask',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5,
+        max: 3,
+        step: 0.1,
+        default: 1,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.01,
+        max: 0.15,
+        step: 0.005,
+        default: 0.080,
+        unit: 's',
+      },
+      {
+        id: 'yRange',
+        label: 'Y Zigzag',
+        type: 'slider',
+        min: 10,
+        max: 80,
+        step: 5,
+        default: 20,
+        unit: 'px',
+      },
+      {
+        id: 'xRange',
+        label: 'X Float',
+        type: 'slider',
+        min: 30,
+        max: 200,
+        step: 10,
+        default: 140,
+        unit: 'px',
+      },
+      {
+        id: 'rotationRange',
+        label: 'Rotation',
+        type: 'slider',
+        min: 0,
+        max: 30,
+        step: 1,
+        default: 15,
+        unit: 'deg',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['power3.out', 'sine.out', 'expo.out', 'back.out(1.2)'],
+        default: 'power3.out',
+      },
+    ],
+  },
+
+  // ─── 25 ───────────────────────────────────────────────────
+  {
+    id: 'cinematic-depth',
+    label: 'Cinematic Depth — Blur',
+    description: 'Chars fly in from depth with scale, blur, and fade. Premium editorial reveal.',
+    animationKey: 'CinematicDepthReveal',
+    defaultText: 'This Sample Long Heading in Here',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5,
+        max: 3,
+        step: 0.1,
+        default: 1.3,
+        unit: 's',
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.01,
+        max: 0.12,
+        step: 0.005,
+        default: 0.035,
+        unit: 's',
+      },
+      {
+        id: 'blurAmount',
+        label: 'Blur Start',
+        type: 'slider',
+        min: 4,
+        max: 24,
+        step: 1,
+        default: 12,
+        unit: 'px',
+      },
+      {
+        id: 'scaleFrom',
+        label: 'Scale From',
+        type: 'slider',
+        min: 0.3,
+        max: 0.9,
+        step: 0.05,
+        default: 0.6,
+        unit: '',
+      },
+      {
+        id: 'depthY',
+        label: 'Depth Y Offset',
+        type: 'slider',
+        min: 10,
+        max: 100,
+        step: 5,
+        default: 40,
+        unit: 'px',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['power3.out', 'expo.out', 'sine.out', 'back.out(1.3)'],
+        default: 'power3.out',
+      },
+    ],
+  },
+
 ]

@@ -21,6 +21,24 @@ import { Typewriter }       from '@/animations/heading-reveal/Typewriter'
 import { LetterCollapse }   from '@/animations/heading-reveal/LetterCollapse'
 import { SlideFromLeft }    from '@/animations/heading-reveal/SlideFromLeft'
 import { FadeSubtle }       from '@/animations/heading-reveal/FadeSubtle'
+import { SliceGlitchReveal } from '@/animations/heading-reveal/SliceGlitchReveal'
+import { CharAssembleGlitch } from '@/animations/heading-reveal/CharAssembleGlitch'
+import { RandomMaskAssemble } from '@/animations/heading-reveal/RandomMaskAssemble'
+import { BottomMaskAssemble } from '@/animations/heading-reveal/BottomMaskAssemble'
+import { GlitchChangeAssemble } from '@/animations/heading-reveal/GlitchChangeAssemble'
+import { SliceMaskGlitch } from '@/animations/heading-reveal/SliceMaskGlitch'
+import { AlternatingYReveal } from '@/animations/heading-reveal/AlternatingYReveal'
+import { FloatingZigzagReveal } from '@/animations/heading-reveal/FloatingZigzagReveal'
+import { FloatingZigzagNoMask } from '@/animations/heading-reveal/FloatingZigzagNoMask' // ✅ TAMBAHKAN INI
+import { CinematicDepthReveal } from '@/animations/heading-reveal/CinematicDepthReveal'
+
+
+
+
+
+
+
+
 
 const ANIMATION_REGISTRY = {
   SplitFadeOpacity,
@@ -38,6 +56,16 @@ const ANIMATION_REGISTRY = {
   LetterCollapse,
   SlideFromLeft,
   FadeSubtle,
+  SliceGlitchReveal,
+  CharAssembleGlitch,
+  RandomMaskAssemble,
+  BottomMaskAssemble,
+  GlitchChangeAssemble,
+  SliceMaskGlitch,
+  AlternatingYReveal,
+  FloatingZigzagReveal,
+  FloatingZigzagNoMask,
+  CinematicDepthReveal,
 }
 
 /**
@@ -116,6 +144,17 @@ export function PreviewPane({
       return () => cancelAnimationFrame(raf)
     }
   }, [state, runAnimation])
+
+  // Di dalam PreviewPane.jsx
+useEffect(() => {
+  // Cleanup when text changes
+  tweenRef.current?.kill()
+  gsapCtxRef.current?.revert()
+  if (splitRef.current) {
+    splitRef.current.revert()
+    splitRef.current = null
+  }
+}, [text, subtext]) // Dependencies
 
   // Cleanup on unmount
   useEffect(() => {

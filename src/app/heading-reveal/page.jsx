@@ -2,6 +2,7 @@ import { Navbar }       from '@/components/layout/Navbar'
 import { HeroSection }  from '@/components/layout/HeroSection'
 import { AnimationCard } from '@/components/animation-card/AnimationCard'
 import { headingRevealAnimations } from '@/data/headingReveal.config'
+import { FloatingNav } from '@/components/animation-card/FloatingNav'
 
 export const metadata = {
   title: 'Heading Reveal — MotionLab',
@@ -12,7 +13,7 @@ export default function HeadingRevealPage() {
   return (
     <>
       <Navbar />
-
+      <FloatingNav animations={headingRevealAnimations} />
       <main style={{
         maxWidth: '1200px',
         margin:   '0 auto',

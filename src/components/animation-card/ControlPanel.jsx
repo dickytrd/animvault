@@ -3,17 +3,19 @@
 import { useState } from 'react'
 import { ControlsTab } from './ControlsTab'
 import { CodeTab }     from './CodeTab'
+import { TextTab }     from './TextTab'
 
 const TABS = [
   { id: 'controls', label: 'Controls' },
+  { id: 'text',     label: 'Text'     },
   { id: 'code',     label: 'Code'     },
 ]
 
 /**
  * ControlPanel
  * ────────────
- * Right panel. Two tabs: Controls | Code.
- * Tab state is local — doesn't affect animation state.
+ * Right panel. Three tabs: Controls | Text | Code.
+ * Updated to support manual text apply & safe reset.
  */
 export function ControlPanel({
   config,
@@ -22,6 +24,13 @@ export function ControlPanel({
   codeString,
   animationLabel,
   animationDescription,
+  headingText,
+  subtext,
+  onHeadingChange,
+  onSubtextChange,
+  onApplyText,
+  onResetText,
+  initialDefaults,
 }) {
   const [activeTab, setActiveTab] = useState('controls')
 
@@ -35,17 +44,14 @@ export function ControlPanel({
       borderRadius:   '10px',
       background:     'var(--surface)',
       overflow:       'hidden',
-      // Fixed height so it doesn't grow with code content
       maxHeight:      '460px',
     }}>
-
       {/* ── Panel header ── */}
       <div style={{
         padding:      '16px 18px 0',
         borderBottom: '1px solid var(--border)',
         flexShrink:   0,
       }}>
-        {/* Animation name + description */}
         <div style={{ marginBottom: '14px' }}>
           <p style={{
             fontSize:      '11px',
@@ -92,7 +98,7 @@ export function ControlPanel({
                   fontFamily:      'inherit',
                   cursor:          'pointer',
                   transition:      'all 0.15s ease',
-                  marginBottom:    '-1px', // overlap the border-bottom of header
+                  marginBottom:    '-1px',
                   letterSpacing:   '0.01em',
                 }}
               >
@@ -116,6 +122,21 @@ export function ControlPanel({
             onChange={onChange}
           />
         )}
+
+        {activeTab === 'text' && (
+          <TextTab
+            headingText={headingText}
+            subtext={subtext}
+            onHeadingChange={onHeadingChange}
+            onSubtextChange={onSubtextChange}
+            onApply={onApplyText}
+            onReset={onResetText}
+            // ✅ Fallback chain: useRef defaults → config defaults → empty string
+            defaultHeading={initialDefaults?.heading ?? config.defaultText ?? ''}
+            defaultSubtext={initialDefaults?.subtext ?? config.defaultSubtext ?? ''}
+          />
+        )}
+
         {activeTab === 'code' && (
           <CodeTab codeString={codeString} />
         )}

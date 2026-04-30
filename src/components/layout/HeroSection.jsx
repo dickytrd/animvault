@@ -117,7 +117,7 @@ export function HeroSection() {
         borderTop:  '1px solid var(--border)',
       }}>
         {[
-          { value: '15',    label: 'Animations'  },
+          { value: '30',    label: 'Animations'  },
           { value: 'GSAP', label: 'Engine'       },
           { value: 'Free', label: 'All Plugins'  },
           { value: '0',    label: 'Dependencies' },
