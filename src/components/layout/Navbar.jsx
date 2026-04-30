@@ -33,7 +33,7 @@ export function Navbar() {
         fontSize: '14px', fontWeight: '600',
         color: 'var(--text)', textDecoration: 'none', letterSpacing: '-0.01em',
       }}>
-        Motion<span style={{ color: 'var(--accent)' }}>Lab</span>
+        Anim<span style={{ color: 'var(--accent)' }}>Vault</span>
       </a>
 
       {/* Links */}
@@ -54,10 +54,10 @@ export function Navbar() {
                 fontWeight:    active ? '500' : '400',
                 color:         active ? 'var(--text)' : 'var(--text-muted)',
                 textDecoration:'none',
-                // background:    active ? 'rgba(255,255,255,0.07)' : 'transparent',
+                background:    active ? 'rgba(255,255,255,0.07)' : 'transparent',
                 letterSpacing: '0.01em',
                 transition:    'all 0.15s ease',
-                borderLeft:    active ? '0px solid var(--accent)' : '2px solid transparent',
+                borderLeft:    active ? '2px solid var(--accent)' : '2px solid transparent',
               }}
               onMouseEnter={(e) => {
                 if (!active) {
