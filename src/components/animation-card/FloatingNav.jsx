@@ -1,16 +1,56 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export function FloatingNav({ animations }) {
   const [activeId, setActiveId] = useState(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [mounted, setMounted] = useState(false)
+  const navContainerRef = useRef(null)
+    const [isNavScrolling, setIsNavScrolling] = useState(false)
+
+  // 🎯 Auto-hide scrollbar when inactive
+  useEffect(() => {
+    const nav = navContainerRef.current
+    if (!nav || !mounted) return
+
+    let timeout
+    const handleScroll = () => {
+      setIsNavScrolling(true)
+      clearTimeout(timeout)
+      timeout = setTimeout(() => setIsNavScrolling(false), 800) // Hide after 800ms
+    }
+
+    nav.addEventListener('scroll', handleScroll)
+    return () => {
+      nav.removeEventListener('scroll', handleScroll)
+      clearTimeout(timeout)
+    }
+  }, [mounted])
 
   // Wait for mount
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // 🎯 Auto-scroll active item into view (with delay for DOM readiness)
+  useEffect(() => {
+    if (!activeId || !navContainerRef.current || !mounted) return
+
+    const timer = setTimeout(() => {
+      const activeButton = navContainerRef.current?.querySelector(`[data-nav-id="${activeId}"]`)
+      
+      if (activeButton) {
+        activeButton.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest',
+        })
+      }
+    }, 150) // Delay 150ms untuk pastikan DOM update selesai
+
+    return () => clearTimeout(timer)
+  }, [activeId, mounted])
 
   // Intersection Observer dengan retry
   useEffect(() => {
@@ -33,35 +73,24 @@ export function FloatingNav({ animations }) {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions)
 
-    // Function to observe sections
     const observeSections = () => {
       const sections = document.querySelectorAll('[data-animation-id]')
-      console.log(`[FloatingNav] Found ${sections.length} sections`)
-      
-      sections.forEach((section) => {
-        observer.observe(section)
-      })
-      
+      sections.forEach((section) => observer.observe(section))
       return sections.length
     }
 
-    // Try multiple times with increasing delay
     let attempt = 0
     const maxAttempts = 5
     const tryObserve = () => {
       const count = observeSections()
-      
       if (count === 0 && attempt < maxAttempts) {
         attempt++
-        console.log(`[FloatingNav] Retry ${attempt}/${maxAttempts}...`)
-        setTimeout(tryObserve, attempt * 200) // 200ms, 400ms, 600ms, 800ms, 1000ms
+        setTimeout(tryObserve, attempt * 200)
       }
     }
 
-    // Initial attempt
     setTimeout(tryObserve, 100)
 
-    // Also observe on DOM changes
     const mutationObserver = new MutationObserver(() => {
       const sections = document.querySelectorAll('[data-animation-id]')
       if (sections.length > 0) {
@@ -69,16 +98,30 @@ export function FloatingNav({ animations }) {
       }
     })
 
-    mutationObserver.observe(document.body, {
-      childList: true,
-      subtree: true,
-    })
+    mutationObserver.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       observer.disconnect()
       mutationObserver.disconnect()
     }
   }, [mounted])
+
+    // 🎯 NEW: Clear active state when at top (hero section)
+  useEffect(() => {
+    const handleScroll = () => {
+      // If scroll position is near top (< 100px), clear active state
+      if (window.scrollY < 100) {
+        setActiveId(null)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    // Check initial position
+    handleScroll()
+    
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Scroll progress
   useEffect(() => {
@@ -93,31 +136,16 @@ export function FloatingNav({ animations }) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Smooth scroll dengan multiple fallback methods
+  // Smooth scroll ke section
   const scrollToSection = (id) => {
-    console.log(`[FloatingNav] Scrolling to: ${id}`)
-    
-    // Try multiple selectors
-    const element = 
-      document.getElementById(id) ||
-      document.querySelector(`[data-animation-id="${id}"]`)
+    const element = document.getElementById(id) || document.querySelector(`[data-animation-id="${id}"]`)
     
     if (element) {
       const rect = element.getBoundingClientRect()
       const offsetTop = window.scrollY + rect.top - 100
       
-      window.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth',
-      })
-      
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
       window.history.pushState(null, '', `#${id}`)
-    } else {
-      console.error(`[FloatingNav] Element "${id}" not found!`)
-      // List available sections for debugging
-      const available = Array.from(document.querySelectorAll('[data-animation-id]'))
-        .map(el => el.getAttribute('data-animation-id'))
-      console.log('[FloatingNav] Available:', available)
     }
   }
 
@@ -127,15 +155,12 @@ export function FloatingNav({ animations }) {
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault()
         const currentIndex = animations.findIndex((a) => a.id === activeId)
-        const nextIndex =
-          e.key === 'ArrowDown'
-            ? Math.min(currentIndex + 1, animations.length - 1)
-            : Math.max(currentIndex - 1, 0)
-
+        const nextIndex = e.key === 'ArrowDown'
+          ? Math.min(currentIndex + 1, animations.length - 1)
+          : Math.max(currentIndex - 1, 0)
         scrollToSection(animations[nextIndex].id)
       }
     }
-
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [activeId, animations])
@@ -166,26 +191,47 @@ export function FloatingNav({ animations }) {
 
       {/* Floating Navigation */}
       <nav
+        ref={navContainerRef}
+        className={`floating-nav ${isNavScrolling ? 'scrolling' : ''}`}
         style={{
           position: 'fixed',
-          left: 'auto',
           right: '24px',
-          top: '40%',
-          transform: 'translateY(-50%)',
+          top: 'auto',
+          bottom: '32px',
+          transform: 'none',
           zIndex: 100,
           display: 'flex',
           flexDirection: 'column',
           gap: '4px',
-          padding: '8px 4px',
-          background: 'rgba(10, 10, 10, 0.9)',
-          backdropFilter: 'blur(12px)',
+          padding: '10px 8px',
+          background: 'rgba(10, 10, 10, 0.92)',
+          backdropFilter: 'blur(16px)',
           border: '1px solid var(--border)',
-          borderRadius: '10px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-          maxHeight: '50vh',
+          borderRadius: '12px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+          maxHeight: '40vh',
           overflowY: 'auto',
+          minWidth: '180px',
+          scrollBehavior: 'smooth',
         }}
       >
+          {/* 🎯 NEW: Header Title */}
+  <div
+    style={{
+      padding: '8px 12px',
+      marginBottom: '8px',
+      borderBottom: '1px solid var(--border)',
+      fontSize: '9px',
+      fontWeight: '600',
+      color: 'var(--text-subtle)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.08em',
+      textAlign: 'center',
+    }}
+  >
+    Table of Animations
+  </div>
+        
         {animations.map((anim, index) => {
           const isActive = activeId === anim.id
           const number = String(index + 1).padStart(2, '0')
@@ -193,58 +239,137 @@ export function FloatingNav({ animations }) {
           return (
             <button
               key={anim.id}
+              data-nav-id={anim.id}
               onClick={() => scrollToSection(anim.id)}
               title={`${number} — ${anim.label}`}
+              className={`nav-btn ${isActive ? 'active' : ''}`}
               style={{
+                // ✅ FIX 2: Hapus inline style yang conflict dengan CSS class
+                // Biarkan CSS class (.nav-btn) yang handle background/color/hover
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '6px 8px',
-                background: isActive ? 'var(--accent)' : 'transparent',
-                color: isActive ? '#fff' : 'var(--text-muted)',
+                justifyContent: 'flex-start',
+                gap: '8px',
+                padding: '8px 12px',
                 border: 'none',
-                borderRadius: '6px',
-                fontSize: '9px',
-                fontWeight: isActive ? '600' : '400',
+                borderLeft: '2px solid transparent',
+                borderRadius: '0 8px 8px 0',
+                fontSize: '10px',
+                fontWeight: '400',
                 fontFamily: 'inherit',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                transition: 'all 0.15s ease',
                 letterSpacing: '0.02em',
                 textTransform: 'uppercase',
-                minWidth: '32px',
-                justifyContent: 'center',
+                minWidth: '150px',
                 position: 'relative',
+                outline: 'none',
+                // Color akan di-handle oleh CSS class (.nav-btn / .nav-btn.active)
               }}
             >
-              <span
-                style={{
-                  fontVariantNumeric: 'tabular-nums',
-                  opacity: isActive ? 0.9 : 0.5,
-                  fontSize: '8px',
-                  fontWeight: isActive ? '700' : '500',
-                }}
-              >
+              {/* Number */}
+              <span style={{
+                fontVariantNumeric: 'tabular-nums',
+                opacity: isActive ? 0.9 : 0.5,
+                fontSize: '9px',
+                fontWeight: isActive ? '700' : '500',
+                minWidth: '20px',
+                textAlign: 'center',
+              }}>
                 {number}
               </span>
 
+              {/* Separator */}
+              <span style={{ opacity: 0.3, fontSize: '8px' }}>•</span>
+
+              {/* Label */}
+              <span style={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                maxWidth: '110px',
+                fontSize: '9px',
+              }}>
+                {getShortLabel(anim.label)}
+              </span>
+
+              {/* Active Dot */}
               {isActive && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    right: '-4px',
-                    width: '4px',
-                    height: '4px',
-                    background: '#fff',
-                    borderRadius: '50%',
-                    boxShadow: '0 0 6px rgba(255, 255, 255, 0.8)',
-                  }}
-                />
+                <span style={{
+                  position: 'absolute',
+                  right: '8px',
+                  width: '4px',
+                  height: '4px',
+                  background: '#fff',
+                  borderRadius: '50%',
+                  boxShadow: '0 0 6px rgba(255, 255, 255, 0.8)',
+                }} />
               )}
             </button>
           )
         })}
       </nav>
+
+      {/* CSS Styles */}
+            {/* ── HOVER, ACTIVE & SCROLLBAR STYLES ── */}
+      <style jsx>{`
+        /* Button Styles */
+        .nav-btn {
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          background: transparent;
+          color: var(--text-muted);
+        }
+        .nav-btn:hover:not(.active) {
+          background: var(--surface-2) !important;
+          color: var(--text) !important;
+          border-left-color: var(--accent) !important;
+          padding-left: 10px !important;
+          transform: translateX(3px);
+        }
+        .nav-btn:active:not(.active) {
+          transform: translateX(1px) scale(0.98);
+          opacity: 0.85;
+        }
+        .nav-btn.active {
+          background: var(--accent) !important;
+          color: #fff !important;
+          border-left-color: #fff !important;
+          font-weight: 600 !important;
+        }
+        .nav-btn.active:hover {
+          transform: none !important;
+          padding-left: 12px !important;
+        }
+
+        /* 🎯 Auto-Hide Scrollbar Styles */
+        .floating-nav::-webkit-scrollbar {
+          width: 4px;
+        }
+        .floating-nav::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .floating-nav::-webkit-scrollbar-thumb {
+          background: transparent; /* Hidden by default */
+          transition: background 0.3s ease;
+          border-radius: 2px;
+        }
+        /* Show scrollbar on scroll or hover */
+        .floating-nav.scrolling::-webkit-scrollbar-thumb,
+        .floating-nav:hover::-webkit-scrollbar-thumb {
+          background: var(--border);
+        }
+        
+        /* Firefox Support */
+        .floating-nav {
+          scrollbar-width: thin;
+          scrollbar-color: transparent transparent;
+          transition: scrollbar-color 0.3s ease;
+        }
+        .floating-nav.scrolling,
+        .floating-nav:hover {
+          scrollbar-color: var(--border) transparent;
+        }
+      `}</style>
     </>
   )
 }
