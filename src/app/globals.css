@@ -148,3 +148,11 @@ body {
   -webkit-font-smoothing: antialiased;
   transform: translateZ(0);
 }
+
+:root {
+  --surface: #0a0a0a;
+  --surface-2: #111111;
+  --border: #222;
+  --border-hover: #333;
+  /* ... lainnya */
+}

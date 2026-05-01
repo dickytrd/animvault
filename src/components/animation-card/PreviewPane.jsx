@@ -145,17 +145,6 @@ export function PreviewPane({
     }
   }, [state, runAnimation])
 
-  // Di dalam PreviewPane.jsx
-useEffect(() => {
-  // Cleanup when text changes
-  tweenRef.current?.kill()
-  gsapCtxRef.current?.revert()
-  if (splitRef.current) {
-    splitRef.current.revert()
-    splitRef.current = null
-  }
-}, [text, subtext]) // Dependencies
-
   // Cleanup on unmount
   useEffect(() => {
     return () => {
