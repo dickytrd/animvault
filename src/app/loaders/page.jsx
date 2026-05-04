@@ -1,4 +1,5 @@
 import { Navbar }           from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
 import { PageHero }          from '@/components/shared/PageHero'
 import { LoaderCard }        from '@/components/loaders/LoaderCard'
 import { loadersAnimations } from '@/data/loaders.config'
@@ -27,14 +28,7 @@ export default function LoadersPage() {
           ))}
         </div>
 
-        <footer style={{
-          marginTop: '80px', paddingTop: '32px',
-          borderTop: '1px solid var(--border)',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        }}>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>Built with GSAP + Next.js</p>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>MotionLab — Loaders v1.0</p>
-        </footer>
+        <Footer /> 
       </main>
     </>
   )

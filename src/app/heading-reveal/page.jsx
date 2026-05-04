@@ -1,8 +1,14 @@
 import { Navbar }       from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
 import { HeroSection }  from '@/components/layout/HeroSection'
 import { AnimationCard } from '@/components/animation-card/AnimationCard'
 import { headingRevealAnimations } from '@/data/headingReveal.config'
 import { FloatingNav } from '@/components/animation-card/FloatingNav'
+import { gsap } from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
 
 export const metadata = {
   title: 'Heading Reveal — MotionLab',
@@ -17,7 +23,6 @@ export default function HeadingRevealPage() {
       <main style={{
         maxWidth: '1200px',
         margin:   '0 auto',
-        padding:  '0 48px 120px',
       }}>
         {/* Hero */}
         <HeroSection />
@@ -34,21 +39,7 @@ export default function HeadingRevealPage() {
         </div>
 
         {/* Footer */}
-        <footer style={{
-          marginTop:     '80px',
-          paddingTop:    '32px',
-          borderTop:     '1px solid var(--border)',
-          display:       'flex',
-          justifyContent:'space-between',
-          alignItems:    'center',
-        }}>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>
-            Built with GSAP + Next.js
-          </p>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>
-            MotionLab — Heading Reveal v1.0
-          </p>
-        </footer>
+        <Footer />
       </main>
     </>
   )

@@ -1,4 +1,5 @@
 import { Navbar }                  from '@/components/layout/Navbar'
+import { Footer }                  from '@/components/layout/Footer'
 import { PageHero }                from '@/components/shared/PageHero'
 import { ContentRevealSection }    from '@/components/content-reveal/ContentRevealSection'
 import { contentRevealAnimations } from '@/data/contentReveal.config'
@@ -12,7 +13,7 @@ export default function ContentRevealPage() {
   return (
     <>
       <Navbar />
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 48px 120px' }}>
+      <main style={{ maxWidth: '1200px', margin: '0 auto', }}>
 
         <PageHero
           category="Content Reveal"
@@ -27,14 +28,7 @@ export default function ContentRevealPage() {
           ))}
         </div>
 
-        <footer style={{
-          marginTop: '80px', paddingTop: '32px',
-          borderTop: '1px solid var(--border)',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        }}>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>Built with GSAP + Next.js</p>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>MotionLab — Content Reveal v1.0</p>
-        </footer>
+       <Footer />
       </main>
     </>
   )

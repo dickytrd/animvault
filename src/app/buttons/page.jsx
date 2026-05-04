@@ -1,4 +1,5 @@
 import { Navbar }          from '@/components/layout/Navbar'
+import { Footer }          from '@/components/layout/Footer'
 import { PageHero }         from '@/components/shared/PageHero'
 import { ButtonGridCard }   from '@/components/buttons/ButtonGridCard'
 import { buttonsAnimations } from '@/data/buttons.config'
@@ -12,7 +13,7 @@ export default function ButtonsPage() {
   return (
     <>
       <Navbar />
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 48px 120px' }}>
+      <main style={{ maxWidth: '1200px', margin: '0 auto', }}>
 
         <PageHero
           category="Buttons"
@@ -27,20 +28,14 @@ export default function ButtonsPage() {
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap:                 '20px',
           marginTop:           '8px',
+          padding: '0 48px 120px'
         }}>
           {buttonsAnimations.map((config) => (
             <ButtonGridCard key={config.id} config={config} />
           ))}
         </div>
 
-        <footer style={{
-          marginTop: '80px', paddingTop: '32px',
-          borderTop: '1px solid var(--border)',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        }}>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>Built with GSAP + Next.js</p>
-          <p style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>MotionLab — Buttons v1.0</p>
-        </footer>
+       <Footer />
       </main>
     </>
   )

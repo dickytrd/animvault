@@ -128,6 +128,91 @@ body {
   border-top: 1px solid var(--border);
 }
 
+/* ─── Typography Scale ───────────────────────────────────── */
+/*
+  Global heading sizes — define once, change here = changes everywhere.
+  Use <h2 className="section-heading"> or just <h2> in JSX.
+  Remove inline fontSize from headings to let these apply.
+*/
+ 
+/* Base heading reset */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+ 
+/* ── Size scale ─────────────────────────── */
+ 
+/* h1 — Hero headline */
+.h1 { text-transform:uppercase; font-size: clamp(72px, 7vw, 120px); line-height: 1.0; letter-spacing: -0.03em; }
+
+.h2 { text-transform:uppercase; font-size: clamp(52px, 4vw, 72px); line-height: 1.1; letter-spacing: -0.02em; }
+
+.h2-lg { text-transform:uppercase; font-size: clamp(56px, 5vw, 88px); line-height: 1.05; letter-spacing: -0.03em; }
+
+.h2-cta { text-transform:uppercase; font-size: clamp(60px, 6vw, 104px); line-height: 1.0; letter-spacing: -0.03em; }
+
+.h3 { text-transform:uppercase; font-size: clamp(42px, 2.5vw, 48px); line-height: 1.2; letter-spacing: -0.01em; }
+
+.h4 { text-transform:uppercase; font-size: clamp(38px, 1.5vw, 42px); line-height: 1.3; letter-spacing: 0; }
+
+
+
+/* ─── Marquee ────────────────────────────────────────────── */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+ 
+/* ─── Works Swiper ───────────────────────────────────────── */
+.works-swiper .swiper-slide {
+  transition: filter 0.5s ease, transform 0.5s ease, opacity 0.5s ease;
+  filter: blur(3px);
+  opacity: 0.45;
+  transform: scale(0.88);
+}
+.works-swiper .swiper-slide-active {
+  filter: blur(0px);
+  opacity: 1;
+  transform: scale(1);
+}
+.works-swiper .swiper-slide-prev,
+.works-swiper .swiper-slide-next {
+  filter: blur(1.5px);
+  opacity: 0.65;
+  transform: scale(0.93);
+}
+ 
+/* ─── Search Input ───────────────────────────────────────── */
+.search-input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.search-input::placeholder { color: var(--text-subtle); }
+.search-input:focus { border-color: var(--border-hover); }
+
+/* ─── Lenis ──────────────────────────────────────────────── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
 .glitch-slice {
   will-change: transform, opacity;
   backface-visibility: hidden;
@@ -155,4 +240,47 @@ body {
   --border: #222;
   --border-hover: #333;
   /* ... lainnya */
+}
+
+/* Enable smooth blur rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading containers must allow overflow for blur effect */
+h1, h2, h3 {
+  overflow: visible !important;
+  will-change: transform, filter;
+}
+
+/* Accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-split-text] {
+    filter: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Loader bar animation */
+@keyframes loaderSlide {
+  0%   { left: -35%; width: 35%; }
+  50%  { left: 100%; width: 35%; }
+  100% { left: 100%; width: 0%; }
+}
+
+/* Optional: hide scrollbar during load to prevent layout shift */
+body.loading {
+  overflow: hidden;
 }
