@@ -193,6 +193,7 @@ export function FloatingNav({ animations }) {
       <nav
         ref={navContainerRef}
         className={`floating-nav ${isNavScrolling ? 'scrolling' : ''}`}
+        data-lenis-prevent
         style={{
           position: 'fixed',
           right: '24px',
@@ -213,6 +214,8 @@ export function FloatingNav({ animations }) {
           overflowY: 'auto',
           minWidth: '180px',
           scrollBehavior: 'smooth',
+          scrollBehavior: 'auto',               
+          overscrollBehavior: 'contain',
         }}
       >
           {/* 🎯 NEW: Header Title */}

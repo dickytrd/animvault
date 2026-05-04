@@ -10,8 +10,34 @@ import { ArrowSlideBtn }  from '@/components/buttons/ArrowSlideBtn'
 import { RippleClickBtn } from '@/components/buttons/RippleClickBtn'
 import { ScalePopBtn }    from '@/components/buttons/ScalePopBtn'
 import { ShakeErrorBtn }  from '@/components/buttons/ShakeErrorBtn'
+import { MagneticBtn } from '@/components/buttons/MagneticBtn'
+import { ThreeDFlipBtn } from '@/components/buttons/3DFlipBtn'
+import { LiquidFillBtn } from '@/components/buttons/LiquidFillBtn'
+import { MorphLoaderBtn } from '@/components/buttons/MorphLoaderBtn'
+import { GlitchTextBtn } from '@/components/buttons/GlitchTextBtn'
+import { PressHoldBtn } from '@/components/buttons/PressHoldBtn'
+import { QuantumFluxBtn } from '@/components/buttons/QuantumFluxBtn'
+import { HoloDecodeBtn } from '@/components/buttons/HoloDecodeBtn'
+import { DataStreamBtn } from '@/components/buttons/DataStreamBtn'
+import { CyberSliceBtn } from '@/components/buttons/CyberSliceBtn'
 
-const REGISTRY = { FillSlideBtn, ArrowSlideBtn, RippleClickBtn, ScalePopBtn, ShakeErrorBtn }
+const REGISTRY = { 
+  FillSlideBtn, 
+  ArrowSlideBtn, 
+  RippleClickBtn, 
+  ScalePopBtn, 
+  ShakeErrorBtn, 
+  MagneticBtn,
+  ThreeDFlipBtn,
+  LiquidFillBtn,
+  MorphLoaderBtn,
+  GlitchTextBtn,
+  PressHoldBtn,
+  QuantumFluxBtn,
+  HoloDecodeBtn,
+  DataStreamBtn,
+  CyberSliceBtn,
+ }
 
 const INTERACTION_HINT = {
   RippleClickBtn: 'Click the button',
@@ -19,6 +45,16 @@ const INTERACTION_HINT = {
   FillSlideBtn:   'Hover the button',
   ArrowSlideBtn:  'Hover the button',
   ScalePopBtn:    'Hover & click',
+  MagneticBtn:    'Hover & move cursor',
+  ThreeDFlipBtn:  'Hover to flip',
+  LiquidFillBtn:  'Click to Fill',
+  MorphLoaderBtn: 'Click to submit',
+  GlitchTextBtn:   'Hover to glitch',
+  PressHoldBtn:   'Hold to complete',
+  QuantumFluxBtn: 'Hover to collapse',
+  HoloDecodeBtn:  'Hover to decode',
+  DataStreamBtn:  'Hover to converge',
+  CyberSliceBtn:  'Hover to slice',
 }
 
 export function ButtonGridCard({ config }) {

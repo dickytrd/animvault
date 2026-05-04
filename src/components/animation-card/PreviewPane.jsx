@@ -29,8 +29,13 @@ import { GlitchChangeAssemble } from '@/animations/heading-reveal/GlitchChangeAs
 import { SliceMaskGlitch } from '@/animations/heading-reveal/SliceMaskGlitch'
 import { AlternatingYReveal } from '@/animations/heading-reveal/AlternatingYReveal'
 import { FloatingZigzagReveal } from '@/animations/heading-reveal/FloatingZigzagReveal'
-import { FloatingZigzagNoMask } from '@/animations/heading-reveal/FloatingZigzagNoMask' // ✅ TAMBAHKAN INI
+import { FloatingZigzagNoMask } from '@/animations/heading-reveal/FloatingZigzagNoMask'
 import { CinematicDepthReveal } from '@/animations/heading-reveal/CinematicDepthReveal'
+import { KineticSnapReveal } from '@/animations/heading-reveal/KineticSnapReveal'
+import { TrackingReveal } from '@/animations/heading-reveal/TrackingReveal'
+import { RadialBurstReveal } from '@/animations/heading-reveal/RadialBurstReveal'
+import { CenterOutCascade } from '@/animations/heading-reveal/CenterOutCascade'
+import { ElasticOvershoot } from '@/animations/heading-reveal/ElasticOvershoot'
 
 
 
@@ -66,6 +71,11 @@ const ANIMATION_REGISTRY = {
   FloatingZigzagReveal,
   FloatingZigzagNoMask,
   CinematicDepthReveal,
+  KineticSnapReveal,
+  TrackingReveal,
+  RadialBurstReveal,
+  CenterOutCascade,
+  ElasticOvershoot,
 }
 
 /**

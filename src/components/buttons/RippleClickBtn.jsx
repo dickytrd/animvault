@@ -21,7 +21,7 @@ export function RippleClickBtn({ duration, label }) {
         width: `${size}px`, height: `${size}px`,
         left: `${x - size / 2}px`, top: `${y - size / 2}px`,
         borderRadius: '50%',
-        background: 'rgba(255, 255, 255, 0.25)',
+        background: 'var(--accent)',
         pointerEvents: 'none',
       })
       btn.appendChild(ripple)

@@ -6,7 +6,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { useGSAP } from '@gsap/react'
-import { ClickBurstCursor } from '@/components/effects/ClickBurstCursor' 
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -187,13 +186,6 @@ function Hero() {
 
   return (
     <section ref={containerRef} style={{ minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'120px 48px 80px', position:'relative', overflow:'hidden' }}>
-      <ClickBurstCursor 
-        color="#ffffff"
-        lineCount={8}
-        length={4}
-        speed={4}
-        decay={0.01}
-      />
       <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 80% 50% at 50% 0%, var(--accent-dim) 0%, transparent 70%)', pointerEvents:'none' }} />
       <div style={{ fontSize:'11px', fontWeight:'500', letterSpacing:'0.12em', textTransform:'uppercase', color:'var(--text-subtle)', marginBottom:'28px', padding:'4px 14px', border:'1px solid var(--border)', borderRadius:'20px', display:'inline-block' }}>Animation Collection — GSAP</div>
       <h1 ref={headlineRef} className="h1" style={{ maxWidth:'1000px', marginBottom:'24px', overflow:'hidden' }}>Make Your Site<br /> Come To Life.</h1>
@@ -225,7 +217,7 @@ and discover the best animated websites on the internet.</p>
 function VideoSection() {
   const wrapperRef = useRef(null)
   const videoRef   = useRef(null)
-  const cursorRef  = useRef(null)
+  // const cursorRef  = useRef(null)
   const isInside   = useRef(false)
   const [loaded, setLoaded] = useState(false)
 
@@ -236,20 +228,20 @@ function VideoSection() {
     )
   }, { scope:wrapperRef })
 
-  useEffect(() => {
-    const el  = videoRef.current
-    const dot = cursorRef.current
-    if (!el || !dot) return
-    const xTo = gsap.quickTo(dot, 'x', { duration:0.45, ease:'power3.out' })
-    const yTo = gsap.quickTo(dot, 'y', { duration:0.45, ease:'power3.out' })
-    const onMove  = (e) => { if (!isInside.current) return; const r = el.getBoundingClientRect(); xTo(e.clientX - r.left); yTo(e.clientY - r.top) }
-    const onEnter = () => { isInside.current = true;  gsap.to(dot, { scale:1, opacity:1, duration:0.35, ease:'back.out(2)' }) }
-    const onLeave = () => { isInside.current = false; gsap.to(dot, { scale:0, opacity:0, duration:0.25, ease:'power2.in'  }) }
-    window.addEventListener('mousemove', onMove)
-    el.addEventListener('mouseenter', onEnter)
-    el.addEventListener('mouseleave', onLeave)
-    return () => { window.removeEventListener('mousemove', onMove); el.removeEventListener('mouseenter', onEnter); el.removeEventListener('mouseleave', onLeave) }
-  }, [])
+  // useEffect(() => {
+  //   const el  = videoRef.current
+  //   // const dot = cursorRef.current
+  //   if (!el || !dot) return
+  //   const xTo = gsap.quickTo(dot, 'x', { duration:0.45, ease:'power3.out' })
+  //   const yTo = gsap.quickTo(dot, 'y', { duration:0.45, ease:'power3.out' })
+  //   const onMove  = (e) => { if (!isInside.current) return; const r = el.getBoundingClientRect(); xTo(e.clientX - r.left); yTo(e.clientY - r.top) }
+  //   const onEnter = () => { isInside.current = true;  gsap.to(dot, { scale:1, opacity:1, duration:0.35, ease:'back.out(2)' }) }
+  //   const onLeave = () => { isInside.current = false; gsap.to(dot, { scale:0, opacity:0, duration:0.25, ease:'power2.in'  }) }
+  //   window.addEventListener('mousemove', onMove)
+  //   el.addEventListener('mouseenter', onEnter)
+  //   el.addEventListener('mouseleave', onLeave)
+  //   return () => { window.removeEventListener('mousemove', onMove); el.removeEventListener('mouseenter', onEnter); el.removeEventListener('mouseleave', onLeave) }
+  // }, [])
 
   return (
     <div ref={wrapperRef} style={{ marginTop:'-10vh', position:'relative', zIndex:1 }}>

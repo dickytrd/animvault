@@ -798,6 +798,181 @@ gsap.to(split.chars, {
   stagger: ${c.stagger},
   ease: '${c.ease}',
 })`,
+
+// ─── 26. Kinetic Snap — Elastic ─────────────────────────
+'kinetic-snap': (c) =>
+`import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
+// Kinetic reveal: chars scatter randomly then snap back with elastic easing.
+// Lightweight, premium, 60fps — pure transform + opacity.
+
+const element = document.querySelector('.heading')
+
+const split = new SplitText(element, { type: 'chars' })
+
+// Optional: Force GPU acceleration for smoother performance
+split.chars.forEach(char => {
+  char.style.willChange = 'transform, opacity'
+  char.style.transform = 'translate3d(0,0,0)'
+  char.style.backfaceVisibility = 'hidden'
+})
+
+// Initial state: scattered positions, scaled down, invisible
+gsap.set(split.chars, {
+  x: () => (Math.random() > 0.5 ? 1 : -1) * ${c.displacement} * 2,
+  y: () => (Math.random() > 0.5 ? 1 : -1) * ${c.displacement} * 2,
+  scale: ${c.scaleFrom},
+  opacity: 0,
+  transformOrigin: 'center center',
+})
+
+// Animate snap back to aligned position
+gsap.to(split.chars, {
+  x: 0,
+  y: 0,
+  scale: 1,
+  opacity: 1,
+  duration: ${c.duration},
+  stagger: ${c.stagger},
+  ease: '${c.ease}',
+})
+
+// Note: Call split.revert() when component unmounts or animation is no longer needed`,
+
+// ─── 27. Tracking — Editorial ─────────────────────────────
+'tracking-reveal': (c) =>
+`import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
+// Editorial reveal: chars start wide apart then converge with stagger.
+// Clean, premium, lightweight — perfect for hero headlines.
+
+const element = document.querySelector('.heading')
+
+const split = new SplitText(element, { type: 'chars' })
+
+// Optional: Force GPU acceleration
+split.chars.forEach(char => {
+  char.style.willChange = 'transform, opacity'
+  char.style.transform = 'translate3d(0,0,0)'
+})
+
+// Initial state: wide tracking, displaced Y, invisible
+gsap.set(split.chars, {
+  x: (i) => i * ${c.trackingFrom}, // Each char starts far apart
+  y: ${c.yFrom},
+  opacity: 0,
+})
+
+// Animate converge to normal position
+gsap.to(split.chars, {
+  x: 0,
+  y: 0,
+  opacity: 1,
+  duration: ${c.duration},
+  stagger: ${c.stagger},
+  ease: '${c.ease}',
+})
+
+// Note: Call split.revert() when component unmounts`,
+
+// ─── 28. Radial Burst — Explosive ────────────────────────
+'radial-burst': (c) =>
+`import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
+// Radial burst: chars explode from center, then converge.
+// High-energy, cinematic reveal.
+
+const element = document.querySelector('.heading')
+const split = new SplitText(element, { type: 'chars' })
+
+// Calculate center origin
+const rect = element.getBoundingClientRect()
+const centerX = rect.width / 2
+const centerY = rect.height / 2
+
+// GPU acceleration
+split.chars.forEach(char => {
+  char.style.willChange = 'transform, opacity'
+  char.style.transform = 'translate3d(0,0,0)'
+  char.style.transformOrigin = 'center center'
+})
+
+// Set initial radial scattered state
+gsap.set(split.chars, {
+  x: (i, target) => {
+    const charRect = target.getBoundingClientRect()
+    const charCX = charRect.left + charRect.width / 2 - rect.left
+    const charCY = charRect.top + charRect.height / 2 - rect.top
+    const angle = Math.random() * Math.PI * 2
+    const dist = ${c.burstRange} * (0.5 + Math.random() * 0.5)
+    return (centerX - charCX) + Math.cos(angle) * dist
+  },
+  y: (i, target) => {
+    const charRect = target.getBoundingClientRect()
+    const charCX = charRect.left + charRect.width / 2 - rect.left
+    const charCY = charRect.top + charRect.height / 2 - rect.top
+    const angle = Math.random() * Math.PI * 2
+    const dist = ${c.burstRange} * (0.5 + Math.random() * 0.5)
+    return (centerY - charCY) + Math.sin(angle) * dist
+  },
+  scale: ${c.scaleFrom},
+  rotation: () => (Math.random() - 0.5) * ${c.rotationRange},
+  opacity: 0
+})
+
+// Animate converge to final position
+gsap.to(split.chars, {
+  x: 0,
+  y: 0,
+  scale: 1,
+  rotation: 0,
+  opacity: 1,
+  duration: ${c.duration},
+  stagger: ${c.stagger},
+  ease: '${c.ease}'
+})`,
+
+// ─── 29. Center Out — Cascade ────────────────────────────
+'center-out': (c) =>
+`import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
+// Center-out cascade: chars reveal outward from the middle.
+// Elegant, editorial, uses GSAP's native stagger.from: 'center'.
+
+const element = document.querySelector('.heading')
+const split = new SplitText(element, { type: 'chars' })
+
+// GPU optimization
+split.chars.forEach(char => {
+  char.style.willChange = 'transform, opacity'
+  char.style.transform = 'translate3d(0,0,0)'
+  char.style.transformOrigin = 'center center'
+})
+
+// Animate from center outward
+gsap.from(split.chars, {
+  y: ${c.yFrom},
+  scale: ${c.scaleFrom},
+  opacity: 0,
+  duration: ${c.duration},
+  stagger: { each: ${c.stagger}, from: 'center' },
+  ease: '${c.ease}',
+})
+
+// Note: Call split.revert() on unmount`,
+
 }
 
 export function useCodeGenerator(animationId, controls) {

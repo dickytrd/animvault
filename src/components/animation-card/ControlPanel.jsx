@@ -43,8 +43,8 @@ export function ControlPanel({
       border:         '1px solid var(--border)',
       borderRadius:   '10px',
       background:     'var(--surface)',
-      overflow:       'hidden',
-      maxHeight:      '460px',
+      overflow:       'visible',
+      height:      '460px',
     }}>
       {/* ── Panel header ── */}
       <div style={{
@@ -110,10 +110,13 @@ export function ControlPanel({
       </div>
 
       {/* ── Tab content ── */}
-      <div style={{
+      <div className="control-panel-scroll" data-lenis-prevent style={{
         flex:     1,
         overflow: 'auto',
         padding:  activeTab === 'code' ? '0' : '18px',
+        minHeight: '0', // Fixes overflow issues in flex containers
+        scrollBehavior: 'auto',
+        overscrollBehavior: 'contain',
       }}>
         {activeTab === 'controls' && (
           <ControlsTab

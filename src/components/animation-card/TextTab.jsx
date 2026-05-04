@@ -17,7 +17,8 @@ export function TextTab({
   onReset,
 }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="control-panel-scroll" data-lenis-prevent style={{ 
+      display: 'flex', flexDirection: 'column', gap: '20px', minHeight: '0', overscrollBehavior: 'contain', height: '100%'}}>
       
       {/* Header */}
       <div>
@@ -44,6 +45,7 @@ export function TextTab({
           marginBottom: '6px',
           textTransform: 'uppercase',
           letterSpacing: '0.04em',
+          minHeight:'0',
         }}>
           Heading
         </label>
@@ -145,6 +147,7 @@ export function TextTab({
           onChange={(e) => onSubtextChange?.(e.target.value)}
           rows={4}
           style={{
+            flex: '1',
             width: '100%',
             padding: '10px 12px',
             background: 'var(--bg)',
@@ -154,8 +157,8 @@ export function TextTab({
             fontSize: '13px',
             fontFamily: 'inherit',
             outline: 'none',
-            resize: 'vertical',
-            minHeight: '80px',
+            resize: 'none',
+            minHeight: '100px',
             transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
           }}
           placeholder="Type your subtext..."

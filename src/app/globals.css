@@ -284,3 +284,130 @@ h1, h2, h3 {
 body.loading {
   overflow: hidden;
 }
+
+/* globals.css */
+.custom-scrollbar,
+[style*="overflow: auto"],
+[style*="overflow-y: auto"] {
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3a transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar,
+[style*="overflow: auto"]::-webkit-scrollbar,
+[style*="overflow-y: auto"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track,
+[style*="overflow: auto"]::-webkit-scrollbar-track,
+[style*="overflow-y: auto"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb,
+[style*="overflow: auto"]::-webkit-scrollbar-thumb,
+[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
+  background-color: #3a3a3a;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+[style*="overflow: auto"]::-webkit-scrollbar-thumb:hover,
+[style*="overflow-y: auto"]::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* ─── Control Panel Scroll Exception ────────────────────── */
+/* Disable smooth scroll untuk panel kontrol agar bisa scroll normal */
+
+.control-panel-scroll,
+.control-panel-scroll * {
+  scroll-behavior: auto !important;
+}
+
+/* Prevent Lenis smooth scroll dari mengambil alih */
+.control-panel-scroll {
+  overscroll-behavior: contain;
+}
+
+/* Pastikan scrollbar terlihat */
+.control-panel-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.control-panel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.control-panel-scroll::-webkit-scrollbar-thumb {
+  background-color: #3a3a3a;
+  border-radius: 3px;
+}
+
+.control-panel-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* ─── Control Panel Native Scroll ───────────────────────── */
+[data-lenis-prevent] {
+  /* Pastikan native scroll bekerja */
+  -webkit-overflow-scrolling: touch; /* Smooth scroll di iOS */
+}
+
+/* Custom scrollbar untuk elemen dengan lenis-prevent */
+[data-lenis-prevent]::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-lenis-prevent]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-lenis-prevent]::-webkit-scrollbar-thumb {
+  background-color: #3a3a3a;
+  border-radius: 3px;
+}
+
+[data-lenis-prevent]::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* ─── Force Code Scroll to Work ──────────────────────────── */
+.code-scroll-area,
+[data-lenis-prevent] {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin !important;
+}
+
+.code-scroll-area::-webkit-scrollbar,
+[data-lenis-prevent]::-webkit-scrollbar {
+  width: 6px !important;
+  display: block !important;
+}
+
+.code-scroll-area::-webkit-scrollbar-thumb,
+[data-lenis-prevent]::-webkit-scrollbar-thumb {
+  background-color: #3a3a3a !important;
+  display: block !important;
+}
+
+/* Pastikan parent tidak memblokir scroll */
+[style*="overflow: visible"] [data-lenis-prevent] {
+  pointer-events: auto !important;
+}
+
+/* Tambahkan di globals.css */
+
+/* Smooth scroll untuk code & text area */
+.code-scroll-area,
+.control-panel-scroll {
+  scroll-behavior: smooth; /* ✅ Smooth scroll */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tapi instant saat pakai lenis-prevent */
+[data-lenis-prevent] {
+  scroll-behavior: auto;
+}

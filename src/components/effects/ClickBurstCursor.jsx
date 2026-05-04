@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 
 export function ClickBurstCursor({ 
   color="#ffffff", 
-  lineCount = 8, 
+  lineCount = 2, 
   length = 8, 
   speed = 4, 
   decay = 0.02 
