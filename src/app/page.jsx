@@ -203,7 +203,7 @@ and discover the best animated websites on the internet.</p>
         <a href="#collection" style={{ fontSize:'14px', fontWeight:'500', color:'#fff', background:'var(--accent)', padding:'12px 24px', borderRadius:'8px', textDecoration:'none', transition:'background 0.2s, transform 0.2s' }}
           onMouseEnter={(e)=>{e.currentTarget.style.background='#1d4ed8';e.currentTarget.style.transform='translateY(-1px)'}}
           onMouseLeave={(e)=>{e.currentTarget.style.background='var(--accent)';e.currentTarget.style.transform='translateY(0)'}}>Explore Animation</a>
-        <a href="https://gsap.com" target="_blank" rel="noreferrer" style={{ fontSize:'14px', color:'var(--text-muted)', padding:'12px 24px', borderRadius:'8px', textDecoration:'none', border:'1px solid var(--border)', transition:'all 0.2s' }}
+        <a href="#inspiration" style={{ fontSize:'14px', color:'var(--text-muted)', padding:'12px 24px', borderRadius:'8px', textDecoration:'none', border:'1px solid var(--border)', transition:'all 0.2s' }}
           onMouseEnter={(e)=>{e.currentTarget.style.color='var(--text)';e.currentTarget.style.borderColor='var(--border-hover)'}}
           onMouseLeave={(e)=>{e.currentTarget.style.color='var(--text-muted)';e.currentTarget.style.borderColor='var(--border)'}}>Browse Inspiration</a>
       </div>
@@ -457,7 +457,7 @@ See how they behave before using them.</p>
 }
 
 // ─────────────────────────────────────────────
-// WORKS — 3D Card Stack + Interactive Tilt (UPDATED: Larger Cards)
+// WORKS — 3D Card Stack + Interactive Tilt (BALANCED SIZE)
 // ─────────────────────────────────────────────
 function Works() {
   const ref = useRef(null)
@@ -574,7 +574,9 @@ function Works() {
         <div style={{ 
           overflow: 'visible',
           borderRadius: '24px',
-          padding: '64px 0 64px' // ← Wrapper lebih tinggi untuk card besar
+          padding: '60px 0 80px',
+          maxWidth: '100%',
+          position: 'relative',
         }}>
           <div style={{ perspective: '2800px', perspectiveOrigin: 'center center' }}>
             <Swiper 
@@ -590,16 +592,16 @@ function Works() {
               
               // 🔧 Breakpoints dengan slidesPerView: 'auto'
               breakpoints={{ 
-                768: { slidesPerView: 'auto', spaceBetween: -60 }, 
-                1100: { slidesPerView: 'auto', spaceBetween: -90 } 
+                768: { slidesPerView: 'auto', spaceBetween: -100 }, 
+                1100: { slidesPerView: 'auto', spaceBetween: -120 } 
               }}
               
-              spaceBetween={-90} // ← Overlap lebih rapat untuk card besar
+              spaceBetween={-120}
               coverflowEffect={{ 
                 rotate: 0, 
                 stretch: 0,
                 depth: 320, 
-                modifier: 2.2, 
+                modifier: 2.8, 
                 slideShadows: false 
               }}
               autoplay={{ 
@@ -661,9 +663,10 @@ function Works() {
                     height: 'auto', 
                     display: 'flex', 
                     justifyContent: 'center',
-                    // 🔧 KEY FIX: Set width di SwiperSlide (bukan di inner card)
-                    width: 'clamp(340px, 22vw, 440px)', // 1920px: 22vw = ~422px
-                    flexShrink: 0 // ← Mencegah Swiper compress slide
+                    // 🔧 WIDTH CARD: Lebih moderate untuk 1920px
+                    width: 'clamp(320px, 24vw, 600px)', // Main Control Card Size
+                    maxWidth: '600px', // BATAS MAKSIMAL LEBAR CARD
+                    flexShrink: 0
                   }}
                 >
                   {({ isActive }) => (
@@ -672,9 +675,9 @@ function Works() {
                       onMouseMove={(e) => isActive && handleCardMouseMove(e, e.currentTarget)}
                       onMouseLeave={(e) => isActive && handleCardMouseLeave(e.currentTarget)}
                       style={{ 
-                        // 🔧 Inner card mengikuti parent width
                         width: '100%',
-                        aspectRatio: '2.5/3.7', 
+                        // 🔧 ASPECT RATIO: Lebih balanced (tidak terlalu tinggi)
+                        aspectRatio: '3/4', // Ubah dari 2.5/3.7 (~0.68) ke 3/4 (0.75)
                         borderRadius: '18px', 
                         overflow: 'hidden', 
                         background: 'var(--surface)', 
@@ -688,16 +691,21 @@ function Works() {
                         cursor: isActive ? 'default' : 'grab',
                         display: 'flex',
                         flexDirection: 'column',
+                        width: '100%',
+                        maxWidth: '600px',
+                        maxHeight: '760px',
                       }}
                     >
+                      {/* 🔧 IMAGE SECTION - 60% tinggi card */}
                       <div style={{ 
-                        aspectRatio: '4/3', position: 'relative', overflow: 'hidden',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                        position: 'relative', 
+                        overflow: 'hidden', 
                         background: 'var(--surface-2)',
                         transform: isActive ? 'translateZ(30px)' : 'translateZ(18px)',
+                        height: 'auto',
                         flex: '0 0 75%',
                       }}>
-                        <div style={{width: '100%', height: '100%', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
                           {w.video ? (
                             <video autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={w.video} />
                           ) : (
@@ -709,22 +717,23 @@ function Works() {
                         )}
                       </div>
 
+                      {/* 🔧 CONTENT SECTION - 40% sisa */}
                       <div style={{ 
-                        padding: '20px 22px',
+                        padding: '16px 18px',
                         transform: isActive ? 'translateZ(40px)' : 'translateZ(24px)',
                         background: 'linear-gradient(to bottom, var(--surface) 0%, var(--surface-2) 100%)',
-                        flex: '1 1 auto', // ← Ambil sisa ruang
+                        flex: '1 1 auto',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'flex-start',
                       }}>
-                        <span style={{ fontSize: '9px', color: 'var(--accent)', background: 'var(--accent-dim)', padding: '3px 10px', borderRadius: '8px', fontWeight: '600', display: 'inline-block', marginBottom: '10px' }}>
+                        <span style={{ fontSize: '9px', color: 'var(--accent)', background: 'var(--accent-dim)', padding: '3px 10px', borderRadius: '8px', fontWeight: '600', display: 'inline-block', marginBottom: '8px' }}>
                           {w.tag}
                         </span>
-                        <h3 className="h4" style={{ marginBottom: '8px', color: isActive ? 'var(--text)' : 'var(--text-muted)', fontSize: '16px', lineHeight: '1.3' }}>
+                        <h3 className="h4" style={{ marginBottom: '6px', color: isActive ? 'var(--text)' : 'var(--text-muted)', fontSize: '15px', lineHeight: '1.3' }}>
                           {w.title}
                         </h3>
-                        <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.55', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.5', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                           {w.desc}
                         </p>
                       </div>
@@ -798,7 +807,7 @@ function CardGridSection({ sectionId, sectionNum, label, titleText, subtitleText
   useGSAP(() => {
     gsap.fromTo('.section-card-grid', { y:28, opacity:0 }, { y:0, opacity:1, duration:0.7, ease:'power3.out', scrollTrigger:{ trigger:ref.current, start:'top 72%' } })
     gsap.utils.toArray('.section-card-item').forEach(card=>{
-      card.addEventListener('mouseenter', ()=>gsap.to(card,{y:-4,duration:0.25,ease:'power2.out'}))
+      card.addEventListener('mouseenter', ()=>gsap.to(card,{y:0,duration:0.25,ease:'power2.out'}))
       card.addEventListener('mouseleave', ()=>gsap.to(card,{y:0, duration:0.25,ease:'power2.out'}))
     })
   }, { scope:ref })
