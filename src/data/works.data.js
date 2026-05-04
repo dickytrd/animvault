@@ -55,4 +55,20 @@ export const WORKS = [
     video: null,
     url:   '#',
   },
+{ 
+    title: 'Portfolio Minimalist', 
+    tag: 'UI + Motion', 
+    desc: 'Clean layout with staggered fades and smooth scroll parallax.', 
+    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80',
+    video: null,
+    url:   '#', 
+},
+{ 
+    title: 'SaaS Dashboard v2', 
+    tag: 'Data Viz', 
+    desc: 'Animated counters, skeleton loaders, and micro-interactions on charts.',
+     image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
+     video: null, 
+     url: '#' 
+    },
 ]

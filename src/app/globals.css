@@ -182,7 +182,7 @@ h1, h2, h3, h4, h5, h6 {
 .works-swiper .swiper-slide-prev,
 .works-swiper .swiper-slide-next {
   filter: blur(1.5px);
-  opacity: 0.65;
+  opacity: 1;
   transform: scale(0.93);
 }
  

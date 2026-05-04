@@ -324,8 +324,8 @@ function Introduction() {
           {steps.filter((_,i)=>i%2===0).map(s=><StepCard key={s.num} step={s} side="left"/>)}
         </div>
         <div style={{ position:'relative' }}>
-          <div style={{ height:'580px', position:'absolute', top:'20px', width:'4px', background:'var(--border)', left:'-1px' }} />
-          <div ref={lineRef} style={{ height:'580px', position:'absolute', top:'20px', left:'-1px', width:'4px', background:'var(--accent)', transformOrigin:'top center' }} />
+          <div style={{ height:'600px', position:'absolute', top:'20px', width:'4px', background:'var(--border)', left:'-1px' }} />
+          <div ref={lineRef} style={{ height:'600px', position:'absolute', top:'20px', left:'-1px', width:'4px', background:'var(--accent)', transformOrigin:'top center' }} />
         </div>
         <div style={{ display:'flex', flexDirection:'column', paddingTop:'200px', gap:'200px' }}>
           {steps.filter((_,i)=>i%2===1).map(s=><StepCard key={s.num} step={s} side="right"/>)}
@@ -457,67 +457,312 @@ See how they behave before using them.</p>
 }
 
 // ─────────────────────────────────────────────
-// WORKS — center-focus coverflow
+// WORKS — 3D Card Stack + Interactive Tilt (UPDATED: Larger Cards)
 // ─────────────────────────────────────────────
 function Works() {
-  const ref=useRef(null); const titleRef=useRef(null)
-  useBottomMaskReveal(titleRef,{yRange:100,rotationRange:0,stagger:0.01,start:'top 90%'})
-  useGSAP(()=>{ gsap.from('.works-header',{y:24,opacity:0,duration:0.7,ease:'power3.out',scrollTrigger:{trigger:ref.current,start:'top 80%'}}) },{scope:ref})
+  const ref = useRef(null)
+  const titleRef = useRef(null)
+  const swiperRef = useRef(null)
+  
+  useBottomMaskReveal(titleRef, { yRange: 100, rotationRange: 0, stagger: 0.01, start: 'top 90%' })
+  
+  useGSAP(() => {
+    gsap.from('.works-header', { 
+      y: 24, opacity: 0, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: ref.current, start: 'top 80%' }
+    })
+  }, { scope: ref })
+
+  // 3D Tilt effect for active card
+  const handleCardMouseMove = (e, card) => {
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+    
+    const rotateX = ((y - centerY) / centerY) * -8
+    const rotateY = ((x - centerX) / centerX) * 8
+    
+    gsap.to(card, {
+      rotationX: rotateX,
+      rotationY: rotateY,
+      scale: 1.05,
+      duration: 0.3,
+      ease: 'power2.out',
+      transformPerspective: 1000,
+      transformOrigin: 'center center'
+    })
+  }
+
+  const handleCardMouseLeave = (card) => {
+    if (!card) return
+    gsap.to(card, {
+      rotationX: 0,
+      rotationY: 0,
+      scale: 1,
+      duration: 0.5,
+      ease: 'power3.out'
+    })
+  }
 
   return (
-    <section ref={ref} style={{ padding:'128px 0', overflow:'hidden' }}>
-      <div className="works-header" style={{ display:'flex', flexDirection:'column', justifyContent: 'center', alignItems:'center', padding:'0 48px', maxWidth:'1200px', margin:'0 auto 48px' }}>
+    <section ref={ref} style={{ padding: '128px 0', overflow: 'hidden' }}>
+      <div className="works-header" style={{ 
+        display: 'flex', flexDirection: 'column', 
+        justifyContent: 'center', alignItems: 'center', 
+        padding: '0 48px', maxWidth: '1200px', margin: '0 auto 64px' 
+      }}>
         <SectionLabel>Built With AnimVault</SectionLabel>
-        <div style={{ display:'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center', gap:'8px', flexWrap:'wrap' }}>
-          <h2 ref={titleRef} className="h2" style={{ overflow:'hidden' }}>Built with These Animations</h2>
-          <p style={{ fontSize:'13px', color:'var(--text-subtle)', marginBottom:'4px' }}>Real projects using similar interaction patterns.
-See how animations are applied in real-world interfaces.</p>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <h2 ref={titleRef} className="h2" style={{ overflow: 'hidden' }}>Built with These Animations</h2>
+          <p style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>
+            Real projects using similar interaction patterns.
+          </p>
         </div>
       </div>
-      <div>
-        <Swiper className="works-swiper" modules={[Autoplay,Navigation,Pagination,EffectCoverflow]}
-          effect="coverflow" centeredSlides grabCursor
-          slidesPerView={1.6} spaceBetween={24}
-          breakpoints={{ 768:{slidesPerView:2.2}, 1100:{slidesPerView:2.6} }}
-          coverflowEffect={{ rotate:0, stretch:0, depth:0, modifier:1, slideShadows:false }}
-          autoplay={{ delay:3000, disableOnInteraction:false, pauseOnMouseEnter:true }}
-          loop navigation={{ prevEl:'.works-prev', nextEl:'.works-next' }}
-          pagination={{ clickable:true, el:'.works-pagination' }}
-          style={{ padding:'20px 0 16px' }}>
-          {WORKS.map((w,i)=>(
-            <SwiperSlide key={i} style={{ height:'auto' }}>
-              {({isActive})=>(
-                <div style={{ borderRadius:'14px', overflow:'hidden', background:'var(--surface)', border:`1px solid ${isActive?'var(--accent)':'var(--border)'}`, transition:'border-color 0.4s ease' }}>
-                  <div style={{ aspectRatio:'4/3', position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', background:'var(--surface-2)' }}>
-                    <div style={{ width:'100%', aspectRatio:'1/1', overflow:'hidden' }}>
-                      {w.video
-                        ? <video autoPlay loop muted playsInline style={{ width:'100%', height:'100%', objectFit:'cover' }} src={w.video} />
-                        : <img src={w.image} alt={w.title} style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.5s ease', transform:isActive?'scale(1.03)':'scale(1)' }} />
-                      }
+
+      {/* Container: relative untuk nav buttons */}
+      <div style={{ position: 'relative', maxWidth: '1400px', margin: '0 auto', padding: '0 100px' }}>
+        
+        {/* ← Navigation Button */}
+        <button className="swiper-btn-prev" style={{
+          position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
+          width: '48px', height: '48px', borderRadius: '50%',
+          border: '1px solid var(--border)', background: 'rgba(10,10,10,0.85)',
+          backdropFilter: 'blur(8px)', color: 'var(--text-muted)', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'all 0.2s ease', zIndex: 50, fontSize: '18px',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.4)'
+        }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'var(--accent)'
+            e.currentTarget.style.color = 'var(--text)'
+            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'var(--border)'
+            e.currentTarget.style.color = 'var(--text-muted)'
+            e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
+          }}
+        >←</button>
+
+        {/* → Navigation Button */}
+        <button className="swiper-btn-next" style={{
+          position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+          width: '48px', height: '48px', borderRadius: '50%',
+          border: '1px solid var(--border)', background: 'rgba(10,10,10,0.85)',
+          backdropFilter: 'blur(8px)', color: 'var(--text-muted)', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'all 0.2s ease', zIndex: 50, fontSize: '18px',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.4)'
+        }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'var(--accent)'
+            e.currentTarget.style.color = 'var(--text)'
+            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'var(--border)'
+            e.currentTarget.style.color = 'var(--text-muted)'
+            e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
+          }}
+        >→</button>
+
+        {/* 🔧 CLIPPING WRAPPER + PERSPECTIVE */}
+        <div style={{ 
+          overflow: 'visible',
+          borderRadius: '24px',
+          padding: '64px 0 64px' // ← Wrapper lebih tinggi untuk card besar
+        }}>
+          <div style={{ perspective: '2800px', perspectiveOrigin: 'center center' }}>
+            <Swiper 
+              ref={swiperRef}
+              className="works-swiper" 
+              modules={[Autoplay, Navigation, Pagination, EffectCoverflow]}
+              effect="coverflow" 
+              centeredSlides 
+              grabCursor
+              
+              // 🔧 KUNCI: slidesPerView="auto" agar width dari slide style dipakai
+              slidesPerView="auto"
+              
+              // 🔧 Breakpoints dengan slidesPerView: 'auto'
+              breakpoints={{ 
+                768: { slidesPerView: 'auto', spaceBetween: -60 }, 
+                1100: { slidesPerView: 'auto', spaceBetween: -90 } 
+              }}
+              
+              spaceBetween={-90} // ← Overlap lebih rapat untuk card besar
+              coverflowEffect={{ 
+                rotate: 0, 
+                stretch: 0,
+                depth: 320, 
+                modifier: 2.2, 
+                slideShadows: false 
+              }}
+              autoplay={{ 
+                delay: 4000, 
+                disableOnInteraction: false, 
+                pauseOnMouseEnter: true, 
+                waitForTransition: true 
+              }}
+              loop
+              observer={true}
+              observeParents={true}
+              navigation={{ prevEl: '.swiper-btn-prev', nextEl: '.swiper-btn-next' }}
+              pagination={{ clickable: true, el: '.works-pagination', type: 'bullets' }}
+              onSlideChange={(swiper) => {
+                const slides = document.querySelectorAll('.works-swiper .swiper-slide')
+                slides.forEach((slide, i) => {
+                  const distance = Math.abs(i - swiper.activeIndex)
+                  const card = slide.querySelector('.work-card-inner')
+                  if (!card) return
+
+                  // 🔧 HIDE CARD DILUAR 5 VIEWPORT (distance > 2)
+                  if (distance > 2) {
+                    gsap.set(card, { 
+                      opacity: 0, 
+                      scale: 0.8, 
+                      filter: 'blur(4px)', 
+                      visibility: 'hidden',
+                      zIndex: 0 
+                    })
+                    return
+                  }
+
+                  // 🔧 SCALE SETTINGS
+                  const ACTIVE_SCALE = 1.02
+                  const INACTIVE_SCALE_DROP = 0.02
+                  const BLUR_PX_PER_STEP = 1.5
+                  const opacity = 1
+                  const scale = distance === 0 ? ACTIVE_SCALE : 1 - (distance * INACTIVE_SCALE_DROP)
+                  const blur = distance * BLUR_PX_PER_STEP
+                  const zIndex = 10 - distance
+
+                  gsap.to(card, { 
+                    opacity, 
+                    scale, 
+                    filter: `blur(${blur}px)`, 
+                    visibility: 'visible',
+                    zIndex,
+                    duration: 0.4, 
+                    ease: 'power2.out' 
+                  })
+                })
+              }}
+              style={{ padding: '20px 0 16px', overflow: 'visible' }}
+            >
+              {WORKS.map((w, i) => (
+                <SwiperSlide 
+                  key={i} 
+                  style={{ 
+                    height: 'auto', 
+                    display: 'flex', 
+                    justifyContent: 'center',
+                    // 🔧 KEY FIX: Set width di SwiperSlide (bukan di inner card)
+                    width: 'clamp(340px, 22vw, 440px)', // 1920px: 22vw = ~422px
+                    flexShrink: 0 // ← Mencegah Swiper compress slide
+                  }}
+                >
+                  {({ isActive }) => (
+                    <div 
+                      className="work-card-inner"
+                      onMouseMove={(e) => isActive && handleCardMouseMove(e, e.currentTarget)}
+                      onMouseLeave={(e) => isActive && handleCardMouseLeave(e.currentTarget)}
+                      style={{ 
+                        // 🔧 Inner card mengikuti parent width
+                        width: '100%',
+                        aspectRatio: '2.5/3.7', 
+                        borderRadius: '18px', 
+                        overflow: 'hidden', 
+                        background: 'var(--surface)', 
+                        border: isActive ? '2px solid var(--accent)' : '1px solid var(--border)',
+                        transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+                        transformStyle: 'preserve-3d',
+                        willChange: 'transform, filter, opacity',
+                        boxShadow: isActive 
+                          ? '0 20px 60px rgba(37, 99, 235, 0.35), 0 0 0 1px rgba(37, 99, 235, 0.2)' 
+                          : '0 12px 40px rgba(0, 0, 0, 0.3)',
+                        cursor: isActive ? 'default' : 'grab',
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <div style={{ 
+                        aspectRatio: '4/3', position: 'relative', overflow: 'hidden',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                        background: 'var(--surface-2)',
+                        transform: isActive ? 'translateZ(30px)' : 'translateZ(18px)',
+                        flex: '0 0 75%',
+                      }}>
+                        <div style={{width: '100%', height: '100%', overflow: 'hidden' }}>
+                          {w.video ? (
+                            <video autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={w.video} />
+                          ) : (
+                            <img src={w.image} alt={w.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease', transform: isActive ? 'scale(1.08)' : 'scale(1)' }} />
+                          )}
+                        </div>
+                        {isActive && (
+                          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, rgba(37,99,235,0.18) 100%)', pointerEvents: 'none' }} />
+                        )}
+                      </div>
+
+                      <div style={{ 
+                        padding: '20px 22px',
+                        transform: isActive ? 'translateZ(40px)' : 'translateZ(24px)',
+                        background: 'linear-gradient(to bottom, var(--surface) 0%, var(--surface-2) 100%)',
+                        flex: '1 1 auto', // ← Ambil sisa ruang
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                      }}>
+                        <span style={{ fontSize: '9px', color: 'var(--accent)', background: 'var(--accent-dim)', padding: '3px 10px', borderRadius: '8px', fontWeight: '600', display: 'inline-block', marginBottom: '10px' }}>
+                          {w.tag}
+                        </span>
+                        <h3 className="h4" style={{ marginBottom: '8px', color: isActive ? 'var(--text)' : 'var(--text-muted)', fontSize: '16px', lineHeight: '1.3' }}>
+                          {w.title}
+                        </h3>
+                        <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.55', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                          {w.desc}
+                        </p>
+                      </div>
+
+                      <div style={{ position: 'absolute', inset: 0, borderRadius: '18px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.25)', pointerEvents: 'none' }} />
                     </div>
-                    {isActive&&<div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, transparent 50%, rgba(37,99,255,0.08))', pointerEvents:'none' }} />}
-                  </div>
-                  <div style={{ padding:'20px 22px 22px' }}>
-                    <span style={{ fontSize:'10px', color:'var(--accent)', background:'var(--accent-dim)', padding:'2px 8px', borderRadius:'6px', fontWeight:'600', display:'inline-block', marginBottom:'8px' }}>{w.tag}</span>
-                    <h3 className="h4" style={{ marginBottom:'6px', color:isActive?'var(--text)':'var(--text-muted)' }}>{w.title}</h3>
-                    <p style={{ fontSize:'12px', color:'var(--text-muted)', lineHeight:'1.6' }}>{w.desc}</p>
-                  </div>
-                </div>
-              )}
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <div style={{ display:'flex', justifyContent:'center', alignItems:'center', gap:'12px', padding:'0 48px', marginTop:'8px' }}>
-          <button className="works-prev" style={{ width:'36px', height:'36px', borderRadius:'8px', border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text-muted)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'all 0.15s', fontFamily:'inherit' }}
-            onMouseEnter={(e)=>{e.currentTarget.style.borderColor='var(--border-hover)';e.currentTarget.style.color='var(--text)'}}
-            onMouseLeave={(e)=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.color='var(--text-muted)'}}>←</button>
-          <div className="works-pagination" style={{ display:'flex', justifyContent:'center', gap:'4px', alignItems:'center' }} />
-          <button className="works-next" style={{ width:'36px', height:'36px', borderRadius:'8px', border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text-muted)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'all 0.15s', fontFamily:'inherit' }}
-            onMouseEnter={(e)=>{e.currentTarget.style.borderColor='var(--border-hover)';e.currentTarget.style.color='var(--text)'}}
-            onMouseLeave={(e)=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.color='var(--text-muted)'}}>→</button>
+                  )}
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
+
+        {/* Pagination Dots */}
+        <div className="works-pagination" style={{ display: 'flex', justifyContent: 'center', gap: '6px', alignItems: 'center', marginTop: '24px' }} />
       </div>
-      <style>{`.works-pagination .swiper-pagination-bullet{width:6px;height:6px;border-radius:50%;background:var(--border-hover);opacity:1;cursor:pointer;transition:all 0.2s;margin:0 3px}.works-pagination .swiper-pagination-bullet-active{background:var(--accent);width:18px;border-radius:3px}`}</style>
+
+      <style>{`
+        .works-swiper .swiper-slide {
+          transition: filter 0.5s ease, opacity 0.5s ease, transform 0.5s ease !important;
+          display: flex !important; justify-content: center !important;
+        }
+        .works-swiper .swiper-slide-active { z-index: 10 !important; }
+        
+        .works-pagination .swiper-pagination-bullet {
+          width: 8px; height: 8px; border-radius: 50%;
+          background: var(--border-hover); opacity: 0.4;
+          cursor: pointer; transition: all 0.3s ease; margin: 0 4px;
+        }
+        .works-pagination .swiper-pagination-bullet-active {
+          background: var(--accent); width: 28px; border-radius: 4px; opacity: 1;
+        }
+        
+        .work-card-inner {
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+      `}</style>
     </section>
   )
 }
@@ -609,7 +854,7 @@ function CardGridSection({ sectionId, sectionNum, label, titleText, subtitleText
       <div style={{ position:'relative', marginBottom:'16px', maxWidth:'480px' }}>
         <svg style={{ position:'absolute', left:'12px', top:'50%', transform:'translateY(-50%)', pointerEvents:'none' }} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-subtle)" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input className="search-input" type="text" placeholder={searchPlaceholder} value={query}
-          onChange={(e)=>{ setQuery(e.target.value); setExpanded(false) }} />
+          onChange={(e)=>{ setQuery(e.target.value); setExpanded(false) }} suppressHydrationWarning />
       </div>
 
       {/* Filter tabs */}
@@ -697,7 +942,7 @@ export default function HomePage() {
         <CardGridSection
           sectionId="inspiration"
           sectionNum="06 — Inspiration"
-          titleText="Curated Sites Worth Studying"
+          titleText="Curated Sites & Projects"
           subtitleText="A selection of beautifully crafted websites with standout animations, interaction design, and motion systems."
           filters={INSP_FILTERS}
           initialShow={INSP_INITIAL_SHOW}
