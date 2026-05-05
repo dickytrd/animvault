@@ -19,6 +19,7 @@ import 'swiper/css/effect-coverflow'
 import { WORKS }                                from '@/data/works.data'
 import { INSIGHTS, INSIGHTS_FILTERS, INSIGHTS_INITIAL_SHOW } from '@/data/insights.data'
 import { INSPIRATION, INSP_FILTERS, INSP_INITIAL_SHOW }      from '@/data/inspiration.data'
+import { AnimationPlayground } from '@/components/playground/AnimationPlayground'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -118,15 +119,15 @@ const COLLECTION = [
   { id:'12', title:'Navigation',       desc:'Menu morphs, dropdown stagger, mobile nav.',      tags:['Timeline','Stagger'],       count:0,  href:'#',               status:'planned', preview:'≡'  },
 ]
 
-const GALLERY_ITEMS = [
-  { label:'Mask Reveal',   tag:'Heading', col:'span 2' },
-  { label:'Scramble Text', tag:'Heading', col:'span 1' },
-  { label:'Card Stagger',  tag:'Content', col:'span 1' },
-  { label:'Loader Ring',   tag:'Loader',  col:'span 1' },
-  { label:'Ripple Click',  tag:'Button',  col:'span 1', row:'span 2' },
-  { label:'Wave Chars',    tag:'Heading', col:'span 2', row:'span 2' },
-  { label:'Pulse Dots',    tag:'Loader',  col:'span 1' },
-]
+// const GALLERY_ITEMS = [
+//   { label:'Mask Reveal',   tag:'Heading', col:'span 2' },
+//   { label:'Scramble Text', tag:'Heading', col:'span 1' },
+//   { label:'Card Stagger',  tag:'Content', col:'span 1' },
+//   { label:'Loader Ring',   tag:'Loader',  col:'span 1' },
+//   { label:'Ripple Click',  tag:'Button',  col:'span 1', row:'span 2' },
+//   { label:'Wave Chars',    tag:'Heading', col:'span 2', row:'span 2' },
+//   { label:'Pulse Dots',    tag:'Loader',  col:'span 1' },
+// ]
 
 const STATUS_BADGE = {
   live:    { label:'live',    bg:'rgba(34,197,94,0.1)',    color:'#4ade80' },
@@ -416,37 +417,37 @@ to complex motion systems.</p>
   )
 }
 
-// ─────────────────────────────────────────────
-// GALLERY
-// ─────────────────────────────────────────────
-function Gallery() {
-  const ref=useRef(null); const titleRef=useRef(null)
-  useBottomMaskReveal(titleRef,{yRange:100,rotationRange:0,stagger:0.01,start:'top 90%'})
-  useGSAP(()=>{ gsap.from('.gallery-item',{scale:0.94,opacity:0,filter:'blur(4px)',duration:0.6,stagger:0.07,ease:'power3.out',scrollTrigger:{trigger:ref.current,start:'top 70%'}}) },{scope:ref})
-  return (
-    <section id="gallery" ref={ref} style={{ padding:'80px 48px', maxWidth:'1200px', margin:'0 auto' }}>
-      <div style={{ marginBottom:'40px' }}>
-        <SectionLabel>05 — Gallery</SectionLabel>
-        <h2 ref={titleRef} className="h2" style={{ marginBottom:'8px', overflow:'hidden' }}>Try the Animations</h2>
-        <p style={{ fontSize:'14px', color:'var(--text-muted)' }}>Hover, click, and explore interactions in real-time.
-See how they behave before using them.</p>
-      </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gridAutoRows:'240px', gap:'10px' }}>
-        {GALLERY_ITEMS.map((item,i)=>(
-          <div key={i} className="gallery-item" style={{ gridColumn:item.col||'span 1', gridRow:item.row||'span 1', background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'10px', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'14px 16px', position:'relative', overflow:'hidden', cursor:'pointer', transition:'border-color 0.2s' }}
-            onMouseEnter={(e)=>e.currentTarget.style.borderColor='var(--border-hover)'}
-            onMouseLeave={(e)=>e.currentTarget.style.borderColor='var(--border)'}>
-            <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-60%)', width:'40px', height:'40px', borderRadius:'50%', background:'var(--accent-dim)', border:'1px solid rgba(37,99,255,0.2)' }} />
-            <div style={{ position:'relative', zIndex:1 }}>
-              <div style={{ fontSize:'10px', color:'var(--accent)', marginBottom:'3px', fontWeight:'500' }}>{item.tag}</div>
-              <div style={{ fontSize:'12px', color:'var(--text-muted)', fontWeight:'500' }}>{item.label}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
+// // ─────────────────────────────────────────────
+// // GALLERY
+// // ─────────────────────────────────────────────
+// function Gallery() {
+//   const ref=useRef(null); const titleRef=useRef(null)
+//   useBottomMaskReveal(titleRef,{yRange:100,rotationRange:0,stagger:0.01,start:'top 90%'})
+//   useGSAP(()=>{ gsap.from('.gallery-item',{scale:0.94,opacity:0,filter:'blur(4px)',duration:0.6,stagger:0.07,ease:'power3.out',scrollTrigger:{trigger:ref.current,start:'top 70%'}}) },{scope:ref})
+//   return (
+//     <section id="gallery" ref={ref} style={{ padding:'80px 48px', maxWidth:'1200px', margin:'0 auto' }}>
+//       <div style={{ marginBottom:'40px' }}>
+//         <SectionLabel>05 — Gallery</SectionLabel>
+//         <h2 ref={titleRef} className="h2" style={{ marginBottom:'8px', overflow:'hidden' }}>Try the Animations</h2>
+//         <p style={{ fontSize:'14px', color:'var(--text-muted)' }}>Hover, click, and explore interactions in real-time.
+// See how they behave before using them.</p>
+//       </div>
+//       <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gridAutoRows:'240px', gap:'10px' }}>
+//         {GALLERY_ITEMS.map((item,i)=>(
+//           <div key={i} className="gallery-item" style={{ gridColumn:item.col||'span 1', gridRow:item.row||'span 1', background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'10px', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'14px 16px', position:'relative', overflow:'hidden', cursor:'pointer', transition:'border-color 0.2s' }}
+//             onMouseEnter={(e)=>e.currentTarget.style.borderColor='var(--border-hover)'}
+//             onMouseLeave={(e)=>e.currentTarget.style.borderColor='var(--border)'}>
+//             <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-60%)', width:'40px', height:'40px', borderRadius:'50%', background:'var(--accent-dim)', border:'1px solid rgba(37,99,255,0.2)' }} />
+//             <div style={{ position:'relative', zIndex:1 }}>
+//               <div style={{ fontSize:'10px', color:'var(--accent)', marginBottom:'3px', fontWeight:'500' }}>{item.tag}</div>
+//               <div style={{ fontSize:'12px', color:'var(--text-muted)', fontWeight:'500' }}>{item.label}</div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </section>
+//   )
+// }
 
 // ─────────────────────────────────────────────
 // WORKS — 3D Card Stack + Interactive Tilt (BALANCED SIZE)
@@ -936,7 +937,8 @@ export default function HomePage() {
         <Introduction />
         <Marquee />
         <CollectionCards />
-        <Gallery />
+        {/* <Gallery /> */}
+        <AnimationPlayground />
         <Works />
 
         {/* 06 — Inspiration */}
