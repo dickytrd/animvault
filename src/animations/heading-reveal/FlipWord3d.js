@@ -11,7 +11,7 @@ import { gsap, SplitText } from '@/lib/gsap'
  * @param {object}      controls  - { duration, stagger, rotateAmount, perspective, ease }
  * @param {function}    onComplete
  */
-export function FlipWord3D({ element, splitRef, controls, onComplete }) {
+export function FlipWord3d({ element, splitRef, controls, onComplete }) {
   const { duration, stagger, rotateAmount, perspective, ease } = controls
 
   if (splitRef.current) {

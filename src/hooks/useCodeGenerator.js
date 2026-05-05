@@ -973,6 +973,39 @@ gsap.from(split.chars, {
 
 // Note: Call split.revert() on unmount`,
 
+// ─── 30. Elastic Overshoot — Bounce ──────────────────────
+'elastic-overshoot': (c) =>
+`import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
+// Elastic Overshoot: Chars fall from top and bounce into place.
+// Playful, physics-based reveal.
+
+const element = document.querySelector('.heading')
+const split = new SplitText(element, { type: 'chars' })
+
+// GPU optimization
+split.chars.forEach(char => {
+  char.style.willChange = 'transform, opacity'
+  char.style.transform = 'translate3d(0,0,0)'
+  char.style.transformOrigin = 'center center'
+})
+
+// Animate from displaced state to normal
+gsap.from(split.chars, {
+  y: ${c.yFrom},      // Start from above
+  opacity: 0,         // Fade in
+  scale: 0.8,         // Pop in size
+  rotation: () => (Math.random() - 0.5) * ${c.rotationRange}, // Random tilt
+  duration: ${c.duration},
+  stagger: ${c.stagger},
+  ease: '${c.ease}',  // e.g., 'elastic.out(1, 0.6)'
+})
+
+// Note: Call split.revert() on unmount`,
+
 }
 
 export function useCodeGenerator(animationId, controls) {

@@ -13,7 +13,7 @@ import { SplitMaskWord }    from '@/animations/heading-reveal/SplitMaskWord'
 import { SplitSkewFade }    from '@/animations/heading-reveal/SplitSkewFade'
 import { ScrambleReveal }   from '@/animations/heading-reveal/ScrambleReveal'
 import { RotateIn3D }       from '@/animations/heading-reveal/RotateIn3d'
-import { FlipWord3D }       from '@/animations/heading-reveal/FlipWord3d'
+import { FlipWord3d }       from '@/animations/heading-reveal/FlipWord3d'
 import { WaveChar }         from '@/animations/heading-reveal/WaveChar'
 import { LineByLine }       from '@/animations/heading-reveal/LineByLine'
 import { ScaleFade }        from '@/animations/heading-reveal/ScaleFade'
@@ -53,7 +53,7 @@ const ANIMATION_REGISTRY = {
   SplitSkewFade,
   ScrambleReveal,
   RotateIn3D,
-  FlipWord3D,
+  FlipWord3d,
   WaveChar,
   LineByLine,
   ScaleFade,

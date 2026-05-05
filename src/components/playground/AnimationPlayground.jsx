@@ -3,8 +3,9 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
+import { useRouter } from 'next/navigation'
 
-// ── Heading animations ───────────────────────────────────────────
+// ── Heading animations (ALL 30) ─────────────────────────────────
 import { SplitFadeOpacity }     from '@/animations/heading-reveal/SplitFadeOpacity'
 import { SplitFadeBlur }        from '@/animations/heading-reveal/SplitFadeBlur'
 import { SplitMaskChar }        from '@/animations/heading-reveal/SplitMaskChar'
@@ -20,34 +21,62 @@ import { LetterCollapse }       from '@/animations/heading-reveal/LetterCollapse
 import { SlideFromLeft }        from '@/animations/heading-reveal/SlideFromLeft'
 import { FadeSubtle }           from '@/animations/heading-reveal/FadeSubtle'
 import { BottomMaskAssemble }   from '@/animations/heading-reveal/BottomMaskAssemble'
+import { AlternatingYReveal }   from '@/animations/heading-reveal/AlternatingYReveal'
+import { CharAssembleGlitch }   from '@/animations/heading-reveal/CharAssembleGlitch'
+import { CinematicDepthReveal } from '@/animations/heading-reveal/CinematicDepthReveal'
+import { FloatingZigzagNoMask } from '@/animations/heading-reveal/FloatingZigzagNoMask'
+import { FloatingZigzagReveal } from '@/animations/heading-reveal/FloatingZigzagReveal'
+import { GlitchChangeAssemble } from '@/animations/heading-reveal/GlitchChangeAssemble'
+import { RandomMaskAssemble }   from '@/animations/heading-reveal/RandomMaskAssemble'
+import { SliceGlitchReveal }    from '@/animations/heading-reveal/SliceGlitchReveal'
+import { SliceMaskGlitch }      from '@/animations/heading-reveal/SliceMaskGlitch'
+import { FlipWord3d }       from '@/animations/heading-reveal/FlipWord3d'
+import { KineticSnapReveal }    from '@/animations/heading-reveal/KineticSnapReveal'
+import { TrackingReveal }       from '@/animations/heading-reveal/TrackingReveal'
+import { RadialBurstReveal }    from '@/animations/heading-reveal/RadialBurstReveal'
+import { CenterOutCascade }     from '@/animations/heading-reveal/CenterOutCascade'
+import { ElasticOvershoot }     from '@/animations/heading-reveal/ElasticOvershoot'
 
-// ── Content animations ───────────────────────────────────────────
+// ── Content animations ──────────────────────────────────────────
 import { StaggerCards }         from '@/animations/content-reveal/StaggerCards'
 import { ClipSlideCards }       from '@/animations/content-reveal/ClipSlideCards'
 import { FadeUpBatch }          from '@/animations/content-reveal/FadeUpBatch'
 import { ScaleReveal }          from '@/animations/content-reveal/ScaleReveal'
 import { StaggerChildren }      from '@/animations/content-reveal/StaggerChildren'
 
-// ── Button components ────────────────────────────────────────────
+// ── Button components (ALL) ─────────────────────────────────────
 import { FillSlideBtn }         from '@/components/buttons/FillSlideBtn'
 import { ArrowSlideBtn }        from '@/components/buttons/ArrowSlideBtn'
 import { RippleClickBtn }       from '@/components/buttons/RippleClickBtn'
 import { ScalePopBtn }          from '@/components/buttons/ScalePopBtn'
 import { ShakeErrorBtn }        from '@/components/buttons/ShakeErrorBtn'
+import { MagneticBtn }          from '@/components/buttons/MagneticBtn'
+import { ThreeDFlipBtn }        from '@/components/buttons/ThreeDFlipBtn'
+import { LiquidFillBtn }        from '@/components/buttons/LiquidFillBtn'
+import { PressHoldBtn }         from '@/components/buttons/PressHoldBtn'
+import { GlitchTextBtn }        from '@/components/buttons/GlitchTextBtn'
+import { QuantumFluxBtn }       from '@/components/buttons/QuantumFluxBtn'
+import { HoloDecodeBtn }        from '@/components/buttons/HoloDecodeBtn'
+import { DataStreamBtn }        from '@/components/buttons/DataStreamBtn'
+import { CyberSliceBtn }        from '@/components/buttons/CyberSliceBtn'
 
 import {
   HEADING_ANIMS, CONTENT_ANIMS, BUTTON_ANIMS,
   PLAYGROUND_HEADING, PLAYGROUND_SUBTEXT,
 } from '@/data/playground.data'
 
-// ─────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────
 // REGISTRIES
-// ─────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────
 const HEADING_REGISTRY = {
   SplitFadeOpacity, SplitFadeBlur, SplitMaskChar, SplitMaskWord,
   SplitSkewFade, ScrambleReveal, RotateIn3D, WaveChar, LineByLine,
   ScaleFade, Typewriter, LetterCollapse, SlideFromLeft, FadeSubtle,
-  BottomMaskAssemble,
+  BottomMaskAssemble, AlternatingYReveal, CharAssembleGlitch,
+  CinematicDepthReveal, FloatingZigzagNoMask, FloatingZigzagReveal,
+  GlitchChangeAssemble, RandomMaskAssemble, SliceGlitchReveal,
+  SliceMaskGlitch, FlipWord3d, KineticSnapReveal, TrackingReveal,
+  RadialBurstReveal, CenterOutCascade, ElasticOvershoot,
 }
 
 const CONTENT_REGISTRY = {
@@ -56,21 +85,30 @@ const CONTENT_REGISTRY = {
 
 const BUTTON_REGISTRY = {
   FillSlideBtn, ArrowSlideBtn, RippleClickBtn, ScalePopBtn, ShakeErrorBtn,
+  MagneticBtn, ThreeDFlipBtn, LiquidFillBtn, PressHoldBtn, GlitchTextBtn,
+  QuantumFluxBtn, HoloDecodeBtn, DataStreamBtn, CyberSliceBtn,
 }
 
 const TABS = [
   { id: 'heading', label: 'Heading Reveal' },
-  { id: 'content', label: 'Content Reveal' },
+  // { id: 'content', label: 'Content Reveal' },
   { id: 'button',  label: 'Button Hover'   },
 ]
 
-// ─────────────────────────────────────────────────────────────────
-// MINI CARD COMPONENT
-// ─────────────────────────────────────────────────────────────────
-function MiniCard({ highlight, index }) {
+const TAB_ROUTES = {
+  heading: '/heading-reveal',
+  content: '/content-reveal',
+  button: '/buttons',
+}
+
+// ────────────────────────────────────────────────────────────────
+// MINI CARD COMPONENT (Fixed Size)
+// ────────────────────────────────────────────────────────────────
+function MiniCard({ highlight }) {
   return (
     <div style={{
       flex:          1,
+      minWidth:      0,
       background:    'var(--surface)',
       border:        `1px solid ${highlight ? 'var(--accent)' : 'var(--border)'}`,
       borderRadius:  '12px',
@@ -78,30 +116,39 @@ function MiniCard({ highlight, index }) {
       transition:    'all 0.4s ease',
       display:       'flex',
       flexDirection: 'column',
-      minWidth:      0,
-      transform:     highlight ? 'translateY(0)' : 'translateY(0)',
-      opacity:       highlight ? 1 : 0.6,
     }}>
       <div style={{ aspectRatio:'16/9', background:'var(--surface-2)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
           <circle cx="8.5" cy="8.5" r="1.5"/>
           <polyline points="21 15 16 10 5 21"/>
         </svg>
       </div>
-      <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:'8px' }}>
-        <div style={{ height:'12px', width:'70%', background:'var(--border)', borderRadius:'4px' }} />
-        <div style={{ height:'10px',  width:'100%', background:'var(--border)', borderRadius:'4px', opacity:0.6 }} />
-        <div style={{ height:'10px',  width:'60%', background:'var(--border)', borderRadius:'4px', opacity:0.4 }} />
+      <div style={{ padding:'18px', display:'flex', flexDirection:'column', gap:'10px' }}>
+        <div style={{ height:'14px', width:'75%', background:'var(--border)', borderRadius:'4px' }} />
+        <div style={{ height:'12px', width:'100%', background:'var(--border)', borderRadius:'4px', opacity:0.6 }} />
+        <div style={{ height:'12px', width:'65%', background:'var(--border)', borderRadius:'4px', opacity:0.4 }} />
       </div>
     </div>
   )
 }
 
-// ─────────────────────────────────────────────────────────────────
-// VARIANT POPUP
-// ─────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────
+// VARIANT POPUP (Fixed Scroll Lock)
+// ────────────────────────────────────────────────────────────────
 function VariantPopup({ isOpen, onClose, variants, currentIndex, onSelect }) {
+  // Lock body scroll when popup is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   return (
@@ -113,8 +160,8 @@ function VariantPopup({ isOpen, onClose, variants, currentIndex, onSelect }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(0,0,0,0.7)',
-        backdropFilter: 'blur(4px)',
+        background: 'rgba(0,0,0,0.8)',
+        backdropFilter: 'blur(6px)',
       }}
       onClick={onClose}
     >
@@ -123,49 +170,66 @@ function VariantPopup({ isOpen, onClose, variants, currentIndex, onSelect }) {
           background: 'var(--surface)',
           border: '1px solid var(--border)',
           borderRadius: '16px',
-          padding: '24px',
-          maxWidth: '520px',
+          padding: '28px',
+          maxWidth: '560px',
           width: '90%',
-          maxHeight: '70vh',
+          maxHeight: '75vh',
           overflow: 'auto',
           boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
+          transform: 'scale(1)',
+          animation: 'popupIn 0.2s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text)', margin: 0 }}>Select Variant</h3>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+          <div>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text)', margin: 0 }}>Select Variant</h3>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '4px 0 0' }}>
+              {currentIndex + 1} of {variants.length} selected
+            </p>
+          </div>
           <button 
             onClick={onClose}
             style={{
-              background: 'none',
-              border: 'none',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
+              borderRadius: '8px',
               color: 'var(--text-muted)',
               cursor: 'pointer',
-              padding: '4px',
+              padding: '6px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              transition: 'all 0.15s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--border)'
+              e.currentTarget.style.color = 'var(--text)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'var(--surface-2)'
+              e.currentTarget.style.color = 'var(--text-muted)'
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
           </button>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '10px' }}>
           {variants.map((v, i) => (
             <button
               key={v.key}
               onClick={() => { onSelect(i); onClose(); }}
               style={{
-                padding: '12px 8px',
-                borderRadius: '8px',
+                padding: '14px 8px',
+                borderRadius: '10px',
                 border: i === currentIndex ? '2px solid var(--accent)' : '1px solid var(--border)',
                 background: i === currentIndex ? 'var(--accent-dim)' : 'var(--surface-2)',
                 color: i === currentIndex ? 'var(--accent)' : 'var(--text-muted)',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontWeight: i === currentIndex ? '700' : '500',
                 fontFamily: 'inherit',
                 cursor: 'pointer',
@@ -176,12 +240,14 @@ function VariantPopup({ isOpen, onClose, variants, currentIndex, onSelect }) {
                 if (i !== currentIndex) {
                   e.currentTarget.style.borderColor = 'var(--border-hover)'
                   e.currentTarget.style.color = 'var(--text)'
+                  e.currentTarget.style.background = 'var(--border)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (i !== currentIndex) {
                   e.currentTarget.style.borderColor = 'var(--border)'
                   e.currentTarget.style.color = 'var(--text-muted)'
+                  e.currentTarget.style.background = 'var(--surface-2)'
                 }
               }}
             >
@@ -194,10 +260,11 @@ function VariantPopup({ isOpen, onClose, variants, currentIndex, onSelect }) {
   )
 }
 
-// ─────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────
 // ANIMATION PLAYGROUND
-// ─────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────
 export function AnimationPlayground() {
+  const router = useRouter()
   const [tab,           setTab]           = useState('heading')
   const [hIdx,          setHIdx]          = useState(0)
   const [cIdx,          setCIdx]          = useState(0)
@@ -205,6 +272,7 @@ export function AnimationPlayground() {
   const [state,         setState]         = useState('idle')
   const [btnKey,        setBtnKey]        = useState(0)
   const [showPopup,     setShowPopup]     = useState(false)
+  const isAnimatingRef  = useRef(false)
 
   const headingRef   = useRef(null)
   const cardsRef     = useRef(null)
@@ -217,6 +285,7 @@ export function AnimationPlayground() {
   const buttonAnim   = BUTTON_ANIMS[bIdx]
 
   const cleanup = useCallback(() => {
+    isAnimatingRef.current = false
     tweenRef.current?.kill()
     gsapCtxRef.current?.revert()
     tweenRef.current  = null
@@ -228,10 +297,13 @@ export function AnimationPlayground() {
   }, [])
 
   const runHeading = useCallback(() => {
+    if (isAnimatingRef.current) return
+    isAnimatingRef.current = true
+    
     const el = headingRef.current
-    if (!el) return
+    if (!el) { setState('complete'); return }
     const fn = HEADING_REGISTRY[headingAnim.key]
-    if (!fn) { setState('complete'); return }
+    if (!fn) { setState('complete'); isAnimatingRef.current = false; return }
 
     cleanup()
     setState('animating')
@@ -241,16 +313,22 @@ export function AnimationPlayground() {
         element:    el,
         splitRef,
         controls:   headingAnim.controls,
-        onComplete: () => setState('complete'),
+        onComplete: () => {
+          setState('complete')
+          isAnimatingRef.current = false
+        },
       })
     })
   }, [headingAnim, cleanup])
 
   const runContent = useCallback(() => {
+    if (isAnimatingRef.current) return
+    isAnimatingRef.current = true
+    
     const el = cardsRef.current
-    if (!el) return
+    if (!el) { setState('complete'); return }
     const fn = CONTENT_REGISTRY[contentAnim.key]
-    if (!fn) { setState('complete'); return }
+    if (!fn) { setState('complete'); isAnimatingRef.current = false; return }
 
     cleanup()
     setState('animating')
@@ -259,35 +337,47 @@ export function AnimationPlayground() {
       tweenRef.current = fn({
         element:    el,
         controls:   contentAnim.controls,
-        onComplete: () => setState('complete'),
+        onComplete: () => {
+          setState('complete')
+          isAnimatingRef.current = false
+        },
       })
     })
   }, [contentAnim, cleanup])
 
   const replay = useCallback(() => {
-    if (state === 'animating') return
+    if (state === 'animating' || isAnimatingRef.current) return
     setState('idle')
     setTimeout(() => {
       if (tab === 'heading') runHeading()
       if (tab === 'content') runContent()
       if (tab === 'button')  { setBtnKey(k => k + 1); setState('complete') }
-    }, 80)
+    }, 100)
   }, [state, tab, runHeading, runContent])
 
+  // Auto-play when tab or variant changes
   useEffect(() => {
+    if (isAnimatingRef.current) return
     cleanup()
     setState('idle')
     const t = setTimeout(() => {
       if (tab === 'heading') runHeading()
       if (tab === 'content') runContent()
       if (tab === 'button')  { setBtnKey(k => k + 1); setState('complete') }
-    }, 150)
+    }, 200)
     return () => clearTimeout(t)
   }, [tab, hIdx, cIdx, bIdx])
 
-  useEffect(() => () => cleanup(), [cleanup])
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanup()
+      document.body.style.overflow = ''
+    }
+  }, [cleanup])
 
   const shuffle = () => {
+    if (state === 'animating' || isAnimatingRef.current) return
     if (tab === 'heading') setHIdx(Math.floor(Math.random() * HEADING_ANIMS.length))
     if (tab === 'content') setCIdx(Math.floor(Math.random() * CONTENT_ANIMS.length))
     if (tab === 'button')  setBIdx(Math.floor(Math.random() * BUTTON_ANIMS.length))
@@ -301,15 +391,20 @@ export function AnimationPlayground() {
   const BtnComponent = BUTTON_REGISTRY[buttonAnim.key]
   const { btnLabel, hint, key: _k, num: _n, label: _l, hintType: _h, ...btnProps } = buttonAnim
 
+  const handleGetCode = () => {
+    const route = TAB_ROUTES[tab]
+    if (route) router.push(route)
+  }
+
   return (
     <section style={{ 
-      padding: '120px 0', 
+      padding: '120px 0 80px', 
       maxWidth: '1400px', 
       margin: '0 auto',
       borderTop: '1px solid var(--border)',
     }}>
-      {/* ── Header ─ */}
-      <div style={{ padding: '0 48px 40px', textAlign: 'center' }}>
+      {/* ── Header ── */}
+      <div style={{ padding: '0 48px 48px', textAlign: 'center' }}>
         <p style={{ 
           fontSize: '11px', 
           fontWeight: '600', 
@@ -328,10 +423,10 @@ export function AnimationPlayground() {
         </p>
       </div>
 
-      {/* ── Control Bar (Top Horizontal) ── */}
+      {/* ── Control Bar ── */}
       <div style={{ 
-        margin: '0 48px 24px',
-        padding: '16px 24px',
+        margin: '0 48px 0',
+        padding: '18px 28px',
         background: 'var(--surface)',
         border: '1px solid var(--border)',
         borderRadius: '12px',
@@ -340,6 +435,7 @@ export function AnimationPlayground() {
         justifyContent: 'space-between',
         gap: '24px',
         flexWrap: 'wrap',
+        position: 'relative',
       }}>
         {/* Left: Type Selector */}
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -381,29 +477,23 @@ export function AnimationPlayground() {
         {/* Center: Variant Navigation */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button 
-            onClick={() => setCurrentIdx(i => Math.max(0, i - 1))} 
-            disabled={currentIdx === 0}
+            onClick={() => {
+              if (state !== 'animating' && !isAnimatingRef.current) {
+                setCurrentIdx(i => Math.max(0, i - 1))
+              }
+            }} 
+            disabled={currentIdx === 0 || state === 'animating'}
             style={{
               padding: '8px 14px',
-              background: currentIdx === 0 ? 'var(--surface-2)' : 'var(--surface-2)',
+              background: 'var(--surface-2)',
               border: '1px solid var(--border)',
               borderRadius: '6px',
-              color: currentIdx === 0 ? 'var(--text-subtle)' : 'var(--text)',
+              color: currentIdx === 0 || state === 'animating' ? 'var(--text-subtle)' : 'var(--text)',
               fontSize: '12px',
-              cursor: currentIdx === 0 ? 'not-allowed' : 'pointer',
-              opacity: currentIdx === 0 ? 0.4 : 1,
+              cursor: currentIdx === 0 || state === 'animating' ? 'not-allowed' : 'pointer',
+              opacity: currentIdx === 0 || state === 'animating' ? 0.4 : 1,
               transition: 'all 0.15s',
               fontFamily: 'inherit',
-            }}
-            onMouseEnter={(e) => {
-              if (currentIdx > 0) {
-                e.currentTarget.style.borderColor = 'var(--border-hover)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (currentIdx > 0) {
-                e.currentTarget.style.borderColor = 'var(--border)'
-              }
             }}
           >
             ← Prev
@@ -411,56 +501,44 @@ export function AnimationPlayground() {
 
           <button
             onClick={() => setShowPopup(true)}
+            disabled={state === 'animating'}
             style={{
-              padding: '8px 20px',
-              background: 'var(--accent-dim)',
-              border: '1px solid var(--accent)',
+              padding: '8px 24px',
+              background: state === 'animating' ? 'var(--surface-2)' : 'var(--accent-dim)',
+              border: `1px solid ${state === 'animating' ? 'var(--border)' : 'var(--accent)'}`,
               borderRadius: '6px',
-              color: 'var(--accent)',
+              color: state === 'animating' ? 'var(--text-subtle)' : 'var(--accent)',
               fontSize: '13px',
               fontWeight: '600',
-              cursor: 'pointer',
+              cursor: state === 'animating' ? 'not-allowed' : 'pointer',
               fontFamily: 'inherit',
               fontVariantNumeric: 'tabular-nums',
               transition: 'all 0.15s',
-              minWidth: '100px',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--accent)'
-              e.currentTarget.style.color = '#fff'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'var(--accent-dim)'
-              e.currentTarget.style.color = 'var(--accent)'
+              minWidth: '120px',
+              opacity: state === 'animating' ? 0.5 : 1,
             }}
           >
             {currentIdx + 1} / {currentAnims.length}
           </button>
 
           <button 
-            onClick={() => setCurrentIdx(i => Math.min(currentAnims.length - 1, i + 1))} 
-            disabled={currentIdx === currentAnims.length - 1}
+            onClick={() => {
+              if (state !== 'animating' && !isAnimatingRef.current) {
+                setCurrentIdx(i => Math.min(currentAnims.length - 1, i + 1))
+              }
+            }} 
+            disabled={currentIdx === currentAnims.length - 1 || state === 'animating'}
             style={{
               padding: '8px 14px',
               background: 'var(--surface-2)',
               border: '1px solid var(--border)',
               borderRadius: '6px',
-              color: currentIdx === currentAnims.length - 1 ? 'var(--text-subtle)' : 'var(--text)',
+              color: currentIdx === currentAnims.length - 1 || state === 'animating' ? 'var(--text-subtle)' : 'var(--text)',
               fontSize: '12px',
-              cursor: currentIdx === currentAnims.length - 1 ? 'not-allowed' : 'pointer',
-              opacity: currentIdx === currentAnims.length - 1 ? 0.4 : 1,
+              cursor: currentIdx === currentAnims.length - 1 || state === 'animating' ? 'not-allowed' : 'pointer',
+              opacity: currentIdx === currentAnims.length - 1 || state === 'animating' ? 0.4 : 1,
               transition: 'all 0.15s',
               fontFamily: 'inherit',
-            }}
-            onMouseEnter={(e) => {
-              if (currentIdx < currentAnims.length - 1) {
-                e.currentTarget.style.borderColor = 'var(--border-hover)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (currentIdx < currentAnims.length - 1) {
-                e.currentTarget.style.borderColor = 'var(--border)'
-              }
             }}
           >
             Next →
@@ -471,27 +549,21 @@ export function AnimationPlayground() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <button 
             onClick={shuffle} 
+            disabled={state === 'animating'}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
               padding: '10px 16px',
-              background: 'var(--surface-2)',
+              background: state === 'animating' ? 'var(--surface-2)' : 'var(--surface-2)',
               border: '1px solid var(--border)',
               borderRadius: '8px',
-              color: 'var(--text-muted)',
+              color: state === 'animating' ? 'var(--text-subtle)' : 'var(--text-muted)',
               fontSize: '12px',
               fontFamily: 'inherit',
-              cursor: 'pointer',
+              cursor: state === 'animating' ? 'not-allowed' : 'pointer',
               transition: 'all 0.15s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-hover)'
-              e.currentTarget.style.color = 'var(--text)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border)'
-              e.currentTarget.style.color = 'var(--text-muted)'
+              opacity: state === 'animating' ? 0.5 : 1,
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -529,9 +601,43 @@ export function AnimationPlayground() {
             {state === 'animating' ? 'Playing…' : 'Replay'}
           </button>
         </div>
+
+        {/* Playing Indicator (Small, Smooth, Right Side of Bar) */}
+        {state === 'animating' && (
+          <div style={{
+            position: 'absolute',
+            bottom: '-36px',
+            right: '28px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '6px 12px',
+            background: 'var(--surface)',
+            border: '1px solid var(--accent)',
+            borderRadius: '20px',
+            boxShadow: '0 4px 12px rgba(37, 99, 255, 0.15)',
+            animation: 'indicatorSlide 0.3s ease-out',
+          }}>
+            <span style={{ 
+              width: '6px', 
+              height: '6px', 
+              borderRadius: '50%', 
+              background: 'var(--accent)',
+              animation: 'indicatorPulse 1.2s ease-in-out infinite',
+            }} />
+            <span style={{ 
+              fontSize: '11px', 
+              color: 'var(--accent)', 
+              letterSpacing: '0.04em',
+              fontWeight: '600',
+            }}>
+              Playing
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* ── Playground Stage (Full Width, Large Height) ── */}
+      {/* ── Playground Stage ── */}
       <div style={{
         margin: '0 48px',
         background: 'var(--surface)',
@@ -586,13 +692,6 @@ export function AnimationPlayground() {
               marginBottom: '24px',
               background: tab === 'heading' ? 'var(--accent-dim)' : 'transparent',
             }}>
-              <span style={{ 
-                width: '6px', 
-                height: '6px', 
-                borderRadius: '50%', 
-                background: tab === 'heading' ? 'var(--accent)' : 'var(--border)',
-                animation: tab === 'heading' && state === 'animating' ? 'pgPulse 1s ease-in-out infinite' : 'none',
-              }} />
               <span style={{ fontSize: '10px', color: 'var(--text-subtle)', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: '600' }}>
                 {tab === 'heading' ? headingAnim.label : 'Heading Reveal'}
               </span>
@@ -629,9 +728,9 @@ export function AnimationPlayground() {
               transition: 'opacity 0.5s ease',
             }}
           >
-            <MiniCard highlight={tab === 'content'} index={0} />
-            <MiniCard highlight={tab === 'content'} index={1} />
-            <MiniCard highlight={tab === 'content'} index={2} />
+            <MiniCard highlight={tab === 'content'} />
+            <MiniCard highlight={tab === 'content'} />
+            <MiniCard highlight={tab === 'content'} />
           </div>
 
           {/* Button Section */}
@@ -667,25 +766,47 @@ export function AnimationPlayground() {
             )}
           </div>
         </div>
+      </div>
 
-        {/* Playing Indicator */}
-        {state === 'animating' && (
-          <div style={{ 
-            position: 'absolute', 
-            top: '20px', 
-            right: '24px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            padding: '8px 16px',
-            background: 'var(--surface-2)',
-            border: '1px solid var(--accent)',
-            borderRadius: '20px',
-          }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent)', animation: 'pgPulse 1s ease-in-out infinite' }} />
-            <span style={{ fontSize: '12px', color: 'var(--accent)', letterSpacing: '0.04em', fontWeight: '600' }}>Playing</span>
-          </div>
-        )}
+      {/* ── Get Code Button ── */}
+      <div style={{ 
+        margin: '32px 48px 0',
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
+        <button
+          onClick={handleGetCode}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '14px 32px',
+            background: 'var(--accent)',
+            border: 'none',
+            borderRadius: '10px',
+            color: '#fff',
+            fontSize: '14px',
+            fontWeight: '600',
+            fontFamily: 'inherit',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+            boxShadow: '0 4px 12px rgba(37, 99, 255, 0.2)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)'
+            e.currentTarget.style.boxShadow = '0 8px 20px rgba(37, 99, 255, 0.3)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)'
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(37, 99, 255, 0.2)'
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+          Get Code for {currentAnim.label}
+        </button>
       </div>
 
       {/* Variant Popup */}
@@ -697,11 +818,19 @@ export function AnimationPlayground() {
         onSelect={setCurrentIdx}
       />
 
-      {/* Pulse Keyframe */}
+      {/* Animations */}
       <style>{`
-        @keyframes pgPulse {
+        @keyframes popupIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes indicatorSlide {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes indicatorPulse {
           0%, 100% { opacity: 1; transform: scale(1); }
-          50%       { opacity: 0.4; transform: scale(0.7); }
+          50% { opacity: 0.5; transform: scale(0.8); }
         }
       `}</style>
     </section>
