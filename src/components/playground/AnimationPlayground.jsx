@@ -401,7 +401,6 @@ export function AnimationPlayground() {
       padding: '120px 0 80px', 
       maxWidth: '1400px', 
       margin: '0 auto',
-      borderTop: '1px solid var(--border)',
     }}>
       {/* ── Header ── */}
       <div style={{ padding: '0 48px 48px', textAlign: 'center' }}>

@@ -20,6 +20,8 @@ import { WORKS }                                from '@/data/works.data'
 import { INSIGHTS, INSIGHTS_FILTERS, INSIGHTS_INITIAL_SHOW } from '@/data/insights.data'
 import { INSPIRATION, INSP_FILTERS, INSP_INITIAL_SHOW }      from '@/data/inspiration.data'
 import { AnimationPlayground } from '@/components/playground/AnimationPlayground'
+import { IntroductionCinematic } from '@/components/sections/IntroductionCinematic'
+// import { CTASection } from '@/components/sections/CTASection'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -194,8 +196,12 @@ function Hero() {
 and discover the best animated websites on the internet.</p>
       <div ref={ctaRef} style={{ display:'flex', gap:'12px', alignItems:'center', marginBottom:'72px' }}>
         <a href="#collection" style={{ fontSize:'14px', fontWeight:'500', color:'#fff', background:'var(--accent)', padding:'12px 24px', borderRadius:'8px', textDecoration:'none', transition:'background 0.2s, transform 0.2s' }}
-          onMouseEnter={(e)=>{e.currentTarget.style.background='#1d4ed8';e.currentTarget.style.transform='translateY(-1px)'}}
-          onMouseLeave={(e)=>{e.currentTarget.style.background='var(--accent)';e.currentTarget.style.transform='translateY(0)'}}>Explore Animation</a>
+          onMouseEnter={(e)=>{e.currentTarget.style.background='#1d4ed8';e.currentTarget.style.transform='translateY(-1px)', 
+            e.currentTarget.style.boxShadow = '0 8px 20px rgba(37, 99, 255, 0.3)'
+          }}
+          onMouseLeave={(e)=>{e.currentTarget.style.background='var(--accent)';e.currentTarget.style.transform='translateY(0)', 
+            e.currentTarget.style.boxShadow = '0 0px 0px rgba(37, 99, 255, 0.1)'
+          }}>Explore Animation</a>
         <a href="#inspiration" style={{ fontSize:'14px', color:'var(--text-muted)', padding:'12px 24px', borderRadius:'8px', textDecoration:'none', border:'1px solid var(--border)', transition:'all 0.2s' }}
           onMouseEnter={(e)=>{e.currentTarget.style.color='var(--text)';e.currentTarget.style.borderColor='var(--border-hover)'}}
           onMouseLeave={(e)=>{e.currentTarget.style.color='var(--text-muted)';e.currentTarget.style.borderColor='var(--border)'}}>Browse Inspiration</a>
@@ -269,64 +275,64 @@ function VideoSection() {
 // ─────────────────────────────────────────────
 // INTRODUCTION — Swiss Timeline
 // ─────────────────────────────────────────────
-function Introduction() {
-  const sectionRef = useRef(null)
-  const titleRef   = useRef(null)
-  const lineRef    = useRef(null)
-  useBottomMaskReveal(titleRef, { yRange:100, rotationRange:0, stagger:0.01, start:'top 90%' })
+// function Introduction() {
+//   const sectionRef = useRef(null)
+//   const titleRef   = useRef(null)
+//   const lineRef    = useRef(null)
+//   useBottomMaskReveal(titleRef, { yRange:100, rotationRange:0, stagger:0.01, start:'top 90%' })
 
-  const steps = [
-    { num:'01', icon:'🔍', title:'Discover',       desc:'Browse 30+ production-ready animations across 12 categories — from simple fades to physics-based interactions. Every pattern is handpicked for real-world use.' },
-    { num:'02', icon:'📖', title:'Learn the Code', desc:'Each animation comes with clean, commented GSAP code. Read how it works, understand the timing, easing, and stagger values behind each effect.' },
-    { num:'03', icon:'⚙️', title:'Customize Live', desc:'Tweak duration, easing, stagger, and blur directly in the browser. The preview updates in real time so you can dial in the perfect feel before copying.' },
-    { num:'04', icon:'🔁', title:'Copy & Ship',    desc:'One click copies production-ready GSAP code. Drop it into your project and it works — no abstractions, no wrappers, no extra dependencies.' },
-  ]
+//   const steps = [
+//     { num:'01', icon:'🔍', title:'Discover',       desc:'Browse 30+ production-ready animations across 12 categories — from simple fades to physics-based interactions. Every pattern is handpicked for real-world use.' },
+//     { num:'02', icon:'📖', title:'Learn the Code', desc:'Each animation comes with clean, commented GSAP code. Read how it works, understand the timing, easing, and stagger values behind each effect.' },
+//     { num:'03', icon:'⚙️', title:'Customize Live', desc:'Tweak duration, easing, stagger, and blur directly in the browser. The preview updates in real time so you can dial in the perfect feel before copying.' },
+//     { num:'04', icon:'🔁', title:'Copy & Ship',    desc:'One click copies production-ready GSAP code. Drop it into your project and it works — no abstractions, no wrappers, no extra dependencies.' },
+//   ]
 
-  useGSAP(() => {
-    gsap.from(lineRef.current, { scaleY:0, transformOrigin:'top center', ease:'none', scrollTrigger:{ trigger:sectionRef.current, start:'top 60%', end:'bottom 80%', scrub:1 } })
-    gsap.utils.toArray('.timeline-card').forEach((card) => {
-      const dot     = card.querySelector('.timeline-dot')
-      const content = card.querySelector('.timeline-content')
-      gsap.fromTo(dot, { scale:0, opacity:0 }, { scale:1, opacity:1, duration:0.4, ease:'back.out(2)', scrollTrigger:{ trigger:card, start:'top 76%' } })
-      gsap.fromTo(content, { x:-20, opacity:0, filter:'blur(6px)' }, { x:0, opacity:1, filter:'blur(0px)', duration:0.6, ease:'power3.out', delay:0.1, scrollTrigger:{ trigger:card, start:'top 76%' } })
-    })
-  }, { scope:sectionRef })
+//   useGSAP(() => {
+//     gsap.from(lineRef.current, { scaleY:0, transformOrigin:'top center', ease:'none', scrollTrigger:{ trigger:sectionRef.current, start:'top 60%', end:'bottom 80%', scrub:1 } })
+//     gsap.utils.toArray('.timeline-card').forEach((card) => {
+//       const dot     = card.querySelector('.timeline-dot')
+//       const content = card.querySelector('.timeline-content')
+//       gsap.fromTo(dot, { scale:0, opacity:0 }, { scale:1, opacity:1, duration:0.4, ease:'back.out(2)', scrollTrigger:{ trigger:card, start:'top 76%' } })
+//       gsap.fromTo(content, { x:-20, opacity:0, filter:'blur(6px)' }, { x:0, opacity:1, filter:'blur(0px)', duration:0.6, ease:'power3.out', delay:0.1, scrollTrigger:{ trigger:card, start:'top 76%' } })
+//     })
+//   }, { scope:sectionRef })
 
-  const StepCard = ({ step, side }) => (
-    <div className="timeline-card" style={{ display:'flex', flexDirection:'column', alignItems:side==='left'?'flex-end':'flex-start', textAlign:side==='left'?'right':'left', paddingBottom:'0', position:'relative' }}>
-      <div className="timeline-dot" style={{ position:'absolute', [side==='left'?'right':'left']:'-55px', top:'8px', width:'12px', height:'12px', borderRadius:'50%', background:'var(--accent)', border:'3px solid var(--bg)', boxShadow:'0 0 0 4px var(--accent-dim)', zIndex:2 }} />
-      <div className="timeline-content">
-        <div style={{ display:'flex', alignItems:'center', gap:'10px', justifyContent:side==='left'?'flex-end':'flex-start', marginBottom:'16px' }}>
-          <span style={{ fontSize:'10px', fontWeight:'700', color:'var(--accent)', letterSpacing:'0.1em' }}>{step.num}</span>
-          <span style={{ fontSize:'22px' }}>{step.icon}</span>
-        </div>
-        <h3 className="h3" style={{ marginBottom:'14px' }}>{step.title}</h3>
-        <p style={{ fontSize:'14px', color:'var(--text-muted)', lineHeight:'1.75', maxWidth:'300px' }}>{step.desc}</p>
-      </div>
-    </div>
-  )
+//   const StepCard = ({ step, side }) => (
+//     <div className="timeline-card" style={{ display:'flex', flexDirection:'column', alignItems:side==='left'?'flex-end':'flex-start', textAlign:side==='left'?'right':'left', paddingBottom:'0', position:'relative' }}>
+//       <div className="timeline-dot" style={{ position:'absolute', [side==='left'?'right':'left']:'-55px', top:'8px', width:'12px', height:'12px', borderRadius:'50%', background:'var(--accent)', border:'3px solid var(--bg)', boxShadow:'0 0 0 4px var(--accent-dim)', zIndex:2 }} />
+//       <div className="timeline-content">
+//         <div style={{ display:'flex', alignItems:'center', gap:'10px', justifyContent:side==='left'?'flex-end':'flex-start', marginBottom:'16px' }}>
+//           <span style={{ fontSize:'10px', fontWeight:'700', color:'var(--accent)', letterSpacing:'0.1em' }}>{step.num}</span>
+//           <span style={{ fontSize:'22px' }}>{step.icon}</span>
+//         </div>
+//         <h3 className="h3" style={{ marginBottom:'14px' }}>{step.title}</h3>
+//         <p style={{ fontSize:'14px', color:'var(--text-muted)', lineHeight:'1.75', maxWidth:'300px' }}>{step.desc}</p>
+//       </div>
+//     </div>
+//   )
 
-  return (
-    <section ref={sectionRef} style={{ padding:'128px 48px', maxWidth:'1200px', margin:'0 auto', }}>
-      <div style={{ display:'flex', flexDirection:'column', alignItems:'center', marginBottom:'96px' }}>
-        <SectionLabel>What is AnimVault?</SectionLabel>
-        <h2 ref={titleRef} className="h2-lg" style={{ textAlign:'center', maxWidth:'1000px', overflow:'hidden' }}>From Idea to <br />Implementation</h2>
-      </div>
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 2px 1fr', gap:'0 48px' }}>
-        <div style={{ display:'flex', flexDirection:'column', gap:'200px' }}>
-          {steps.filter((_,i)=>i%2===0).map(s=><StepCard key={s.num} step={s} side="left"/>)}
-        </div>
-        <div style={{ position:'relative' }}>
-          <div style={{ height:'600px', position:'absolute', top:'20px', width:'4px', background:'var(--border)', left:'-1px' }} />
-          <div ref={lineRef} style={{ height:'600px', position:'absolute', top:'20px', left:'-1px', width:'4px', background:'var(--accent)', transformOrigin:'top center' }} />
-        </div>
-        <div style={{ display:'flex', flexDirection:'column', paddingTop:'200px', gap:'200px' }}>
-          {steps.filter((_,i)=>i%2===1).map(s=><StepCard key={s.num} step={s} side="right"/>)}
-        </div>
-      </div>
-    </section>
-  )
-}
+//   return (
+//     <section ref={sectionRef} style={{ padding:'128px 48px', maxWidth:'1200px', margin:'0 auto', }}>
+//       <div style={{ display:'flex', flexDirection:'column', alignItems:'center', marginBottom:'96px' }}>
+//         <SectionLabel>What is AnimVault?</SectionLabel>
+//         <h2 ref={titleRef} className="h2-lg" style={{ textAlign:'center', maxWidth:'1000px', overflow:'hidden' }}>From Idea to <br />Implementation</h2>
+//       </div>
+//       <div style={{ display:'grid', gridTemplateColumns:'1fr 2px 1fr', gap:'0 48px' }}>
+//         <div style={{ display:'flex', flexDirection:'column', gap:'200px' }}>
+//           {steps.filter((_,i)=>i%2===0).map(s=><StepCard key={s.num} step={s} side="left"/>)}
+//         </div>
+//         <div style={{ position:'relative' }}>
+//           <div style={{ height:'600px', position:'absolute', top:'20px', width:'4px', background:'var(--border)', left:'-1px' }} />
+//           <div ref={lineRef} style={{ height:'600px', position:'absolute', top:'20px', left:'-1px', width:'4px', background:'var(--accent)', transformOrigin:'top center' }} />
+//         </div>
+//         <div style={{ display:'flex', flexDirection:'column', paddingTop:'200px', gap:'200px' }}>
+//           {steps.filter((_,i)=>i%2===1).map(s=><StepCard key={s.num} step={s} side="right"/>)}
+//         </div>
+//       </div>
+//     </section>
+//   )
+// }
 
 // ─────────────────────────────────────────────
 // MARQUEE — scroll velocity reactive
@@ -417,40 +423,9 @@ to complex motion systems.</p>
   )
 }
 
-// // ─────────────────────────────────────────────
-// // GALLERY
-// // ─────────────────────────────────────────────
-// function Gallery() {
-//   const ref=useRef(null); const titleRef=useRef(null)
-//   useBottomMaskReveal(titleRef,{yRange:100,rotationRange:0,stagger:0.01,start:'top 90%'})
-//   useGSAP(()=>{ gsap.from('.gallery-item',{scale:0.94,opacity:0,filter:'blur(4px)',duration:0.6,stagger:0.07,ease:'power3.out',scrollTrigger:{trigger:ref.current,start:'top 70%'}}) },{scope:ref})
-//   return (
-//     <section id="gallery" ref={ref} style={{ padding:'80px 48px', maxWidth:'1200px', margin:'0 auto' }}>
-//       <div style={{ marginBottom:'40px' }}>
-//         <SectionLabel>05 — Gallery</SectionLabel>
-//         <h2 ref={titleRef} className="h2" style={{ marginBottom:'8px', overflow:'hidden' }}>Try the Animations</h2>
-//         <p style={{ fontSize:'14px', color:'var(--text-muted)' }}>Hover, click, and explore interactions in real-time.
-// See how they behave before using them.</p>
-//       </div>
-//       <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gridAutoRows:'240px', gap:'10px' }}>
-//         {GALLERY_ITEMS.map((item,i)=>(
-//           <div key={i} className="gallery-item" style={{ gridColumn:item.col||'span 1', gridRow:item.row||'span 1', background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'10px', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'14px 16px', position:'relative', overflow:'hidden', cursor:'pointer', transition:'border-color 0.2s' }}
-//             onMouseEnter={(e)=>e.currentTarget.style.borderColor='var(--border-hover)'}
-//             onMouseLeave={(e)=>e.currentTarget.style.borderColor='var(--border)'}>
-//             <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-60%)', width:'40px', height:'40px', borderRadius:'50%', background:'var(--accent-dim)', border:'1px solid rgba(37,99,255,0.2)' }} />
-//             <div style={{ position:'relative', zIndex:1 }}>
-//               <div style={{ fontSize:'10px', color:'var(--accent)', marginBottom:'3px', fontWeight:'500' }}>{item.tag}</div>
-//               <div style={{ fontSize:'12px', color:'var(--text-muted)', fontWeight:'500' }}>{item.label}</div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </section>
-//   )
-// }
 
 // ─────────────────────────────────────────────
-// WORKS — 3D Card Stack + Interactive Tilt (BALANCED SIZE)
+// WORKS — 3D Card Stack
 // ─────────────────────────────────────────────
 function Works() {
   const ref = useRef(null)
@@ -458,15 +433,17 @@ function Works() {
   const swiperRef = useRef(null)
   
   useBottomMaskReveal(titleRef, { yRange: 100, rotationRange: 0, stagger: 0.01, start: 'top 90%' })
-  
+
   useGSAP(() => {
-    gsap.from('.works-header', { 
-      y: 24, opacity: 0, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: ref.current, start: 'top 80%' }
+    gsap.from('.works-header', {
+      y: 24,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: ref.current, start: 'top 80%' },
     })
   }, { scope: ref })
 
-  // 3D Tilt effect for active card
   const handleCardMouseMove = (e, card) => {
     if (!card) return
     const rect = card.getBoundingClientRect()
@@ -485,7 +462,7 @@ function Works() {
       duration: 0.3,
       ease: 'power2.out',
       transformPerspective: 1000,
-      transformOrigin: 'center center'
+      transformOrigin: 'center center',
     })
   }
 
@@ -496,39 +473,60 @@ function Works() {
       rotationY: 0,
       scale: 1,
       duration: 0.5,
-      ease: 'power3.out'
+      ease: 'power3.out',
     })
   }
 
   return (
     <section ref={ref} style={{ padding: '128px 0', overflow: 'hidden' }}>
-      <div className="works-header" style={{ 
-        display: 'flex', flexDirection: 'column', 
-        justifyContent: 'center', alignItems: 'center', 
-        padding: '0 48px', maxWidth: '1200px', margin: '0 auto 64px' 
-      }}>
+      <div
+        className="works-header"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '0 48px',
+          maxWidth: '1200px',
+          margin: '0 auto 64px',
+        }}
+      >
         <SectionLabel>Built With AnimVault</SectionLabel>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-          <h2 ref={titleRef} className="h2" style={{ overflow: 'hidden' }}>Built with These Animations</h2>
+          <h2 ref={titleRef} className="h2" style={{ overflow: 'hidden' }}>
+            Built with These Animations
+          </h2>
           <p style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>
             Real projects using similar interaction patterns.
           </p>
         </div>
       </div>
 
-      {/* Container: relative untuk nav buttons */}
       <div style={{ position: 'relative', maxWidth: '1400px', margin: '0 auto', padding: '0 100px' }}>
-        
         {/* ← Navigation Button */}
-        <button className="swiper-btn-prev" style={{
-          position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
-          width: '48px', height: '48px', borderRadius: '50%',
-          border: '1px solid var(--border)', background: 'rgba(10,10,10,0.85)',
-          backdropFilter: 'blur(8px)', color: 'var(--text-muted)', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transition: 'all 0.2s ease', zIndex: 50, fontSize: '18px',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.4)'
-        }}
+        <button
+          className="swiper-btn-prev"
+          style={{
+            position: 'absolute',
+            left: '10px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '48px',
+            height: '48px',
+            borderRadius: '50%',
+            border: '1px solid var(--border)',
+            background: 'rgba(10,10,10,0.85)',
+            backdropFilter: 'blur(8px)',
+            color: 'var(--text-muted)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s ease',
+            zIndex: 50,
+            fontSize: '18px',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+          }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = 'var(--accent)'
             e.currentTarget.style.color = 'var(--text)'
@@ -539,18 +537,34 @@ function Works() {
             e.currentTarget.style.color = 'var(--text-muted)'
             e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
           }}
-        >←</button>
+        >
+          ←
+        </button>
 
         {/* → Navigation Button */}
-        <button className="swiper-btn-next" style={{
-          position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
-          width: '48px', height: '48px', borderRadius: '50%',
-          border: '1px solid var(--border)', background: 'rgba(10,10,10,0.85)',
-          backdropFilter: 'blur(8px)', color: 'var(--text-muted)', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transition: 'all 0.2s ease', zIndex: 50, fontSize: '18px',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.4)'
-        }}
+        <button
+          className="swiper-btn-next"
+          style={{
+            position: 'absolute',
+            right: '10px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '48px',
+            height: '48px',
+            borderRadius: '50%',
+            border: '1px solid var(--border)',
+            background: 'rgba(10,10,10,0.85)',
+            backdropFilter: 'blur(8px)',
+            color: 'var(--text-muted)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s ease',
+            zIndex: 50,
+            fontSize: '18px',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+          }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = 'var(--accent)'
             e.currentTarget.style.color = 'var(--text)'
@@ -561,47 +575,38 @@ function Works() {
             e.currentTarget.style.color = 'var(--text-muted)'
             e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
           }}
-        >→</button>
+        >
+          →
+        </button>
 
-        {/* 🔧 CLIPPING WRAPPER + PERSPECTIVE */}
-        <div style={{ 
-          overflow: 'visible',
-          borderRadius: '24px',
-          padding: '60px 0 80px',
-          maxWidth: '100%',
-          position: 'relative',
-        }}>
+        {/* Cards Container */}
+        <div style={{ overflow: 'visible', borderRadius: '24px', padding: '60px 0 80px', maxWidth: '100%', position: 'relative' }}>
           <div style={{ perspective: '2800px', perspectiveOrigin: 'center center' }}>
-            <Swiper 
+            <Swiper
               ref={swiperRef}
-              className="works-swiper" 
+              className="works-swiper"
               modules={[Autoplay, Navigation, Pagination, EffectCoverflow]}
-              effect="coverflow" 
-              centeredSlides 
+              effect="coverflow"
+              centeredSlides
               grabCursor
-              
-              // 🔧 KUNCI: slidesPerView="auto" agar width dari slide style dipakai
               slidesPerView="auto"
-              
-              // 🔧 Breakpoints dengan slidesPerView: 'auto'
-              breakpoints={{ 
-                768: { slidesPerView: 'auto', spaceBetween: -100 }, 
-                1100: { slidesPerView: 'auto', spaceBetween: -120 } 
+              breakpoints={{
+                768: { slidesPerView: 'auto', spaceBetween: -100 },
+                1100: { slidesPerView: 'auto', spaceBetween: -120 },
               }}
-              
               spaceBetween={-120}
-              coverflowEffect={{ 
-                rotate: 0, 
+              coverflowEffect={{
+                rotate: 0,
                 stretch: 0,
-                depth: 320, 
-                modifier: 2.8, 
-                slideShadows: false 
+                depth: 320,
+                modifier: 2.8,
+                slideShadows: false,
               }}
-              autoplay={{ 
-                delay: 4000, 
-                disableOnInteraction: false, 
-                pauseOnMouseEnter: true, 
-                waitForTransition: true 
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+                waitForTransition: true,
               }}
               loop
               observer={true}
@@ -614,124 +619,171 @@ function Works() {
                   const distance = Math.abs(i - swiper.activeIndex)
                   const card = slide.querySelector('.work-card-inner')
                   if (!card) return
-
-                  // 🔧 HIDE CARD DILUAR 5 VIEWPORT (distance > 2)
+                  
                   if (distance > 2) {
-                    gsap.set(card, { 
-                      opacity: 0, 
-                      scale: 0.8, 
-                      filter: 'blur(4px)', 
+                    gsap.set(card, {
+                      opacity: 0,
+                      scale: 0.8,
+                      filter: 'blur(4px)',
                       visibility: 'hidden',
-                      zIndex: 0 
+                      zIndex: 0,
                     })
                     return
                   }
-
-                  // 🔧 SCALE SETTINGS
-                  const ACTIVE_SCALE = 1.02
-                  const INACTIVE_SCALE_DROP = 0.02
-                  const BLUR_PX_PER_STEP = 1.5
+                  
                   const opacity = 1
-                  const scale = distance === 0 ? ACTIVE_SCALE : 1 - (distance * INACTIVE_SCALE_DROP)
-                  const blur = distance * BLUR_PX_PER_STEP
+                  const scale = distance === 0 ? 1.02 : 1 - distance * 0.02
+                  const blur = distance * 1.5
                   const zIndex = 10 - distance
-
-                  gsap.to(card, { 
-                    opacity, 
-                    scale, 
-                    filter: `blur(${blur}px)`, 
+                  
+                  gsap.to(card, {
+                    opacity,
+                    scale,
+                    filter: `blur(${blur}px)`,
                     visibility: 'visible',
                     zIndex,
-                    duration: 0.4, 
-                    ease: 'power2.out' 
+                    duration: 0.4,
+                    ease: 'power2.out',
                   })
                 })
               }}
               style={{ padding: '20px 0 16px', overflow: 'visible' }}
             >
               {WORKS.map((w, i) => (
-                <SwiperSlide 
-                  key={i} 
-                  style={{ 
-                    height: 'auto', 
-                    display: 'flex', 
+                <SwiperSlide
+                  key={i}
+                  style={{
+                    height: 'auto',
+                    display: 'flex',
                     justifyContent: 'center',
-                    // 🔧 WIDTH CARD: Lebih moderate untuk 1920px
-                    width: 'clamp(320px, 24vw, 600px)', // Main Control Card Size
-                    maxWidth: '600px', // BATAS MAKSIMAL LEBAR CARD
-                    flexShrink: 0
+                    width: 'clamp(320px, 24vw, 600px)',
+                    maxWidth: '600px',
+                    flexShrink: 0,
                   }}
                 >
                   {({ isActive }) => (
-                    <div 
+                    <div
                       className="work-card-inner"
                       onMouseMove={(e) => isActive && handleCardMouseMove(e, e.currentTarget)}
                       onMouseLeave={(e) => isActive && handleCardMouseLeave(e.currentTarget)}
-                      style={{ 
+                      style={{
                         width: '100%',
-                        // 🔧 ASPECT RATIO: Lebih balanced (tidak terlalu tinggi)
-                        aspectRatio: '3/4', // Ubah dari 2.5/3.7 (~0.68) ke 3/4 (0.75)
-                        borderRadius: '18px', 
-                        overflow: 'hidden', 
-                        background: 'var(--surface)', 
+                        aspectRatio: '3/4',
+                        borderRadius: '18px',
+                        overflow: 'hidden',
+                        background: 'var(--surface)',
                         border: isActive ? '2px solid var(--accent)' : '1px solid var(--border)',
                         transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
                         transformStyle: 'preserve-3d',
                         willChange: 'transform, filter, opacity',
-                        boxShadow: isActive 
-                          ? '0 20px 60px rgba(37, 99, 235, 0.35), 0 0 0 1px rgba(37, 99, 235, 0.2)' 
+                        boxShadow: isActive
+                          ? '0 20px 60px rgba(37, 99, 235, 0.35), 0 0 0 1px rgba(37, 99, 235, 0.2)'
                           : '0 12px 40px rgba(0, 0, 0, 0.3)',
                         cursor: isActive ? 'default' : 'grab',
                         display: 'flex',
                         flexDirection: 'column',
-                        width: '100%',
                         maxWidth: '600px',
                         maxHeight: '760px',
                       }}
                     >
-                      {/* 🔧 IMAGE SECTION - 60% tinggi card */}
-                      <div style={{ 
-                        position: 'relative', 
-                        overflow: 'hidden', 
-                        background: 'var(--surface-2)',
-                        transform: isActive ? 'translateZ(30px)' : 'translateZ(18px)',
-                        height: 'auto',
-                        flex: '0 0 75%',
-                      }}>
+                      {/* Image Section */}
+                      <div
+                        style={{
+                          position: 'relative',
+                          overflow: 'hidden',
+                          background: 'var(--surface-2)',
+                          transform: isActive ? 'translateZ(30px)' : 'translateZ(18px)',
+                          height: 'auto',
+                          flex: '0 0 75%',
+                        }}
+                      >
                         <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-                          {w.video ? (
-                            <video autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={w.video} />
-                          ) : (
-                            <img src={w.image} alt={w.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease', transform: isActive ? 'scale(1.08)' : 'scale(1)' }} />
-                          )}
+                          <img
+                            src={w.image}
+                            alt={w.title}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                              transition: 'transform 0.5s ease',
+                              transform: isActive ? 'scale(1.08)' : 'scale(1)',
+                            }}
+                          />
                         </div>
                         {isActive && (
-                          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, rgba(37,99,235,0.18) 100%)', pointerEvents: 'none' }} />
+                          <div
+                            style={{
+                              position: 'absolute',
+                              inset: 0,
+                              background: 'linear-gradient(to bottom, transparent 40%, rgba(37,99,235,0.18) 100%)',
+                              pointerEvents: 'none',
+                            }}
+                          />
                         )}
                       </div>
 
-                      {/* 🔧 CONTENT SECTION - 40% sisa */}
-                      <div style={{ 
-                        padding: '16px 18px',
-                        transform: isActive ? 'translateZ(40px)' : 'translateZ(24px)',
-                        background: 'linear-gradient(to bottom, var(--surface) 0%, var(--surface-2) 100%)',
-                        flex: '1 1 auto',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-start',
-                      }}>
-                        <span style={{ fontSize: '9px', color: 'var(--accent)', background: 'var(--accent-dim)', padding: '3px 10px', borderRadius: '8px', fontWeight: '600', display: 'inline-block', marginBottom: '8px' }}>
+                      {/* Content Section */}
+                      <div
+                        style={{
+                          padding: '16px 18px',
+                          transform: isActive ? 'translateZ(40px)' : 'translateZ(24px)',
+                          background: 'linear-gradient(to bottom, var(--surface) 0%, var(--surface-2) 100%)',
+                          flex: '1 1 auto',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'flex-start',
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: '9px',
+                            color: 'var(--accent)',
+                            background: 'var(--accent-dim)',
+                            padding: '3px 10px',
+                            borderRadius: '8px',
+                            fontWeight: '600',
+                            display: 'inline-block',
+                            marginBottom: '8px',
+                          }}
+                        >
                           {w.tag}
                         </span>
-                        <h3 className="h4" style={{ marginBottom: '6px', color: isActive ? 'var(--text)' : 'var(--text-muted)', fontSize: '15px', lineHeight: '1.3' }}>
+                        <h3
+                          className="h4"
+                          style={{
+                            marginBottom: '6px',
+                            color: isActive ? 'var(--text)' : 'var(--text-muted)',
+                            fontSize: '15px',
+                            lineHeight: '1.3',
+                          }}
+                        >
                           {w.title}
                         </h3>
-                        <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.5', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        <p
+                          style={{
+                            fontSize: '11px',
+                            color: 'var(--text-muted)',
+                            lineHeight: '1.5',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                          }}
+                        >
                           {w.desc}
                         </p>
                       </div>
 
-                      <div style={{ position: 'absolute', inset: 0, borderRadius: '18px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.25)', pointerEvents: 'none' }} />
+                      {/* Edge highlight */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '18px',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.25)',
+                          pointerEvents: 'none',
+                        }}
+                      />
                     </div>
                   )}
                 </SwiperSlide>
@@ -740,29 +792,52 @@ function Works() {
           </div>
         </div>
 
-        {/* Pagination Dots */}
-        <div className="works-pagination" style={{ display: 'flex', justifyContent: 'center', gap: '6px', alignItems: 'center', marginTop: '24px' }} />
+        {/* Pagination */}
+        <div
+          className="works-pagination"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '6px',
+            alignItems: 'center',
+            marginTop: '24px',
+          }}
+        />
       </div>
 
       <style>{`
         .works-swiper .swiper-slide {
           transition: filter 0.5s ease, opacity 0.5s ease, transform 0.5s ease !important;
-          display: flex !important; justify-content: center !important;
+          display: flex !important;
+          justify-content: center !important;
         }
-        .works-swiper .swiper-slide-active { z-index: 10 !important; }
-        
+        .works-swiper .swiper-slide-active {
+          z-index: 10 !important;
+        }
         .works-pagination .swiper-pagination-bullet {
-          width: 8px; height: 8px; border-radius: 50%;
-          background: var(--border-hover); opacity: 0.4;
-          cursor: pointer; transition: all 0.3s ease; margin: 0 4px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: var(--border-hover);
+          opacity: 0.4;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin: 0 4px;
         }
         .works-pagination .swiper-pagination-bullet-active {
-          background: var(--accent); width: 28px; border-radius: 4px; opacity: 1;
+          background: var(--accent);
+          width: 28px;
+          border-radius: 4px;
+          opacity: 1;
         }
-        
         .work-card-inner {
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
+        }
+        @media (max-width: 768px) {
+          .works-header {
+            padding: 0 24px !important;
+          }
         }
       `}</style>
     </section>
@@ -934,11 +1009,10 @@ export default function HomePage() {
       <main style={{ overflowX:'hidden' }}>
         <Hero />
         <VideoSection />
-        <Introduction />
+        <IntroductionCinematic />
         <Marquee />
-        <CollectionCards />
-        {/* <Gallery /> */}
         <AnimationPlayground />
+        <CollectionCards />
         <Works />
 
         {/* 06 — Inspiration */}
@@ -965,6 +1039,7 @@ export default function HomePage() {
           searchPlaceholder="Search articles…"
         />
 
+        {/* <CTASection /> */}
         <CTA />
         <Footer />
       </main>
