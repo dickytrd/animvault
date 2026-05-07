@@ -424,7 +424,7 @@ export function AnimationPlayground() {
 
       {/* ── Control Bar ── */}
       <div style={{ 
-        margin: '0 48px 0',
+        margin: '0 48px 16px',
         padding: '18px 28px',
         background: 'var(--surface)',
         border: '1px solid var(--border)',
@@ -545,7 +545,7 @@ export function AnimationPlayground() {
         </div>
 
         {/* Right: Actions */}
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ width: '259.53px', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
           <button 
             onClick={shuffle} 
             disabled={state === 'animating'}
@@ -605,7 +605,7 @@ export function AnimationPlayground() {
         {state === 'animating' && (
           <div style={{
             position: 'absolute',
-            bottom: '-36px',
+            bottom: '-58px',
             right: '28px',
             display: 'flex',
             alignItems: 'center',
@@ -616,6 +616,7 @@ export function AnimationPlayground() {
             borderRadius: '20px',
             boxShadow: '0 4px 12px rgba(37, 99, 255, 0.15)',
             animation: 'indicatorSlide 0.3s ease-out',
+            zIndex: '10' 
           }}>
             <span style={{ 
               width: '6px', 

@@ -9,9 +9,9 @@ import { ClickBurstCursor } from '@/components/effects/ClickBurstCursor'
 export const metadata = {
   title: 'AnimVault - Curated Animations Site',
   description: 'Curated collection of heading reveal animations built with GSAP.',
-  // icons: {
-  //   icon: '/Public/favicon.svg',
-  // },
+  icons: {
+    icon: '/icon.svg',
+  },
 }
 
 export default function RootLayout({ children }) {

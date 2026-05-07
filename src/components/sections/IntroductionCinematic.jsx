@@ -142,7 +142,7 @@ export function IntroductionCinematic() {
     // PHASE 3: Heading Exit (30% - 40%)
     tl.to([line1, line2], {
       y: -600, opacity: 1, filter: 'blur(6px)',
-      duration: 10,
+      duration: 15,
       ease: 'power2.in',
     }, 15)
 
@@ -153,7 +153,7 @@ export function IntroductionCinematic() {
     // User Scroll -> Card 1 Muncul
     tl.to(cards[0], {
       y: 0, rotation: 0, scale: 1, opacity: 1, filter: 'blur(0px)',
-      duration: 15,
+      duration: 20,
       ease: 'power3.out',
     }, 25)
 
@@ -165,7 +165,7 @@ export function IntroductionCinematic() {
     // User Scroll -> Card 2 Muncul
     tl.to(cards[1], {
       y: 0, rotation: 0, scale: 1, opacity: 1, filter: 'blur(0px)',
-      duration: 15,
+      duration: 20,
       ease: 'power3.out',
     }, 40)
 
@@ -177,7 +177,7 @@ export function IntroductionCinematic() {
     // User Scroll -> Card 3 Muncul
     tl.to(cards[2], {
       y: 0, rotation: 0, scale: 1, opacity: 1, filter: 'blur(0px)',
-      duration: 15,
+      duration: 20,
       ease: 'power3.out',
     }, 55)
 
@@ -187,22 +187,22 @@ export function IntroductionCinematic() {
     // PHASE 11: Cards Exit (Staggered) (90% - 100%+)
     // Exit juga dibuat bertahap (1 -> 2 -> 3)
     tl.to(cards[0], {
-      y: -600, rotation: -5, opacity: 1, filter: 'blur(8px)',
-      duration: 10,
-      ease: 'power2.in',
+      y: -700, rotation: -5, opacity: 1, filter: 'blur(8px)',
+      duration: 25,
+      ease: 'back.inOut(2)',
     }, 80)
 
     tl.to(cards[1], {
-      y: -600, rotation: -5, opacity: 1, filter: 'blur(8px)',
-      duration: 10,
-      ease: 'power2.in',
-    }, 85) // Delay 3 units
+      y: -700, rotation: -5, opacity: 1, filter: 'blur(8px)',
+      duration: 25,
+      ease: 'back.inOut(2)',
+    }, 90) // Delay 3 units
 
     tl.to(cards[2], {
-      y: -600, rotation: -5, opacity: 1, filter: 'blur(8px)',
-      duration: 10,
-      ease: 'power2.in',
-    }, 90) // Delay 3 units
+      y: -700, rotation: -5, opacity: 1, filter: 'blur(8px)',
+      duration: 25,
+      ease: 'back.inOut(2)',
+    }, 100) // Delay 3 units
 
     return () => {
       split1.revert()
@@ -217,8 +217,10 @@ export function IntroductionCinematic() {
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '100vh',
-        overflow: 'hidden',
+        minHeight: '70vh',
+        height: '70vh',
+        overflow: 'visible',
+        paddingTop:'30vh',
         background: 'var(--bg)',
         display: 'flex',
         alignItems: 'center',

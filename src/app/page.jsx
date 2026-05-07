@@ -19,8 +19,9 @@ import 'swiper/css/effect-coverflow'
 import { WORKS }                                from '@/data/works.data'
 import { INSIGHTS, INSIGHTS_FILTERS, INSIGHTS_INITIAL_SHOW } from '@/data/insights.data'
 import { INSPIRATION, INSP_FILTERS, INSP_INITIAL_SHOW }      from '@/data/inspiration.data'
-import { AnimationPlayground } from '@/components/playground/AnimationPlayground'
+import { AnimationPlayground } from '@/components/sections/AnimationPlayground'
 import { IntroductionCinematic } from '@/components/sections/IntroductionCinematic'
+import { CTADraggable }          from '@/components/sections/CTADraggable'
 // import { CTASection } from '@/components/sections/CTASection'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
@@ -363,7 +364,7 @@ function Marquee() {
   }, [])
 
   return (
-    <section style={{ height: '40svh', padding:'128px 0', overflow:'hidden', background:'var(--bg)' }}>
+    <section style={{ height: '100%', paddingBottom:"128px", overflow:'hidden', background:'var(--bg)' }}>
       <div className="marquee-track" ref={trackRef} style={{ display:'flex', alignItems:'center', willChange:'transform' }}>
         {items.map((word,i)=>(
           <span key={i} style={{ display:'inline-flex', alignItems:'center', flexShrink:0 }}>
@@ -394,7 +395,7 @@ function CollectionCards() {
 
   return (
     <section id="collection" ref={ref} style={{ padding:'80px 48px', maxWidth:'1200px', margin:'0 auto' }}>
-      <div style={{ marginBottom:'48px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:'48px' }}>
         <SectionLabel>04 — Collection</SectionLabel>
         <h2 ref={titleRef} className="h2" style={{ marginBottom:'8px', overflow:'hidden' }}>Browse by Interaction Type</h2>
         <p style={{ fontSize:'14px', color:'var(--text-muted)' }}>Find the exact animation you need — from subtle micro-interactions
@@ -488,7 +489,7 @@ function Works() {
           alignItems: 'center',
           padding: '0 48px',
           maxWidth: '1200px',
-          margin: '0 auto 64px',
+          margin: '0 auto 16px',
         }}
       >
         <SectionLabel>Built With AnimVault</SectionLabel>
@@ -1040,7 +1041,8 @@ export default function HomePage() {
         />
 
         {/* <CTASection /> */}
-        <CTA />
+        {/* <CTA /> */}
+        <CTADraggable />
         <Footer />
       </main>
     </>
