@@ -433,7 +433,7 @@ export function CTADraggable() {
       ))}
 
       {/* ── CTA CONTENT ── */}
-      <div style={{ position: 'relative', zIndex: 20, maxWidth: '760px' }}>
+      <div style={{ position: 'relative', zIndex: 20, maxWidth: '800px' }}>
         <p style={{
           fontSize:'11px', 
           fontWeight:'500', 
@@ -462,7 +462,7 @@ export function CTADraggable() {
             fontSize:'16px', 
             color:'var(--text-muted)', 
             lineHeight:'1.7',
-            maxWidth:'440px', 
+            maxWidth:'500px', 
             margin:'0 auto 40px',
           }}
         >

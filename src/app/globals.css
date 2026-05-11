@@ -45,6 +45,7 @@ body {
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
+  transition: none
 }
 
 /* ─── Custom Scrollbar ───────────────────────────────────── */
@@ -52,6 +53,8 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+
+
 
 /* ─── Custom Range Slider ────────────────────────────────── */
 .custom-range {
@@ -137,7 +140,7 @@ body {
  
 /* Base heading reset */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  font-weight: 900;
   color: var(--text);
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -208,6 +211,10 @@ html.lenis, html.lenis body {
 }
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
+  background: var(--bg);
+}
+.lenis {
+  background: var(--bg);
 }
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
@@ -410,4 +417,56 @@ body.loading {
 /* Tapi instant saat pakai lenis-prevent */
 [data-lenis-prevent] {
   scroll-behavior: auto;
+}
+
+/* ─── Light Section Theme ────────────────────────────────────── */
+/*
+  Apply className="light-section" to any section wrapper to
+  automatically flip all CSS design tokens to a light palette.
+  Every component using var(--text), var(--surface), etc. adapts
+  automatically without any inline style changes.
+*/
+.light-section {
+  --bg:           #f4f3f0;
+  --surface:      #ffffff;
+  --surface-2:    #ebebea;
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.16);
+  --text:         #0a0a0a;
+  --text-muted:   rgba(0, 0, 0, 0.55);
+  --text-subtle:  rgba(0, 0, 0, 0.35);
+  --accent:       #2563ff;
+  --accent-dim:   rgba(37, 99, 255, 0.10);
+  background-color: var(--bg);
+  color: var(--text);
+}
+ 
+/* ─── Section Transition Gradient ───────────────────────────── */
+.section-transition-to-light {
+  height: 180px;
+  background: linear-gradient(to bottom, #0a0a0a 0%, #f4f3f0 100%);
+  display: block;
+  pointer-events: none;
+}
+.section-transition-to-dark {
+  height: 180px;
+  background: linear-gradient(to bottom, #f4f3f0 0%, #0a0a0a 100%);
+  display: block;
+  pointer-events: none;
+}
+
+/* ─── Marquee section borders — themeable ────────────────────── */
+#section-marquee {
+  /* border-top:    1px solid var(--border);
+  border-bottom: 1px solid var(--border); */
+}
+
+/* ─── Smooth atmosphere transitions ─────────────────────────── */
+body {
+  transition: background-color 0.05s linear;
+}
+
+/* Remove hard-coded backgrounds dari sections biar body bg keliatan */
+.section-transparent {
+  background: transparent !important;
 }

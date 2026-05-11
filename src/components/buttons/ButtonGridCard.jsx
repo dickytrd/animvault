@@ -20,6 +20,8 @@ import { QuantumFluxBtn } from '@/components/buttons/QuantumFluxBtn'
 import { HoloDecodeBtn } from '@/components/buttons/HoloDecodeBtn'
 import { DataStreamBtn } from '@/components/buttons/DataStreamBtn'
 import { CyberSliceBtn } from '@/components/buttons/CyberSliceBtn'
+import { LiquidWaveBtn } from '@/components/buttons/LiquidWaveBtn'
+import { GooeySplitBtn } from '@/components/buttons/GooeySplitBtn'
 
 const REGISTRY = { 
   FillSlideBtn, 
@@ -37,6 +39,8 @@ const REGISTRY = {
   HoloDecodeBtn,
   DataStreamBtn,
   CyberSliceBtn,
+  LiquidWaveBtn,
+  GooeySplitBtn,
  }
 
 const INTERACTION_HINT = {
@@ -55,6 +59,8 @@ const INTERACTION_HINT = {
   HoloDecodeBtn:  'Hover to decode',
   DataStreamBtn:  'Hover to converge',
   CyberSliceBtn:  'Hover to slice',
+  LiquidWaveBtn:   'Hover to morph',
+  GooeySplitBtn:   'Hover to split',
 }
 
 export function ButtonGridCard({ config }) {

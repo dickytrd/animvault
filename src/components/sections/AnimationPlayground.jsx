@@ -399,7 +399,8 @@ export function AnimationPlayground() {
   return (
     <section style={{ 
       padding: '120px 0 80px', 
-      maxWidth: '1400px', 
+      width: '100vw',
+      maxWidth: '1920px', 
       margin: '0 auto',
     }}>
       {/* ── Header ── */}
@@ -669,7 +670,7 @@ export function AnimationPlayground() {
         {/* Stage Body */}
         <div style={{ 
           flex: 1, 
-          padding: '80px 60px', 
+          padding: '60px 60px', 
           display: 'flex', 
           flexDirection: 'column', 
           gap: '48px', 
@@ -736,6 +737,7 @@ export function AnimationPlayground() {
           {/* Button Section */}
           <div style={{
             display:        'flex',
+            flexDirection: 'column',
             alignItems:     'center',
             justifyContent: 'center',
             gap:            '20px',

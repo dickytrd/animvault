@@ -1006,6 +1006,220 @@ gsap.from(split.chars, {
 
 // Note: Call split.revert() on unmount`,
 
+// ─── 31. Aurora Shimmer — Gradient ───────────────────────
+'aurora-shimmer': (c) =>
+`import gsap from 'gsap'
+
+// Aurora Shimmer: Gradient wave sweeps across text.
+// Uses background-clip: text for a luminous reveal.
+
+const element = document.querySelector('.heading')
+
+// 1. Set initial shimmer state
+gsap.set(element, {
+  backgroundImage: 'linear-gradient(${c.angle}deg, transparent 0%, ${c.shimmerColor} 50%, transparent 100%)',
+  backgroundSize: '${c.width}% 100%',
+  backgroundPosition: '-${c.width}% 0',
+  backgroundClip: 'text',
+  webkitBackgroundClip: 'text',
+  color: 'transparent',
+})
+
+// 2. Animate the sweep
+gsap.to(element, {
+  backgroundPositionX: '100%',
+  duration: ${c.duration},
+  ease: '${c.ease}',
+})
+
+// Note: After animation, text remains gradient-colored.
+// To revert to solid, run: gsap.set(element, { color: '#fff', backgroundImage: 'none' })`,
+
+// ─── 32. Gradient Shift — Shimmer to Solid ───────────────
+'gradient-shift': (c) =>
+`import gsap from 'gsap'
+
+// Gradient Shift: Pure shimmer sweep that resolves to solid color.
+// No scaling, no popping. Just smooth transition.
+
+const element = document.querySelector('.heading')
+
+gsap.set(element, {
+  color: 'transparent',
+  backgroundImage: 'linear-gradient(${c.angle}deg, transparent 0%, ${c.shimmerColor} 40%, transparent 100%)',
+  backgroundSize: '${c.width}% 100%',
+  backgroundPosition: '-100% 0',
+  backgroundClip: 'text',
+  webkitBackgroundClip: 'text'
+})
+
+const tl = gsap.timeline()
+
+// Move shimmer across the text
+tl.to(element, {
+  backgroundPosition: '200% 0',
+  duration: ${c.duration} * 0.8,
+  ease: '${c.ease}'
+})
+
+// Simultaneously fill with solid color
+tl.to(element, {
+  color: '${c.finalColor}',
+  duration: ${c.duration} * 0.6,
+  ease: '${c.ease}'
+}, '<+=0.1') // Start shortly after sweep begins
+
+// Clean up gradient after animation
+tl.call(() => {
+  gsap.set(element, {
+    backgroundImage: 'none',
+    backgroundClip: 'border-box'
+  })
+})`,
+
+// ─── 33. Vertical Liquid — Fill ──────────────────────────
+'vertical-liquid': (c) =>
+`import gsap from 'gsap'
+
+// Vertical Liquid Fill: Text fills from bottom to top with gradient.
+// Like liquid rising in a container.
+
+const element = document.querySelector('.heading')
+
+gsap.set(element, {
+  backgroundImage: 'linear-gradient(to top, ${c.colorBottom}, ${c.colorTop})',
+  backgroundSize: '100% 0%',
+  backgroundPosition: 'center bottom',
+  backgroundClip: 'text',
+  webkitBackgroundClip: 'text',
+  color: 'transparent',
+  webkitTextFillColor: 'transparent'
+})
+
+gsap.to(element, {
+  backgroundSize: '100% 100%',
+  duration: ${c.duration},
+  ease: '${c.ease}',
+  onComplete: () => {
+    // Clean up gradient and set final color
+    gsap.set(element, {
+      backgroundImage: 'none',
+      backgroundClip: 'border-box',
+      color: '${c.colorTop}',
+      webkitTextFillColor: '${c.colorTop}'
+    })
+  }
+})`,
+
+// ─── 34. Gradient Depth — Bloom ───────────────────────────
+'gradient-depth': (c) =>
+`import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
+// Gradient Depth: Characters bloom from blur into focus.
+// Uses background-clip: text for the gradient.
+
+const element = document.querySelector('.heading')
+const split = new SplitText(element, { type: 'chars' })
+
+// Apply Gradient to Characters
+split.chars.forEach(char => {
+  char.style.display = 'inline-block'
+  char.style.color = 'transparent'
+  char.style.webkitTextFillColor = 'transparent'
+  char.style.backgroundImage = 'linear-gradient(135deg, ${c.colorStart}, ${c.colorEnd})'
+  char.style.backgroundClip = 'text'
+  char.style.webkitBackgroundClip = 'text'
+})
+
+// Animate Bloom Effect (Blur -> Focus)
+gsap.fromTo(split.chars, {
+  y: ${c.depthY},
+  scale: ${c.scaleFrom},
+  opacity: 0,
+  filter: 'blur(${c.blurAmount}px)', // The Bloom
+  rotation: () => (Math.random() - 0.5) * 15
+}, {
+  y: 0,
+  scale: 1,
+  opacity: 1,
+  filter: 'blur(0px)', // Snap to Focus
+  rotation: 0,
+  duration: ${c.duration} * 0.8,
+  stagger: { each: ${c.stagger}, from: 'start' },
+  ease: 'expo.out'
+})
+
+split.revert() // Call on unmount`,
+
+// ─── 35. Word Gradient Shift — Depth to Solid ────────────
+'word-gradient-shift': (c) =>
+`import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+gsap.registerPlugin(SplitText)
+
+// Word Gradient Shift: Cinematic bloom + dynamic gradient → solid finish.
+// Each word reveals with blur, scale, and a horizontally shifting gradient.
+
+const element = document.querySelector('.heading')
+const split = new SplitText(element, { type: 'words' })
+
+// Setup dynamic gradient on each word
+split.words.forEach(word => {
+  word.style.display = 'inline-block'
+  word.style.backgroundImage = 'linear-gradient(90deg, ${c.colorStart}, ${c.colorEnd}, ${c.colorStart})'
+  word.style.backgroundSize = '200% 100%'
+  word.style.backgroundPosition = '0% 0%'
+  word.style.backgroundClip = 'text'
+  word.style.webkitBackgroundClip = 'text'
+  word.style.color = 'transparent'
+  word.style.webkitTextFillColor = 'transparent'
+})
+
+const tl = gsap.timeline()
+
+// Phase 1: Reveal with blur + gradient shift
+tl.fromTo(split.words, {
+  y: 40,
+  scale: 0.92,
+  opacity: 0,
+  filter: 'blur(${c.blurAmount}px)',
+  backgroundPosition: '0% 0%'
+}, {
+  y: 0,
+  scale: 1,
+  opacity: 1,
+  filter: 'blur(0px)',
+  backgroundPosition: '100% 0%',
+  duration: ${c.duration} * 0.75,
+  stagger: { each: ${c.stagger}, from: 'start' },
+  ease: '${c.ease}'
+})
+
+// Phase 2: Resolve to solid color
+tl.to(split.words, {
+  color: '${c.finalColor}',
+  webkitTextFillColor: '${c.finalColor}',
+  duration: ${c.duration} * 0.4,
+  ease: 'power2.inOut'
+}, '-=0.2')
+
+// Cleanup
+tl.call(() => {
+  requestAnimationFrame(() => {
+    split.words.forEach(w => {
+      w.style.backgroundImage = 'none'
+      w.style.backgroundClip = 'border-box'
+      w.style.webkitBackgroundClip = 'border-box'
+    })
+  })
+})
+
+split.revert() // Call on unmount`,
+
 }
 
 export function useCodeGenerator(animationId, controls) {

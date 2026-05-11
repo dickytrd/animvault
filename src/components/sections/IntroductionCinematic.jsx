@@ -88,8 +88,8 @@ export function IntroductionCinematic() {
         
         gsap.set(inner, { 
           y: 120 + Math.random() * 80, 
-          rotation: (Math.random() - 0.5) * 20, 
-          scale: 0.6, 
+          // rotation: (Math.random() - 0.5) * 20, 
+          scale: 1, 
           opacity: 0, 
           filter: 'blur(8px)', 
           transformOrigin: 'center center' 
@@ -117,16 +117,36 @@ export function IntroductionCinematic() {
     // ── Timeline Configuration ──
     // Total Duration: 100 Units (Normalized)
     // Scroll Distance: 600% (Sangat panjang untuk efek "Step-by-Step")
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: '+=400%', // <-- DIPERPANJANG AGAR STEP TERASA
-        pin: true,
-        scrub: 0.8,    // Smooth catch-up
-        anticipatePin: 1,
-      },
-    })
+   const tl = gsap.timeline({
+  scrollTrigger: {
+    trigger: sectionRef.current,
+    start: 'top top',
+    end: '+=400%',
+    pin: true,
+    scrub: 0.8,
+    anticipatePin: 1,
+    // // ── Atmosphere contribution ──────────────────────────────
+    // // Cards exit starts at tl position 80 / total ~140 ≈ 57%
+    // // Contributes 0 → 0.4 during exit phase, before Marquee takes over
+    // onUpdate: (self) => {
+    //   const exitStart    = 0.57
+    //   const contribution = Math.max(0, (self.progress - exitStart) / (1 - exitStart)) * 0.4
+    //   window.__introAtmosContrib = contribution
+    //   const current = window.__atmosphereTarget ?? 0
+    //   if (contribution > current) {
+    //     window.__atmosphereTarget = contribution
+    //   }
+    // },
+    // onLeave: () => {
+    //   window.__introAtmosContrib  = 0.4
+    //   window.__atmosphereTarget   = 0.4
+    // },
+    // onLeaveBack: () => {
+    //   window.__introAtmosContrib  = 0
+    //   window.__atmosphereTarget   = 0
+    // },
+  },
+})
 
     // PHASE 1: Heading Reveal (0% - 20%)
     tl.to(allInners, {
@@ -200,7 +220,7 @@ export function IntroductionCinematic() {
 
     tl.to(cards[2], {
       y: -700, rotation: -5, opacity: 1, filter: 'blur(8px)',
-      duration: 25,
+      duration: 40,
       ease: 'back.inOut(2)',
     }, 100) // Delay 3 units
 
@@ -217,10 +237,10 @@ export function IntroductionCinematic() {
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '70vh',
-        height: '70vh',
+        minHeight: '100vh',
+        height: '100vh',
         overflow: 'visible',
-        paddingTop:'30vh',
+        paddingTop:'0',
         background: 'var(--bg)',
         display: 'flex',
         alignItems: 'center',
@@ -231,8 +251,8 @@ export function IntroductionCinematic() {
         ref={wrapperRef}
         style={{
           position: 'relative',
-          width: '100%',
-          maxWidth: '1200px',
+          width: '100vw',
+          maxWidth: '1920px',
           margin: '0 auto',
           padding: '0 48px',
           display: 'flex',
@@ -259,7 +279,7 @@ export function IntroductionCinematic() {
             ref={line1Ref}
             className="h1"
             style={{
-              fontWeight: '700',
+              fontWeight: '900',
               letterSpacing: '-0.03em',
               lineHeight: '1.05',
               color: 'var(--text)',
@@ -273,7 +293,7 @@ export function IntroductionCinematic() {
             ref={line2Ref}
             className="h1"
             style={{
-              fontWeight: '700',
+              fontWeight: '900',
               letterSpacing: '-0.03em',
               lineHeight: '1.05',
               color: 'var(--text)',

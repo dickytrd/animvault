@@ -620,6 +620,74 @@ btn.addEventListener('mouseleave', () => {
   gsap.to(btn, { borderColor: 'var(--border)', boxShadow: '0 0 0px transparent', duration: ${c.speed} })
 })`,
 
+  // ─── 16. Liquid Wave ────────────────────────────────────
+  'btn-liquid-wave': (c) =>
+`import gsap from 'gsap'
+
+// Liquid Wave — Morphing shape + sliding wave on hover
+const btn  = document.querySelector('.btn')
+const wave = btn.querySelector('.wave')
+const text = btn.querySelector('.text')
+
+const morphStates = [
+  '60% 40% 30% 70% / 60% 30% 70% 40%',
+  '40% 60% 70% 30% / 40% 70% 30% 60%',
+  '70% 30% 50% 50% / 30% 50% 70% 50%',
+  '50% 50% 40% 60% / 60% 40% 60% 40%',
+  '60% 40% 30% 70% / 60% 30% 70% 40%'
+]
+
+let tl = gsap.timeline({ repeat: -1, paused: true })
+  .to(btn, { borderRadius: morphStates[1], duration: 0.8 })
+  .to(text, { y: -4, duration: 0.8 }, '<')
+  .to(wave, { x: '0%', duration: 0.8 }, '<')
+  .to(btn, { borderRadius: morphStates[2], duration: 0.8 })
+  .to(text, { y: 4, duration: 0.8 }, '<')
+  .to(wave, { x: '50%', duration: 0.8 }, '<')
+  .to(btn, { borderRadius: morphStates[3], duration: 0.8 })
+  .to(text, { y: -2, duration: 0.8 }, '<')
+  .to(wave, { x: '100%', duration: 0.8 }, '<')
+  .to(btn, { borderRadius: morphStates[4], duration: 0.8 })
+  .to(text, { y: 0, duration: 0.8 }, '<')
+
+btn.addEventListener('mouseenter', () => tl.play())
+btn.addEventListener('mouseleave', () => {
+  tl.pause()
+  gsap.to([btn, text, wave], { borderRadius: '9999px', y: 0, x: '-100%', duration: 0.4, ease: 'power2.out' })
+})`,
+
+   // ── 17. Gooey Split ────────────────────────────────────
+  'btn-gooey-split': (c) =>
+`import gsap from 'gsap'
+
+// Gooey Split — Button splits with liquid effect
+const container = document.querySelector('.btn-container')
+const main = container.querySelector('.main-btn')
+const arrow = container.querySelector('.arrow-btn')
+const textOld = main.querySelector('.text-old')
+const textNew = main.querySelector('.text-new')
+
+// Initial state
+gsap.set(arrow, { x: ${c.width} - ${c.height}/2, scale: 1, opacity: 1 })
+gsap.set(textNew, { y: '100%' })
+gsap.set(textOld, { y: '0%' })
+
+container.addEventListener('mouseenter', () => {
+  const tl = gsap.timeline()
+    .to(textOld, { y: '-100%', duration: 0.3, ease: 'power2.inOut' })
+    .to(textNew, { y: '0%', duration: 0.3, ease: 'power2.inOut' }, '<')
+    .to(main, { width: ${c.width} * 0.7, duration: 0.5, ease: 'power2.inOut' }, '-=0.2')
+    .to(arrow, { x: ${c.width} + 1, duration: 0.6, ease: 'elastic.out(1, 0.5)' }, '-=0.4')
+})
+
+container.addEventListener('mouseleave', () => {
+  const tl = gsap.timeline()
+    .to(arrow, { x: ${c.width} - ${c.height}/2, duration: 0.4, ease: 'power2.inOut' })
+    .to(main, { width: ${c.width}, duration: 0.4, ease: 'power2.inOut' }, '-=0.3')
+    .to(textNew, { y: '100%', duration: 0.3, ease: 'power2.inOut' }, '-=0.3')
+    .to(textOld, { y: '0%', duration: 0.3, ease: 'power2.inOut' }, '<')
+})`,
+
 }
 
 export function useButtonCodeGenerator(animationId, controls) {

@@ -381,4 +381,79 @@ export const buttonsAnimations = [
     ],
   },
 
+    // ─── 16 ─────────────────────────────────────────────────
+  {
+    id: 'btn-liquid-wave',
+    label: 'Liquid Wave',
+    description: 'One-shot hover animation. Button morphs organically while a wave slides across.',
+    animationKey: 'LiquidWaveBtn',
+    label_button: 'View more',
+    controls: [
+      {
+        id: 'bgColor',
+        label: 'Background Color',
+        type: 'select',
+        options: ['#003845', '#1a1a2e', '#0f172a', '#1e293b'],
+        default: '#003845',
+      },
+      {
+        id: 'waveColor',
+        label: 'Wave Color',
+        type: 'select',
+        options: ['#39FF14', '#00f5ff', '#ff00aa', '#ffaa00'],
+        default: '#39FF14',
+      },
+      {
+        id: 'width',
+        label: 'Button Width',
+        type: 'slider',
+        min: 160,
+        max: 280,
+        step: 10,
+        default: 220,
+        unit: 'px',
+      },
+    ],
+  },
+
+    // ─── 17 ─────────────────────────────────────────────────
+  {
+    id: 'btn-gooey-split',
+    label: 'Gooey Split',
+    description: 'Button splits into two with gooey liquid effect. Text slides with mask animation.',
+    animationKey: 'GooeySplitBtn',
+    label_button: 'Hover Me',
+    controls: [
+      {
+        id: 'color',
+        label: 'Button Color',
+        type: 'select',
+        options: ['#34495e', '#2c3e50', '#8e44ad', '#c0392b', '#16a085'],
+        default: '#34495e',
+      },
+      {
+        id: 'width',
+        label: 'Button Width',
+        type: 'slider',
+        min: 140,
+        max: 200,
+        step: 10,
+        default: 160,
+        unit: 'px',
+      },
+      {
+        id: 'height',
+        label: 'Button Height',
+        type: 'slider',
+        min: 45,
+        max: 65,
+        step: 5,
+        default: 54,
+        unit: 'px',
+      },
+    ],
+  },
+
+  
+
 ]

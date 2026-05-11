@@ -1658,4 +1658,260 @@ export const headingRevealAnimations = [
     ],
   },
 
+  // ─── 31 ───────────────────────────────────────────────────
+  {
+    id: 'aurora-shimmer',
+    label: 'Aurora Shimmer — Gradient',
+    description: 'A luminous gradient wave sweeps across the text. Modern, high-tech reveal.',
+    animationKey: 'AuroraShimmer',
+    defaultText: 'AURORA SHIMMER EFFECT',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5,
+        max: 3,
+        step: 0.1,
+        default: 1.2,
+        unit: 's',
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['power2.inOut', 'sine.inOut', 'expo.inOut', 'linear'],
+        default: 'power2.inOut',
+      },
+      {
+        id: 'shimmerColor',
+        label: 'Shimmer Color',
+        type: 'text',
+        default: '#38bdf8',
+        unit: '',
+        placeholder: 'Hex color (e.g. #38bdf8)',
+      },
+      {
+        id: 'angle',
+        label: 'Angle',
+        type: 'slider',
+        min: 0,
+        max: 180,
+        step: 5,
+        default: 90,
+        unit: 'deg',
+      },
+      {
+        id: 'width',
+        label: 'Shimmer Width',
+        type: 'slider',
+        min: 100,
+        max: 300,
+        step: 10,
+        default: 200,
+        unit: '%',
+      },
+    ],
+  },
+
+  // ─── 32 ──────────────────────────────────────────────────
+  {
+    id: 'gradient-shift',
+    label: 'Gradient Shift — Shimmer to Solid',
+    description: 'A gradient shimmer sweeps across text, smoothly leaving solid color behind.',
+    animationKey: 'GradientShiftReveal',
+    defaultText: 'GRADIENT SHIFT REVEAL',
+    defaultSubtext: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5, max: 2.5, step: 0.1, default: 1.2, unit: 's'
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['power2.inOut', 'expo.inOut', 'sine.inOut'],
+        default: 'power2.inOut' // inOut creates a nice smooth flow
+      },
+      {
+        id: 'shimmerColor',
+        label: 'Shimmer Color',
+        type: 'text',
+        default: '#38bdf8', unit: '', placeholder: '#38bdf8'
+      },
+      {
+        id: 'finalColor',
+        label: 'Final Color',
+        type: 'text',
+        default: '#ffffff', unit: '', placeholder: '#ffffff'
+      },
+      {
+        id: 'angle',
+        label: 'Angle',
+        type: 'slider',
+        min: 0, max: 180, step: 5, default: 90, unit: 'deg'
+      },
+      {
+        id: 'width',
+        label: 'Shimmer Width',
+        type: 'slider',
+        min: 100, max: 300, step: 10, default: 200, unit: '%'
+      }
+    ]
+  },
+
+  // ─── 33 ──────────────────────────────────────────────────
+  {
+    id: 'vertical-liquid',
+    label: 'Vertical Liquid — Fill',
+    description: 'Text fills from bottom to top with gradient like liquid rising. Satisfying & premium.',
+    animationKey: 'VerticalLiquidFill',
+    defaultText: 'LIQUID FILL EFFECT',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5, max: 2.5, step: 0.1, default: 1.2, unit: 's'
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['expo.out', 'power3.out', 'back.out(1.2)', 'elastic.out(1, 0.8)'],
+        default: 'expo.out'
+      },
+      {
+        id: 'colorBottom',
+        label: 'Start Color (Bottom)',
+        type: 'text',
+        default: '#38bdf8', unit: '', placeholder: '#38bdf8'
+      },
+      {
+        id: 'colorTop',
+        label: 'End Color (Top)',
+        type: 'text',
+        default: '#a855f7', unit: '', placeholder: '#a855f7'
+      }
+    ]
+  },
+
+    // ─── 34 ───────────────────────────────────────────────────
+  {
+    id: 'gradient-depth',
+    label: 'Gradient Depth — Bloom',
+    description: 'Cinematic depth reveal where gradient text blooms from blur into sharp focus.',
+    animationKey: 'GradientDepthReveal',
+    defaultText: 'GRADIENT DEPTH BLOOM',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.5, max: 3, step: 0.1, default: 1.2, unit: 's'
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.01, max: 0.15, step: 0.005, default: 0.035, unit: 's'
+      },
+      {
+        id: 'blurAmount',
+        label: 'Bloom Amount',
+        type: 'slider',
+        min: 4, max: 24, step: 1, default: 12, unit: 'px'
+      },
+      {
+        id: 'scaleFrom',
+        label: 'Scale From',
+        type: 'slider',
+        min: 0.3, max: 0.9, step: 0.05, default: 0.6, unit: ''
+      },
+      {
+        id: 'depthY',
+        label: 'Depth Y',
+        type: 'slider',
+        min: 20, max: 100, step: 5, default: 50, unit: 'px'
+      },
+      {
+        id: 'colorStart',
+        label: 'Color Start',
+        type: 'text',
+        default: '#38bdf8', unit: '', placeholder: '#38bdf8'
+      },
+      {
+        id: 'colorEnd',
+        label: 'Color End',
+        type: 'text',
+        default: '#a855f7', unit: '', placeholder: '#a855f7'
+      },
+    ]
+  },
+
+    // ─── 35 ───────────────────────────────────────────────────
+  {
+    id: 'word-gradient-shift',
+    label: 'Word Gradient Shift — Depth to Solid',
+    description: 'Words bloom from blur with shifting gradient, then resolve to solid color. Cinematic & premium.',
+    animationKey: 'WordGradientShiftReveal',
+    defaultText: 'GRADIENT SHIFT FINALE',
+    defaultSubtext:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan lectus non lorem convallis lobortis.',
+    controls: [
+      {
+        id: 'duration',
+        label: 'Duration',
+        type: 'slider',
+        min: 0.6, max: 2.5, step: 0.1, default: 1.3, unit: 's'
+      },
+      {
+        id: 'stagger',
+        label: 'Stagger',
+        type: 'slider',
+        min: 0.02, max: 0.15, step: 0.005, default: 0.05, unit: 's'
+      },
+      {
+        id: 'blurAmount',
+        label: 'Bloom Amount',
+        type: 'slider',
+        min: 4, max: 20, step: 1, default: 10, unit: 'px'
+      },
+      {
+        id: 'colorStart',
+        label: 'Gradient Start',
+        type: 'text',
+        default: '#38bdf8', unit: '', placeholder: '#38bdf8'
+      },
+      {
+        id: 'colorEnd',
+        label: 'Gradient End',
+        type: 'text',
+        default: '#f472b6', unit: '', placeholder: '#f472b6'
+      },
+      {
+        id: 'finalColor',
+        label: 'Final Solid',
+        type: 'text',
+        default: '#ffffff', unit: '', placeholder: '#ffffff'
+      },
+      {
+        id: 'ease',
+        label: 'Ease',
+        type: 'select',
+        options: ['power3.out', 'expo.out', 'sine.out', 'back.out(1.2)'],
+        default: 'power3.out'
+      }
+    ]
+  },
+
 ]

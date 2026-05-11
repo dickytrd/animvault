@@ -36,12 +36,11 @@ import { TrackingReveal } from '@/animations/heading-reveal/TrackingReveal'
 import { RadialBurstReveal } from '@/animations/heading-reveal/RadialBurstReveal'
 import { CenterOutCascade } from '@/animations/heading-reveal/CenterOutCascade'
 import { ElasticOvershoot } from '@/animations/heading-reveal/ElasticOvershoot'
-
-
-
-
-
-
+import { AuroraShimmer } from '@/animations/heading-reveal/AuroraShimmer'
+import { GradientShiftReveal } from '@/animations/heading-reveal/GradientShiftReveal'
+import { VerticalLiquidFill } from '@/animations/heading-reveal/VerticalLiquidFill'
+import { GradientDepthReveal } from '@/animations/heading-reveal/GradientDepthReveal'
+import { WordGradientShiftReveal } from '@/animations/heading-reveal/WordGradientShiftReveal'
 
 
 
@@ -76,6 +75,11 @@ const ANIMATION_REGISTRY = {
   RadialBurstReveal,
   CenterOutCascade,
   ElasticOvershoot,
+  AuroraShimmer,
+  GradientShiftReveal,
+  VerticalLiquidFill,
+  GradientDepthReveal,
+  WordGradientShiftReveal,
 }
 
 /**

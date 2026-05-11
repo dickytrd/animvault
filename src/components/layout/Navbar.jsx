@@ -11,6 +11,7 @@ const MENU_ITEMS = [
   { label: 'Content Reveal', href: '/content-reveal', tag: '02', count: '5'  },
   { label: 'Loaders',        href: '/loaders',        tag: '03', count: '5'  },
   { label: 'Buttons',        href: '/buttons',        tag: '04', count: '5'  },
+  { label: 'gallery',        href: '/gallery-swiper',        tag: '04', count: '5'  },
 ]
 
 const SOON_ITEMS = [
@@ -163,9 +164,9 @@ export function Navbar() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 32px', height: '56px',
-        background: 'rgba(10,10,10,0.85)',
+        background: 'rgba(10,10,10,0.05)',
         backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(30px)',
-        borderBottom: '1px solid var(--border)',
+        // borderBottom: '1px solid var(--border)',
       }}>
         {/* Logo */}
         <a href="/" style={{ fontSize:'15px', fontWeight:'700', color:'var(--text)', textDecoration:'none', letterSpacing:'-0.02em' }}>
