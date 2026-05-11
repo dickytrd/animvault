@@ -94,7 +94,7 @@ function buildCalculator(positions) {
 // ═══════════════════════════════════════════════════════════════
 // COMPONENT
 // ═══════════════════════════════════════════════════════════════
-export function SmoothAtmosphere({ children }) {
+export function Smoothatmosphere({ children }) {
   const curRef  = useRef(0)
   const rafRef  = useRef(null)
   const calcRef = useRef(null)
