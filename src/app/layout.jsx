@@ -3,7 +3,7 @@ import { SiteLoader } from '@/components/layout/SiteLoader'
 import { SmoothScroll } from '@/components/layout/SmoothScroll'
 import { TrailCursor } from '@/components/effects/TrailCursor'
 import { ClickBurstCursor } from '@/components/effects/ClickBurstCursor'
-import { SmoothAtmosphere }  from '@/components/layout/SmoothAtmosphere'
+import { Smoothatmosphere }  from '@/components/layout/Smoothatmosphere'
 
 
 
@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <SmoothAtmosphere>
+        <Smoothatmosphere>
         <SmoothScroll>
         <TrailCursor 
           color="#2563eb"  
@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
       />
         {children}
         </SmoothScroll>
-        </SmoothAtmosphere>
+        </Smoothatmosphere>
         <SiteLoader />
       </body>
     </html>

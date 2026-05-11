@@ -151,14 +151,14 @@ function Hero() {
   const subRef       = useRef(null)
   const ctaRef       = useRef(null)
   const statsRef     = useRef(null)
-
+ 
   useGSAP(() => {
-    const tl = gsap.timeline({ delay: 0.10 })
+    const tl = gsap.timeline({ delay: 0.15 })
     if (headlineRef.current) {
       const el       = headlineRef.current
       const split    = new SplitText(el, { type: 'chars' })
       const inners   = []
-
+ 
       split.chars.forEach((char) => {
         const text    = char.textContent.trim()
         const isSpace = !text
@@ -177,27 +177,26 @@ function Hero() {
         const randY   = 80 + Math.random() * 60
         const randRot = (Math.random() - 0.5) * 25
         const randScl = 0.4 + Math.random() * 0.4
-        gsap.set(inner, { y: randY, rotation: 0, scale: 1, opacity: 1, filter: 'blur(4px)', transformOrigin: 'center center' })
+        gsap.set(inner, { y: randY, rotation: randRot, scale: randScl, opacity: 0, filter: 'blur(4px)', transformOrigin: 'center center' })
         inners.push(inner)
       })
-
+ 
       tl.to(inners, { y:0, rotation:0, scale:1, opacity:1, filter:'blur(0px)', duration:0.9, stagger:{ each:0.03, from:'random' }, ease:'power3.out' })
     }
     tl.from(subRef.current,   { filter:'blur(10px)', y:16, opacity:0, duration:0.6, ease:'power2.out' }, '-=0.4')
     tl.from(ctaRef.current,   { filter:'blur(8px)',  y:12, opacity:0, duration:0.5, ease:'power2.out' }, '-=0.35')
     tl.from(statsRef.current, { filter:'blur(6px)',  y:12, opacity:0, duration:0.5, ease:'power2.out' }, '-=0.25')
   }, { scope: containerRef })
-
+ 
   return (
     <>
-    <section ref={containerRef} style={{ minHeight:'80vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'120px 0 0px', position:'relative', overflow:'hidden' }}>
-      <div style={{ width:'100vw', maxWidth:'1920px', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', margin:'0 auto', padding:'0 48px', width:'100%' }}>
+    <section ref={containerRef} style={{ minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'120px 48px 80px', position:'relative', overflow:'hidden' }}>
       <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 80% 50% at 50% 0%, var(--accent-dim) 0%, transparent 70%)', pointerEvents:'none' }} />
       <div style={{ fontSize:'11px', fontWeight:'500', letterSpacing:'0.12em', textTransform:'uppercase', color:'var(--text-subtle)', marginBottom:'28px', padding:'4px 14px', border:'1px solid var(--border)', borderRadius:'20px', display:'inline-block' }}>Animation Collection — GSAP</div>
       <h1 ref={headlineRef} className="h1" style={{ maxWidth:'1000px', marginBottom:'24px', overflow:'hidden' }}>Make Your Site<br /> Come To Life.</h1>
       <p ref={subRef} style={{ fontSize:'17px', color:'var(--text-muted)', maxWidth:'500px', lineHeight:'1.65', marginBottom:'40px' }}>Explore ready-to-use interactions, study how they work,
 and discover the best animated websites on the internet.</p>
-      <div ref={ctaRef} className="hero-cta" style={{ display:'flex', gap:'12px', alignItems:'center', marginBottom:'72px' }}>
+      <div ref={ctaRef} style={{ display:'flex', gap:'12px', alignItems:'center', marginBottom:'72px' }}>
         <a href="#collection" style={{ fontSize:'14px', fontWeight:'500', color:'#fff', background:'var(--accent)', padding:'12px 24px', borderRadius:'8px', textDecoration:'none', transition:'background 0.2s, transform 0.2s' }}
           onMouseEnter={(e)=>{e.currentTarget.style.background='#1d4ed8';e.currentTarget.style.transform='translateY(-1px)', 
             e.currentTarget.style.boxShadow = '0 8px 20px rgba(37, 99, 255, 0.3)'
@@ -209,14 +208,13 @@ and discover the best animated websites on the internet.</p>
           onMouseEnter={(e)=>{e.currentTarget.style.color='var(--text)';e.currentTarget.style.borderColor='var(--border-hover)'}}
           onMouseLeave={(e)=>{e.currentTarget.style.color='var(--text-muted)';e.currentTarget.style.borderColor='var(--border)'}}>Browse Inspiration</a>
       </div>
-      <div ref={statsRef} className="hero-stats" style={{ display:'flex', borderRadius:'10px', overflow:'hidden', border:'1px solid var(--border)' }}>
+      <div ref={statsRef} style={{ display:'flex', borderRadius:'10px', overflow:'hidden', border:'1px solid var(--border)' }}>
         {[{n:'30+',l:'Animations'},{n:'GSAP',l:'Engine'},{n:'Free',l:'All Plugins'},{n:'4→12',l:'Categories'}].map((s,i)=>(
           <div key={i} style={{ padding:'14px 28px', background:'var(--surface)', borderRight:i<3?'1px solid var(--border)':'none', textAlign:'center' }}>
             <div style={{ fontSize:'18px', fontWeight:'700', color:'var(--text)', letterSpacing:'-0.02em' }}>{s.n}</div>
             <div style={{ fontSize:'11px', color:'var(--text-subtle)', marginTop:'2px' }}>{s.l}</div>
           </div>
         ))}
-      </div>
       </div>
     </section>
     <style>{`
@@ -242,133 +240,55 @@ and discover the best animated websites on the internet.</p>
 }
 
 // ─────────────────────────────────────────────
-// VIDEO SECTION — Stable Placeholder + Crossfade
+// VIDEO SECTION
 // ─────────────────────────────────────────────
 function VideoSection() {
   const wrapperRef = useRef(null)
-  const containerRef = useRef(null)
-  const videoRef = useRef(null)
-  const [videoReady, setVideoReady] = useState(false)
+  const videoRef   = useRef(null)
+  // const cursorRef  = useRef(null)
+  const isInside   = useRef(false)
+  const [loaded, setLoaded] = useState(false)
 
-  // 📍 CONFIG: Ganti dengan URL video & thumbnail Anda
-  const VIDEO_URL = "https://player.vimeo.com/progressive_redirect/playback/1069025739/rendition/720p/file.mp4?loc=external&signature=5228e9b27a0a8a481be5e694143d350db4102f9b2d390efbee5d6e69c16aa277"
-  const PLACEHOLDER_IMG = "/hero-video-thumb.png" // Simpan file ini di folder /public
-
-  // 🔧 Autoplay & Tab Visibility Handler
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    const attemptPlay = async () => {
-      try {
-        if (video.paused) await video.play()
-      } catch (err) {
-        // Browser memblokir autoplay → placeholder tetap tampil, tidak crash
-        console.warn('Autoplay blocked:', err)
-      }
-    }
-
-    attemptPlay()
-
-    // Resume video otomatis saat user kembali ke tab
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible' && video.paused) {
-        attemptPlay()
-      }
-    }
-    document.addEventListener('visibilitychange', handleVisibility)
-    return () => document.removeEventListener('visibilitychange', handleVisibility)
-  }, [])
-
-  // 🎬 GSAP Scroll Animation (Animasi CONTAINER, bukan video langsung → lebih stabil)
   useGSAP(() => {
-    gsap.fromTo(containerRef.current,
-      { scale: 0.65, borderRadius: '20px', y: 60 },
-      {
-        scale: 1,
-        borderRadius: '0px',
-        y: 0,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: wrapperRef.current,
-          start: 'top bottom',
-          end: 'top top',
-          scrub: 1.5
-        }
-      }
+    gsap.fromTo(videoRef.current,
+      { scale:0.65, borderRadius:'20px' },
+      { scale:1, borderRadius:'0px', ease:'none', scrollTrigger:{ trigger:wrapperRef.current, start:'top bottom', end:'top top', scrub:true } }
     )
-  }, { scope: wrapperRef })
+  }, { scope:wrapperRef })
+
+  // useEffect(() => {
+  //   const el  = videoRef.current
+  //   // const dot = cursorRef.current
+  //   if (!el || !dot) return
+  //   const xTo = gsap.quickTo(dot, 'x', { duration:0.45, ease:'power3.out' })
+  //   const yTo = gsap.quickTo(dot, 'y', { duration:0.45, ease:'power3.out' })
+  //   const onMove  = (e) => { if (!isInside.current) return; const r = el.getBoundingClientRect(); xTo(e.clientX - r.left); yTo(e.clientY - r.top) }
+  //   const onEnter = () => { isInside.current = true;  gsap.to(dot, { scale:1, opacity:1, duration:0.35, ease:'back.out(2)' }) }
+  //   const onLeave = () => { isInside.current = false; gsap.to(dot, { scale:0, opacity:0, duration:0.25, ease:'power2.in'  }) }
+  //   window.addEventListener('mousemove', onMove)
+  //   el.addEventListener('mouseenter', onEnter)
+  //   el.addEventListener('mouseleave', onLeave)
+  //   return () => { window.removeEventListener('mousemove', onMove); el.removeEventListener('mouseenter', onEnter); el.removeEventListener('mouseleave', onLeave) }
+  // }, [])
 
   return (
-    <div ref={wrapperRef} style={{ marginTop: '-10vh', position: 'relative', zIndex: 1, overflow: 'hidden' }}>
-      <div
-        ref={containerRef}
-        style={{
-          position: 'relative',
-          width: '100%',
-          aspectRatio: '16/9',
-          background: 'var(--surface)',
-          overflow: 'hidden',
-          willChange: 'transform, opacity',
-        }}
-      >
-        {/* 1️⃣ Placeholder Image (Tampil duluan, loading="eager") */}
-        <img
-          src={PLACEHOLDER_IMG}
-          alt="Video preview"
-          loading="eager"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            opacity: videoReady ? 0 : 1,
-            transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-            zIndex: videoReady ? 1 : 2,
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* 2️⃣ Video Element (Fade in halus saat metadata siap) */}
-        <video
-          ref={videoRef}
-          src={VIDEO_URL}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster={PLACEHOLDER_IMG}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-            opacity: videoReady ? 1 : 0,
-            transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
-          onLoadedData={() => setVideoReady(true)}
-          onError={() => setVideoReady(false)} // Fallback: jika video gagal, placeholder tetap tampil
-        />
-
-        {/* 3️⃣ Gradient Overlay (Agar kontras tetap terjaga) */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.55) 100%)',
-            pointerEvents: 'none',
-            zIndex: 3,
-          }}
-        />
+    <div ref={wrapperRef} style={{ marginTop:'-10vh', position:'relative', zIndex:1 }}>
+      <div ref={videoRef} style={{ width:'100%', aspectRatio:'16/9', background:'var(--surface)', overflow:'hidden', position:'relative', cursor:'visinle', transformOrigin:'center top' }}>
+        <video autoPlay loop muted playsInline preload="auto"
+          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', display:'block' }}
+          src="https://player.vimeo.com/progressive_redirect/playback/1069025739/rendition/720p/file.mp4?loc=external&signature=5228e9b27a0a8a481be5e694143d350db4102f9b2d390efbee5d6e69c16aa277"
+          onLoadedData={() => setLoaded(true)} />
+        {!loaded && (
+          <div style={{ position:'absolute', inset:0, background:'var(--surface)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:5 }}>
+            <div style={{ width:'36px', height:'36px', border:'2px solid var(--border)', borderTopColor:'var(--accent)', borderRadius:'50%', animation:'spin 1s linear infinite' }} />
+          </div>
+        )}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, transparent 70%, rgba(10,10,10,0.5))', pointerEvents:'none', zIndex:1 }} />
+        {/* <div ref={cursorRef} style={{ position:'absolute', top:0, left:0, width:'76px', height:'76px', borderRadius:'50%', background:'rgba(255,255,255,0.95)', display:'flex', alignItems:'center', justifyContent:'center', pointerEvents:'none', transform:'translate(-50%,-50%) scale(0)', opacity:0, zIndex:10, boxShadow:'0 8px 32px rgba(0,0,0,0.4)' }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#0a0a0a"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div> */}
       </div>
-
-      <style>{`
-        @keyframes spin { to { transform: rotate(360deg) } }
-      `}</style>
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
     </div>
   )
 }
