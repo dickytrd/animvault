@@ -74,7 +74,7 @@ function buildCalculator(positions) {
     const sy = window.scrollY
 
     // ── Dark → Light ─────────────────────────────────────────
-    const d2lStart = marqueeTop - wh * 2.5  // start: during intro cards exit
+    const d2lStart = marqueeTop - wh * 1.5  // start: during intro cards exit
     const d2lEnd   = marqueeTop - wh * 0.4  // end: midpoint of marquee
     const p1 = clamp((sy - d2lStart) / (d2lEnd - d2lStart), 0, 1)
 

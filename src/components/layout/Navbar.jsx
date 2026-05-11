@@ -28,6 +28,7 @@ export function Navbar() {
   const [showHint, setShowHint] = useState(true) // Hide hint after first open
 
   // Refs for GSAP
+  const navRef       = useRef(null)
   const menuPanelRef = useRef(null)
   const overlayRef   = useRef(null)
   const itemsRef     = useRef([])
@@ -40,6 +41,11 @@ export function Navbar() {
   const tlRef        = useRef(null)
   const hintRef      = useRef(null) // ← Ref for hint button animation
   const arrowRef     = useRef(null) // ← Ref for arrow icon animation
+  
+  // Scroll tracking
+  const scrollPosRef = useRef(0)
+  const scrollDirRef = useRef('up')
+  const navVisibleRef = useRef(true)
 
   // Build timeline once on mount
   useEffect(() => {
@@ -93,6 +99,63 @@ export function Navbar() {
     }, 0.6)
 
     return () => { tlRef.current?.kill() }
+  }, [])
+
+  // ✨ Scroll-based navbar hide/show interaction
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+
+    // Initialize navbar position
+    gsap.set(nav, { y: 0 })
+
+    let tween = null
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY
+      const lastScroll = scrollPosRef.current
+
+      // Determine scroll direction
+      if (currentScroll > lastScroll) {
+        // Scrolling DOWN
+        if (scrollDirRef.current !== 'down') {
+          scrollDirRef.current = 'down'
+          // Hide navbar (move up by navbar height)
+          if (tween) tween.kill()
+          if (navVisibleRef.current) {
+            navVisibleRef.current = false
+            tween = gsap.to(nav, {
+              y: -56, // Navbar height
+              duration: 0.4,
+              ease: 'power2.inOut',
+            })
+          }
+        }
+      } else if (currentScroll < lastScroll) {
+        // Scrolling UP
+        if (scrollDirRef.current !== 'up') {
+          scrollDirRef.current = 'up'
+          // Show navbar (move back to original position)
+          if (tween) tween.kill()
+          if (!navVisibleRef.current) {
+            navVisibleRef.current = true
+            tween = gsap.to(nav, {
+              y: 0,
+              duration: 0.4,
+              ease: 'power2.inOut',
+            })
+          }
+        }
+      }
+
+      scrollPosRef.current = currentScroll
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (tween) tween.kill()
+    }
   }, [])
 
   // Toggle open/close + hint animation
@@ -160,12 +223,13 @@ export function Navbar() {
   return (
     <>
       {/* ── Fixed Navbar bar ── */}
-      <nav style={{
+      <nav ref={navRef} style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 32px', height: '56px',
         background: 'rgba(10,10,10,0.05)',
         backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(30px)',
+        willChange: 'transform',
         // borderBottom: '1px solid var(--border)',
       }}>
         {/* Logo */}

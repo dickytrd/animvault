@@ -385,7 +385,7 @@ function Marquee() {
   }, [])
 
   return (
-    <section style={{ height: '100%', paddingBottom:"128px", overflow:'hidden', background:'var(--bg)' }}>
+    <section style={{ marginTop: '-65vh', height: '100%', paddingBottom:"128px", overflow:'hidden', background:'var(--bg)' }}>
       <div id="section-marquee" className="marquee-track" ref={trackRef} style={{ display:'flex', alignItems:'center', willChange:'transform' }}>
         {items.map((word,i)=>(
           <span key={i} style={{ display:'inline-flex', alignItems:'center', flexShrink:0 }}>
