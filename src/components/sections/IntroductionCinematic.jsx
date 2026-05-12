@@ -386,7 +386,7 @@ export function IntroductionCinematic() {
                   //   e.currentTarget.style.transform = 'scale(1)'
                   // }}
                 />
-                <div
+                {/* <div
                   style={{
                     position: 'absolute',
                     top: 0,
@@ -397,7 +397,7 @@ export function IntroductionCinematic() {
                     opacity: 0.6,
                     borderRadius: '1px',
                   }}
-                />
+                /> */}
               </div>
 
               {/* Content Section */}

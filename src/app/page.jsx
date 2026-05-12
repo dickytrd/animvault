@@ -248,6 +248,7 @@ function VideoSection() {
   // const cursorRef  = useRef(null)
   const isInside   = useRef(false)
   const [loaded, setLoaded] = useState(false)
+  const [error, setError] = useState(false)
 
   useGSAP(() => {
     gsap.fromTo(videoRef.current,
@@ -271,22 +272,24 @@ function VideoSection() {
   //   return () => { window.removeEventListener('mousemove', onMove); el.removeEventListener('mouseenter', onEnter); el.removeEventListener('mouseleave', onLeave) }
   // }, [])
 
+  const fallbackImage = 'https://images.unsplash.com/photo-1695671538019-0b45bdb5b608?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+
   return (
     <div ref={wrapperRef} style={{ marginTop:'-10vh', position:'relative', zIndex:1 }}>
       <div ref={videoRef} style={{ width:'100%', aspectRatio:'16/9', background:'var(--surface)', overflow:'hidden', position:'relative', cursor:'visinle', transformOrigin:'center top' }}>
-        <video autoPlay loop muted playsInline preload="auto"
-          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', display:'block' }}
+        <video autoPlay loop muted playsInline preload="auto" poster={fallbackImage}
+          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', display:'block', opacity: loaded && !error ? 1 : 0, transition:'opacity 0.4s ease' }}
           src="https://player.vimeo.com/progressive_redirect/playback/1069025739/rendition/720p/file.mp4?loc=external&signature=5228e9b27a0a8a481be5e694143d350db4102f9b2d390efbee5d6e69c16aa277"
-          onLoadedData={() => setLoaded(true)} />
-        {!loaded && (
-          <div style={{ position:'absolute', inset:0, background:'var(--surface)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:5 }}>
+          onLoadedData={() => setLoaded(true)}
+          onCanPlay={() => setLoaded(true)}
+          onError={() => setError(true)} />
+        <div style={{ position:'absolute', inset:0, backgroundImage:`url(${fallbackImage})`, backgroundSize:'cover', backgroundPosition:'center', opacity: loaded && !error ? 0 : 1, transition:'opacity 0.4s ease', zIndex:1 }} />
+        {!loaded && !error && (
+          <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', zIndex:4 }}>
             <div style={{ width:'36px', height:'36px', border:'2px solid var(--border)', borderTopColor:'var(--accent)', borderRadius:'50%', animation:'spin 1s linear infinite' }} />
           </div>
         )}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, transparent 70%, rgba(10,10,10,0.5))', pointerEvents:'none', zIndex:1 }} />
-        {/* <div ref={cursorRef} style={{ position:'absolute', top:0, left:0, width:'76px', height:'76px', borderRadius:'50%', background:'rgba(255,255,255,0.95)', display:'flex', alignItems:'center', justifyContent:'center', pointerEvents:'none', transform:'translate(-50%,-50%) scale(0)', opacity:0, zIndex:10, boxShadow:'0 8px 32px rgba(0,0,0,0.4)' }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#0a0a0a"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </div> */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, transparent 70%, rgba(10,10,10,0.5))', pointerEvents:'none', zIndex:3 }} />
       </div>
       <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
     </div>
@@ -416,7 +419,7 @@ function CollectionCards() {
 
   return (
     <section id="collection" ref={ref} style={{ padding:'80px 0', maxWidth:'none', margin:'0' }}>
-      <div style={{ width:'100vw', maxWidth:'1920px', margin:'0 auto', padding:'0 48px' }}>
+      <div style={{ width:'100%', maxWidth:'1920px', margin:'0 auto', padding:'0 48px' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:'48px' }}>
         <SectionLabel>04 — Collection</SectionLabel>
         <h2 ref={titleRef} className="h2" style={{ marginBottom:'8px', overflow:'hidden' }}>Browse by Interaction Type</h2>
@@ -527,7 +530,7 @@ function Works() {
         </div>
       </div>
 
-      <div style={{ position: 'relative', width:'100vw', maxWidth:'1440px', margin: '0 auto', padding: '0 100px' }}>
+      <div style={{ position: 'relative', width:'100%', maxWidth:'1440px', margin: '0 auto', padding: '0 100px' }}>
         {/* ← Navigation Button */}
         <button
           className="swiper-btn-prev"
@@ -905,12 +908,109 @@ function CardGridSection({ sectionId, sectionNum, label, titleText, subtitleText
     )
   }, { dependencies:[active, query, expanded], scope:ref })
 
+  function CardImage({ item }) {
+    const thumSrc = `https://image.thum.io/get/${item.url}`
+    const [src, setSrc] = useState(item.image)
+    const [isThumFallback, setIsThumFallback] = useState(false)
+    const [isFinalFallback, setIsFinalFallback] = useState(false)
+    const [failed, setFailed] = useState(false)
+
+    useEffect(() => {
+      let active = true
+      const fetchOg = async () => {
+        try {
+          const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(item.url)}`)
+          if (!active || !response.ok) throw new Error('microlink fetch failed')
+          const json = await response.json()
+          const ogUrl = json?.data?.image?.url || json?.data?.image
+          if (ogUrl) {
+            setSrc(ogUrl)
+            return
+          }
+        } catch (e) {
+          // continue to fallback
+        }
+
+        if (active) {
+          setIsThumFallback(true)
+          setSrc(thumSrc)
+        }
+      }
+      fetchOg()
+      return () => { active = false }
+    }, [item.url, thumSrc])
+
+    const handleError = () => {
+      if (!isThumFallback) {
+        setIsThumFallback(true)
+        setSrc(thumSrc)
+        return
+      }
+
+      if (!isFinalFallback && item.image) {
+        setIsFinalFallback(true)
+        setSrc(item.image)
+        return
+      }
+
+      setFailed(true)
+    }
+
+    const handleLoad = (e) => {
+      if (e.currentTarget.naturalWidth === 0 || e.currentTarget.naturalHeight === 0) {
+        handleError()
+      }
+    }
+
+    return (
+      <div style={{
+        width:'100%',
+        aspectRatio:'16/10',
+        overflow:'hidden',
+        borderRadius:'12px',
+        position:'relative',
+        background:'var(--surface)',
+      }}>
+        {!failed ? (
+          <img
+            src={src}
+            alt={item.name || item.title}
+            style={{
+              width:'100%',
+              height:'100%',
+              objectFit:'cover',
+              display:'block',
+              borderRadius:'12px',
+              transition:'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            onError={handleError}
+            onLoad={handleLoad}
+          />
+        ) : (
+          <div style={{
+            position:'absolute',
+            inset:0,
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
+            background:'var(--surface)',
+            color:'var(--text-subtle)',
+            fontSize:'13px',
+            textAlign:'center',
+            padding:'16px',
+          }}>
+            Image preview unavailable
+          </div>
+        )}
+      </div>
+    )
+  }
+
   // Render card (Awwwards exact match)
   const renderCard = (item, index) => {
     const isInsight = 'readTime' in item
     const name      = item.name || item.title
     const tagLabel  = item.type || item.tag
-    const imgSrc    = item.image
     const href      = item.url || '#'
     const desc      = item.desc || ''
     const author    = item.author || item.source || ''
@@ -932,35 +1032,14 @@ function CardGridSection({ sectionId, sectionNum, label, titleText, subtitleText
           }}
         >
           {/* Image Container */}
-          <div style={{ 
-            width:'100%', 
-            aspectRatio:'16/10',
-            overflow:'hidden',
-            borderRadius:'12px',
-            position:'relative',
-            background:'transparent',
-          }}>
-            <img 
-              src={imgSrc} 
-              alt={name} 
-              style={{ 
-                width:'100%', 
-                height:'100%', 
-                objectFit:'cover', 
-                display:'block',
-                borderRadius:'12px',
-                transition:'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-              }}
-              onError={(e)=>{
-                e.currentTarget.style.display='none'
-              }}
-            />
-            
-                        {/* Hover Overlay */}
+          <div style={{ position:'relative' }}>
+            <CardImage item={item} />
+
+            {/* Hover Overlay */}
             <div style={{
               position:'absolute',
               inset:0,
-              background:'rgba(0,0,0,0.75)',
+              background:'rgba(0,0,0,0.5)',
               borderRadius:'12px',
               opacity:0,
               transition:'opacity 0.3s ease',
@@ -968,7 +1047,7 @@ function CardGridSection({ sectionId, sectionNum, label, titleText, subtitleText
               alignItems:'flex-end',
               justifyContent:'space-between',
               padding:'20px',
-              backdropFilter:'blur(4px)',
+              backdropFilter:'blur(1px)',
             }}
               onMouseEnter={(e)=>e.currentTarget.style.opacity=1}
               onMouseLeave={(e)=>e.currentTarget.style.opacity=0}
@@ -1116,7 +1195,7 @@ function CardGridSection({ sectionId, sectionNum, label, titleText, subtitleText
   return (
     <>
     <section id={sectionId} ref={ref} style={{ padding:'100px 0', maxWidth:'none', margin:'0' }}>
-      <div style={{ width:'100vw', maxWidth:'1920px', margin:'0 auto', padding:'0 48px' }}>
+      <div style={{ width:'100%', maxWidth:'1920px', margin:'0 auto', padding:'0 48px' }}>
         <div style={{ marginBottom:'40px' }}>
         <SectionLabel>{sectionNum}</SectionLabel>
         <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:'16px', flexWrap:'wrap' }}>
@@ -1247,7 +1326,7 @@ function CTA() {
   },{scope:ref})
   return (
     <section ref={ref} style={{ padding:'128px 0', display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', position:'relative', overflow:'hidden' }}>
-      <div style={{ width:'100vw', maxWidth:'1920px', margin:'0 auto', padding:'0 48px', width:'100%' }}>
+      <div style={{ width:'100%', maxWidth:'1920px', margin:'0 auto', padding:'0 48px' }}>
       <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 60% at 50% 50%, var(--accent-dim) 0%, transparent 70%)', pointerEvents:'none' }} />
       <SectionLabel>Start Building</SectionLabel>
       <h2 ref={titleRef} className="h2-cta" style={{ maxWidth:'1000px', overflow:'hidden', marginBottom:'24px' }}>Start Exploring <br />Animations</h2>
