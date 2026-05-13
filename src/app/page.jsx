@@ -8,6 +8,7 @@ import { SplitText } from 'gsap/SplitText'
 import { useGSAP } from '@gsap/react'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import BorderGlow from '@/components/ui/BorderGlow'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
 import 'swiper/css'
@@ -401,8 +402,9 @@ function Marquee() {
   )
 }
 
+
 // ─────────────────────────────────────────────
-// COLLECTION CARDS
+// COLLECTION CARDS — with BorderGlow hover effect
 // ─────────────────────────────────────────────
 function CollectionCards() {
   const ref      = useRef(null)
@@ -410,41 +412,89 @@ function CollectionCards() {
   useBottomMaskReveal(titleRef, { yRange:100, rotationRange:0, stagger:0.01, start:'top 100%' })
 
   useGSAP(() => {
-    gsap.from('.coll-card', { y:40, opacity:0, filter:'blur(4px)', duration:0.6, stagger:0.05, ease:'power3.out', scrollTrigger:{ trigger:ref.current, start:'top 70%' } })
-    gsap.utils.toArray('.coll-card.live').forEach(card => {
-      card.addEventListener('mouseenter', ()=>gsap.to(card,{y:-4,duration:0.25,ease:'power2.out'}))
-      card.addEventListener('mouseleave', ()=>gsap.to(card,{y:0, duration:0.25,ease:'power2.out'}))
+    // Animasi masuk card (hanya sekali saat load)
+    gsap.from('.coll-card', { 
+      y:40, opacity:0, filter:'blur(4px)', 
+      duration:0.6, stagger:0.05, ease:'power3.out', 
+      scrollTrigger:{ trigger:ref.current, start:'top 70%' } 
     })
+    // Catatan: Hover effect sekarang ditangani oleh BorderGlow CSS
   }, { scope:ref })
 
   return (
     <section id="collection" ref={ref} style={{ padding:'80px 0', maxWidth:'none', margin:'0' }}>
       <div style={{ width:'100%', maxWidth:'1920px', margin:'0 auto', padding:'0 48px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:'48px' }}>
-        <SectionLabel>04 — Collection</SectionLabel>
-        <h2 ref={titleRef} className="h2" style={{ marginBottom:'8px', overflow:'hidden' }}>Browse by Interaction Type</h2>
-        <p style={{ fontSize:'14px', color:'var(--text-muted)' }}>Find the exact animation you need — from subtle micro-interactions
-to complex motion systems.</p>
-      </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'12px' }}>
-        {COLLECTION.map((cat)=>{
-          const badge=STATUS_BADGE[cat.status]; const isLive=cat.status==='live'; const Tag=isLive?Link:'div'; const extra=isLive?{href:cat.href}:{}
-          return (
-            <Tag key={cat.id} {...extra} className={`coll-card ${isLive?'live':''}`} style={{ background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', padding:'20px', textDecoration:'none', display:'block', cursor:isLive?'pointer':'default', opacity:isLive?1:0.6 }}>
-              <div style={{ fontSize:'26px', color:isLive?'var(--accent)':'var(--text-subtle)', marginBottom:'14px', fontFamily:'monospace' }}>{cat.preview}</div>
-              <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'8px', marginBottom:'8px' }}>
-                <span style={{ fontSize:'13px', fontWeight:'600', color:isLive?'var(--text)':'var(--text-muted)', lineHeight:'1.3' }}>{cat.title}</span>
-                <span style={{ fontSize:'9px', fontWeight:'600', padding:'2px 7px', borderRadius:'10px', flexShrink:0, background:badge.bg, color:badge.color }}>{badge.label}</span>
-              </div>
-              <p style={{ fontSize:'12px', color:'var(--text-muted)', lineHeight:'1.55', marginBottom:'12px' }}>{cat.desc}</p>
-              <div style={{ display:'flex', gap:'5px', flexWrap:'wrap', alignItems:'center' }}>
-                {cat.tags.map(t=>(<span key={t} style={{ fontSize:'10px', color:'var(--text-subtle)', background:'var(--surface-2)', border:'1px solid var(--border)', padding:'2px 8px', borderRadius:'6px' }}>{t}</span>))}
-                {cat.count>0&&<span style={{ fontSize:'10px', color:'var(--accent)', marginLeft:'auto' }}>{cat.count} anims →</span>}
-              </div>
-            </Tag>
-          )
-        })}
-      </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:'48px' }}>
+          <SectionLabel>04 — Collection</SectionLabel>
+          <h2 ref={titleRef} className="h2" style={{ marginBottom:'8px', overflow:'hidden' }}>Browse by Interaction Type</h2>
+          <p style={{ fontSize:'14px', color:'var(--text-muted)' }}>Find the exact animation you need — from subtle micro-interactions to complex motion systems.</p>
+        </div>
+        
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'12px' }}>
+          {COLLECTION.map((cat)=>{
+            const badge = STATUS_BADGE[cat.status]
+            const isLive = cat.status === 'live'
+            const Tag = isLive ? Link : 'div'
+            const extra = isLive ? { href: cat.href } : {}
+            
+            return (
+              <BorderGlow
+                key={cat.id}
+                className={`coll-card ${isLive ? 'live' : ''}`}
+                edgeSensitivity={25}
+                glowColor="210 100% 65%" // Cyan/blue glow
+                backgroundColor="var(--surface)"
+                borderRadius={12}
+                glowRadius={20}
+                glowIntensity={0.9}
+                coneSpread={30}
+                animated={false}
+                colors={['var(--accent)', '#7c3aed', '#06b6d4']} // Accent + purple + cyan
+                fillOpacity={0.25}
+              >
+                <Tag 
+                  {...extra} 
+                  style={{ 
+                    textDecoration:'none', 
+                    display:'block', 
+                    cursor: isLive ? 'pointer' : 'default',
+                    opacity: isLive ? 1 : 0.6,
+                    height: '100%',
+                  }}
+                >
+                  <div style={{ padding:'20px', height:'100%', display:'flex', flexDirection:'column' }}>
+                    <div style={{ fontSize:'26px', color: isLive ? 'var(--accent)' : 'var(--text-subtle)', marginBottom:'14px', fontFamily:'monospace' }}>
+                      {cat.preview}
+                    </div>
+                    <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'8px', marginBottom:'8px' }}>
+                      <span style={{ fontSize:'13px', fontWeight:'600', color: isLive ? 'var(--text)' : 'var(--text-muted)', lineHeight:'1.3' }}>
+                        {cat.title}
+                      </span>
+                      <span style={{ fontSize:'9px', fontWeight:'600', padding:'2px 7px', borderRadius:'10px', flexShrink:0, background:badge.bg, color:badge.color }}>
+                        {badge.label}
+                      </span>
+                    </div>
+                    <p style={{ fontSize:'12px', color:'var(--text-muted)', lineHeight:'1.55', marginBottom:'12px', flex:1 }}>
+                      {cat.desc}
+                    </p>
+                    <div style={{ display:'flex', gap:'5px', flexWrap:'wrap', alignItems:'center' }}>
+                      {cat.tags.map(t => (
+                        <span key={t} style={{ fontSize:'10px', color:'var(--text-subtle)', background:'var(--surface-2)', border:'1px solid var(--border)', padding:'2px 8px', borderRadius:'6px' }}>
+                          {t}
+                        </span>
+                      ))}
+                      {cat.count > 0 && (
+                        <span style={{ fontSize:'10px', color:'var(--accent)', marginLeft:'auto' }}>
+                          {cat.count} anims →
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Tag>
+              </BorderGlow>
+            )
+          })}
+        </div>
       </div>
     </section>
   )
